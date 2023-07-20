@@ -1,0 +1,34 @@
+{
+  "name": "mitrain-fe",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@splidejs/react-splide": "^0.7.12",
+    "@splidejs/splide": "^4.1.4",
+    "@types/node": "20.3.0",
+    "@types/react": "18.2.11",
+    "@types/react-dom": "18.2.4",
+    "axios": "^1.4.0",
+    "date-fns": "^2.30.0",
+    "jsonwebtoken": "^9.0.0",
+    "next": "13.4.5",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-query": "^3.39.3",
+    "swiper": "^9.4.1",
+    "typescript": "5.1.3"
+  },
+  "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.2",
+    "autoprefixer": "^10.4.14",
+    "daisyui": "^3.1.1",
+    "postcss": "^8.4.24",
+    "tailwindcss": "^3.3.2"
+  }
+}
