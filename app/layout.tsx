@@ -1,12 +1,13 @@
-'use client'
 
 import Navbar from '@/src/components/navbar'
 import './globals.css'
 import { Inter } from 'next/font/google'
 import Footer from '@/src/components/footer'
-import { QueryClient, QueryClientProvider } from "react-query";
 import { useEffect, useState } from 'react'
 import { decodeToken } from '@/src/utils/auth/decodeToken'
+import QueryClientWrapper from '@/src/utils/Wrapper/QueryClientWrapper'
+import { getCookie, setCookie } from 'cookies-next'
+import { cookies } from 'next/headers'
 
 
 export const metadata = {
@@ -20,17 +21,19 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
 
-  const queryClient = new QueryClient();
+  const cookieStore = cookies()
+  const token = cookieStore.get('token')
+  
 
   return (
     <html data-theme="light" lang="en">
-      <QueryClientProvider client={queryClient}>
-        <body>
-          <Navbar  />
+      <body>
+        <QueryClientWrapper>
+          <Navbar token={token?.value} />
           {children}
           <Footer />
-        </body>
-      </QueryClientProvider>
+        </QueryClientWrapper>
+      </body>
     </html>
   )
 }

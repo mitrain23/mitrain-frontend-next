@@ -7,22 +7,19 @@ import Image from 'next/image';
 import Link from 'next/link';
 import ProfileButton from './profile';
 import Profile from './profile';
+import { getCookie } from 'cookies-next';
 
 
-const Navbar = () => {
+
+const Navbar = ({token}: any) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [tokenValue, setTokenValue] = useState<string | null>('');
+  const [tokenValue, setTokenValue] = useState<string | null>(token);
   const handleSidebarToggle = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
+ 
 
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      setTokenValue(localStorage.getItem('token'));
-    }
-  }, [])
 
 
   return (
@@ -71,4 +68,19 @@ const Navbar = () => {
   );
 };
 
+
+
+
+
+
+
+
+
+
 export default Navbar;
+
+
+
+
+
+

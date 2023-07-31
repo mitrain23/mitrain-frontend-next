@@ -1,11 +1,11 @@
 import { Post } from "@/src/domain/entities/post";
+import { PostFilter } from "@/src/domain/entities/postFilter";
 import axios from "axios";
-
+import Cookies from 'js-cookie';
 
 export interface responseDelete {
     data: string;
 }
-
 
 
 export class PostsRepository {
@@ -43,7 +43,8 @@ export class PostsRepository {
     }
 
     static getPostByAuthor = async (id: number): Promise<Post[]> => {
-        const token = localStorage.getItem('token');
+        const token = Cookies.get('token');
+        // const token = localStorage.getItem('token');
         const response = await fetch(`http://localhost:8080/api/postAuthor/${id}`, {
             headers: {
                 Authorization: token ? `Bearer ${token}` : '',
@@ -52,4 +53,23 @@ export class PostsRepository {
         const data = await response.json();
         return data.getPostByAuthor;
     }
+
+    static getAllPostByFilter = async (postFilter: PostFilter): Promise<Post[]> => {
+        console.log(postFilter)
+        const { page, search, price_max, price_min, lokasi } = postFilter
+        // console.log(page)
+        const token = Cookies.get('token');
+        const response = await fetch(`http://localhost:8080/api/search?lokasi=${lokasi}&search=${search}&page=${page}&pageSize=10`)
+        const data = await response.json();
+        return data.results
+
+    }
+
+
+
+
+
+
+
+
 }

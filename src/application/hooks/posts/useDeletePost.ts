@@ -7,7 +7,7 @@ export const useDeletePost = (id: number) => {
     const deletePostQuery = useMutation(async () => {
         const deletePost = new DeletePostImpl()
         return deletePost.execute(id);
-    })
+    })  
 
     return deletePostQuery;
 

@@ -58,7 +58,7 @@ const FlyingHero = () => {
     }
 
     return (
-        <div className="bg-white shadow-md mx-auto w-[85%] h-fit absolute z-10 bottom-[-150px] sm:bottom-[-90px] right-0 left-0 px-16 py-8 flex flex-col items-center sm:items-stretch">
+        <div className="bg-white shadow-md rounded-md mx-auto w-[85%] h-fit absolute z-10 bottom-[-150px] sm:bottom-[-90px] right-0 left-0 px-16 py-8 flex flex-col items-center sm:items-stretch" style={{ zIndex: 1 }}>
             <div className="flex flex-row mb-5">
                 <h1 className="text-md md:text-2xl font-bold text-black">Cari Mitra Bisnis Terbaik</h1>
             </div>
@@ -114,6 +114,7 @@ const FlyingHero = () => {
                            
                         </select> */}
                         <input
+                            defaultValue='tes'
                             type="text"
                             name="search"
                             placeholder="harga"

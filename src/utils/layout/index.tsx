@@ -1,11 +1,11 @@
 import React from 'react'
 
-const LayoutTemplate = ({ children, background = 'red-200' }: {
+const LayoutTemplate = ({ children, background = 'bg-white' }: {
     children: React.ReactNode
     background?: string
 }, ) => {
     return (
-        <div className={`px-10 py-8 ${background}`}>
+        <div className={`md:px-10 md:py-8 ${background}`} >
             {children}
         </div>
     )

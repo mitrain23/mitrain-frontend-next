@@ -24,23 +24,38 @@ const CreateForm = () => {
     const [coverImages, setCoverImages] = useState(Array(5).fill(null));
 
 
+    // console.log(coverImages[0].file, 'ini cover images');
+
 
     // handleFileChange
-    const handleFileChange = (file: any, boxNumber: any, coverImage: any) => {
-        const updatedImages = [...coverImages];
-        const coverImageValues = [...coverImages]
-        // console.log(updatedImages, 'tes')
+    interface ImageData {
+        file: any;
+        imageUrl: string | null;
+      }
+      
+      const handleFileChange = (file: any, boxNumber: any, coverImage: any) => {
+        const updatedImages: ImageData[] = coverImages.map((imageData) => ({
+          file: imageData ? imageData.file : null,
+          imageUrl: imageData ? imageData.imageUrl : null,
+        }));
+        const coverImageValues = [...coverImages];
+        let imageUrl = URL.createObjectURL(file);
+      
         for (let i = 0; i < updatedImages.length; i++) {
-            if (updatedImages[i] === null) {
-                updatedImages[i] = file;
-                coverImageValues[i] = coverImage
-                break;
-            }
+          if (updatedImages[i].file === null) {
+            updatedImages[i] = {
+              file: file,
+              imageUrl: imageUrl,
+            };
+            coverImageValues[i] = coverImage;
+            break;
+          }
         }
+      
         setCoverImages(updatedImages);
-    };
-
-
+      };
+      
+    
 
     console.log(coverImages);
 
@@ -53,7 +68,7 @@ const CreateForm = () => {
             formData.append(key, value);
         });
         coverImages.forEach((coverImage, index) => {
-            formData.append('images', coverImage);
+            formData.append('images', coverImage.file);
         });
 
 
@@ -81,10 +96,10 @@ const CreateForm = () => {
     return (
         <>
 
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className='flex flex-col max-md:items-center'>
                 <div className='border-2 border-grey-200 px-10 py-5 mb-10'>
-                    <label className="flex flex-row items-start justify-start gap-10 py-2 w-full">
-                        <div className='flex flex-col items-start justify-center gap-2 w-[550px]'>
+                    <label className="flex flex-col md:flex-row items-start justify-start gap-10 py-2 w-full">
+                        <div className='flex flex-col items-start justify-center gap-2 lg:w-[550px]'>
                             <div className='flex flex-row gap-2'>
                                 <p>Title</p>
                                 <p>wajib</p>
@@ -105,8 +120,8 @@ const CreateForm = () => {
                             className="border border-gray-300 px-2 py-1 w-full"
                         />
                     </label>
-                    <label className="flex flex-row items-start justify-start gap-10 py-2 w-full">
-                        <div className='flex flex-col items-start justify-center gap-2 w-[550px]'>
+                    <label className="flex flex-col md:flex-row items-start justify-start gap-10 py-2 w-full">
+                        <div className='flex flex-col items-start justify-center gap-2 md:w-[550px]'>
                             <div className='flex flex-row gap-2'>
                                 <p>Deskripsi</p>
                                 <p>wajib</p>
@@ -178,34 +193,45 @@ const CreateForm = () => {
                     <label className="flex flex-col items-start justify-start">
                         WhatsApp Phone Number:
                         <input
-                            type="text"
+                            type="number"
                             name='phone_number_whatsapp'
                             value={formState.phone_number_whatsapp}
-                            onChange={(e) =>
+                            onChange={(e) => {
+                                const value = e.target.value;
+                                // Validate phone number length (12 digits)
+                                if (e.target.name === 'phone_number_whatsapp' && value.length == 12) {
+                                  return; // Do not update the state for phone numbers with other than 12 digits
+                                }
                                 setFormState((prevState) => ({
-                                    ...prevState,
-                                    [e.target.name]: e.target.value,
-                                }))
-                            }
+                                  ...prevState,
+                                  [e.target.name]: value,
+                                }));
+                              }}
                             className="border border-gray-300 px-2 py-1"
                         />
                     </label>
                     <label className="flex flex-col items-start justify-start">
                         Contact Phone Number:
                         <input
-                            type="text"
+                            type="number"
                             name='phone_number_contact'
                             value={formState.phone_number_contact}
-                            onChange={(e) =>
+                            onChange={(e) => {
+                                const value = e.target.value;
+                                // Validate phone number length (12 digits)
+                                if (e.target.name === 'phone_number_contact' && value.length == 12) {
+                                  return; // Do not update the state for phone numbers with other than 12 digits
+                                }
                                 setFormState((prevState) => ({
-                                    ...prevState,
-                                    [e.target.name]: e.target.value,
-                                }))
-                            }
+                                  ...prevState,
+                                  [e.target.name]: value,
+                                }));
+                              }}
                             className="border border-gray-300 px-2 py-1"
                         />
                     </label>
-                    <div className='flex items-start gap-5'>
+                    <div className='my-5'></div>
+                    <div className='flex flex-col md:flex-row items-center md:items-start gap-5'>
                         {coverImages.map((coverImage, index) => (
                             <FileInputBox
                                 key={index}
@@ -217,7 +243,7 @@ const CreateForm = () => {
                         ))}
                     </div>
                 </div>
-                <button className='btn' type="submit">Create Post</button>
+                <button className='btn mb-5' type="submit">Create Post</button>
             </form>
 
         </>

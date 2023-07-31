@@ -10,6 +10,7 @@ const Image = dynamic(() => import('next/image'), { loading: () => <div>Loading.
 
 // Inside the component
 const Card = ({ data, deletePost }: { data: Post, deletePost?: boolean }) => {
+    console.log(data.title)
     const [imageLoaded, setImageLoaded] = useState(false);
     const Image1 = `http://localhost:8080/images/${data.image?.[0]?.name}`;
     const handleImageLoad = useCallback(() => {
@@ -32,7 +33,6 @@ const Card = ({ data, deletePost }: { data: Post, deletePost?: boolean }) => {
                     <div className="card card-compact bg-base-100 shadow-xl w-full mb-8">
                         <div className={`image-container ${!imageLoaded ? 'skeleton' : ''}`}>
                             {!imageLoaded && <div className="skeleton-placeholder animate-pulse bg-gray-200 rounded-md dark:bg-gray-400 w-[250px] h-[150px]"></div>}
-
                             <div className={`card-image max-sm:w-[350px] w-full h-[200px] flex items-center justify-center ${imageLoaded ? '' : ''} overflow-hidden`}>
                                 <Image
                                     className='bg-cover bg-no-repeat bg-center w-[80%]'
