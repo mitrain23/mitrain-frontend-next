@@ -3,7 +3,7 @@ import { user } from "@/src/domain/entities/user";
 // User repository
 class UserRepository {
   static loginUser = async (credentials: user) => {
-    const response = await fetch('http://localhost:8080/api/login', {
+    const response = await fetch('http://62.72.0.207:2000/api/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -20,7 +20,7 @@ class UserRepository {
 
 
   static registerUser = async (credentials: user) => {
-    const response = await fetch('http://localhost:8080/api/register', {
+    const response = await fetch('http://62.72.0.207:2000/api/register', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

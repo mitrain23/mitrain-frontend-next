@@ -8,7 +8,6 @@ import ReactPaginate from 'react-paginate'
 const Pagination = ({ handlePageChange }: any) => {
 
     const [pageNumber, setPageNumber] = useState(0);
-    // console.log(pageNumber);
 
 
     return (
@@ -22,7 +21,7 @@ const Pagination = ({ handlePageChange }: any) => {
         onPageChange={(data) => {
             handlePageChange(data.selected + 1);
         }}
-        containerClassName={"flex gap-2 mt-2 lg:mt-12 justify-center items-center bg-red-500 w-fit mx-auto"}
+        containerClassName={"flex gap-2 mt-2 lg:mt-12 justify-center items-center bg-blue-400 w-fit mx-auto"}
         activeClassName={"underline bg-main-orange "}
         pageClassName={
             "w-7 h-7 bg-very-light-orange rounded-lg hover:bg-main-orange"

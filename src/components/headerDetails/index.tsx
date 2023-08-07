@@ -15,8 +15,8 @@ const HeaderDetails = ({ image, data }: { image: ImageType[] | undefined, data: 
   const [loading, setLoading] = useState(true);
 
 
-  const Image1 = `http://localhost:8080/images/${image?.[0]?.name}`;
-  const Image2 = `http://localhost:8080/images/${image?.[1]?.name}`;
+  const Image1 = `http://62.72.0.207:2000/images/${image?.[0]?.name}`;
+  const Image2 = `http://62.72.0.207:2000/images/${image?.[1]?.name}`;
 
 
   console.log(data);

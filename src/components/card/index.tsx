@@ -12,7 +12,7 @@ const Image = dynamic(() => import('next/image'), { loading: () => <div>Loading.
 const Card = ({ data, deletePost }: { data: Post, deletePost?: boolean }) => {
     console.log(data.title)
     const [imageLoaded, setImageLoaded] = useState(false);
-    const Image1 = `http://localhost:8080/images/${data.image?.[0]?.name}`;
+    const Image1 = `http://62.72.0.207:2000/images/${data.image?.[0]?.name}`;
     const handleImageLoad = useCallback(() => {
         setImageLoaded(true);
     }, []);

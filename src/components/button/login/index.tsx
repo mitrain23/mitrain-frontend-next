@@ -25,9 +25,6 @@ const LoginButton = () => {
         console.log('Loading');
     }
 
-
-
-
     
 
     const openLoginDialog = () => {
