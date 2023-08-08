@@ -15,8 +15,8 @@ const HeaderDetails = ({ image, data }: { image: ImageType[] | undefined, data: 
   const [loading, setLoading] = useState(true);
 
 
-  const Image1 = `http://62.72.0.207:2000/images/${image?.[0]?.name}`;
-  const Image2 = `http://62.72.0.207:2000/images/${image?.[1]?.name}`;
+  const Image1 = `https://2af1-2a02-4780-10-d402-00-1.ngrok-free.app/images/${image?.[0]?.name}`;
+  const Image2 = `https://2af1-2a02-4780-10-d402-00-1.ngrok-free.app/images/${image?.[1]?.name}`;
 
 
   console.log(data);
