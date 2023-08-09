@@ -10,7 +10,7 @@ const Image = dynamic(() => import('next/image'), { loading: () => <div>Loading.
 
 // Inside the component
 const Card = ({ data, deletePost }: { data: Post, deletePost?: boolean }) => {
-    console.log(data.title)
+    // console.log(data.title)
     const [imageLoaded, setImageLoaded] = useState(false);
     const Image1 = `https://2af1-2a02-4780-10-d402-00-1.ngrok-free.app/images/${data.image?.[0]?.name}`;
     const handleImageLoad = useCallback(() => {
@@ -19,11 +19,13 @@ const Card = ({ data, deletePost }: { data: Post, deletePost?: boolean }) => {
 
     const deletePostQuery = data.id ? useDeletePost(data.id) : null;
 
-    const handleDelete = (e: any) => {
-        if (deletePostQuery) {
-            deletePostQuery.mutate();
+    const handleDelete = async (e: any) => {
+        e.preventDefault();
+        try {
+            await deletePostQuery?.mutate();
+        } catch (err) {
+            console.log(err);
         }
-        window.location.reload();
     }
 
     return (

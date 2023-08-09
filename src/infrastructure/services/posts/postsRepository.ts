@@ -10,23 +10,28 @@ export interface responseDelete {
 
 export class PostsRepository {
     static getAllPost = async (): Promise<Post[]> => {
-        const response = await fetch('http://https://2af1-2a02-4780-10-d402-00-1.ngrok-free.app/api/allPosts');
+        const response = await fetch('https://2af1-2a02-4780-10-d402-00-1.ngrok-free.app/api/allPosts');
         const data = await response.json();
         return data;
     }
 
     static getPostById = async (id: number): Promise<Post> => {
-        const response = await fetch(`http://https://2af1-2a02-4780-10-d402-00-1.ngrok-free.app/api/post/${id}`);
+        const response = await fetch(`https://2af1-2a02-4780-10-d402-00-1.ngrok-free.app/api/post/${id}`, {
+            headers: {
+                'ngrok-skip-browser-warning': '69420',
+            }
+        });
         const data = await response.json();
         return data;
     }
 
     static createPost = async (data: FormData) => {
         const token = localStorage.getItem('token');
-        const response = await axios.post('http://https://2af1-2a02-4780-10-d402-00-1.ngrok-free.app/api/create', data, {
+        const response = await axios.post('https://2af1-2a02-4780-10-d402-00-1.ngrok-free.app/api/create', data, {
             headers: {
                 Authorization: token ? `Bearer ${token}` : '',
                 'Content-Type': 'multipart/form-data',
+                'ngrok-skip-browser-warning': '69420',
             }
         })
         return response.data
@@ -34,9 +39,11 @@ export class PostsRepository {
 
     static deletePost = async (id: number): Promise<responseDelete> => {
         const token = localStorage.getItem('token');
-        const response = await axios.delete(`http://https://2af1-2a02-4780-10-d402-00-1.ngrok-free.app/api/delete/${id}`, {
+        const response = await axios.delete(`https://2af1-2a02-4780-10-d402-00-1.ngrok-free.app/api/delete/${id}`, {
             headers: {
                 Authorization: token ? `Bearer ${token}` : '',
+                'ngrok-skip-browser-warning': '69420',
+
             }
         });
         return response.data
@@ -45,9 +52,10 @@ export class PostsRepository {
     static getPostByAuthor = async (id: number): Promise<Post[]> => {
         const token = Cookies.get('token');
         // const token = localStorage.getItem('token');
-        const response = await fetch(`http://https://2af1-2a02-4780-10-d402-00-1.ngrok-free.app/api/postAuthor/${id}`, {
+        const response = await fetch(`https://2af1-2a02-4780-10-d402-00-1.ngrok-free.app/api/postAuthor/${id}`, {
             headers: {
                 Authorization: token ? `Bearer ${token}` : '',
+                'ngrok-skip-browser-warning': '69420',
             }
         });
         const data = await response.json();
