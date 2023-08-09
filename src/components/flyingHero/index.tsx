@@ -74,12 +74,8 @@ const FlyingHero = () => {
                             <option value="" selected hidden>
                                 Vendor
                             </option>
-                            <option>Han Solo</option>
-                            <option>Greedo</option>
-                            <option>Greedo</option>
-                            <option>Greedo</option>
-                            <option>Greedo</option>
-                            <option>Greedo</option>
+                            <option>Vendor</option>
+                        
                         </select>
 
                         <select
@@ -91,8 +87,7 @@ const FlyingHero = () => {
                             <option value="" selected hidden>
                                 Jenis
                             </option>
-                            <option>Han Solo</option>
-                            <option>Greedo</option>
+                            <option>Konveksi</option>
                         </select>
                         <select
                             name="lokasi"
@@ -114,8 +109,8 @@ const FlyingHero = () => {
                            
                         </select> */}
                         <input
-                            defaultValue='tes'
-                            type="text"
+                            defaultValue='300000'
+                            type="number"
                             name="search"
                             placeholder="harga"
                             className="input input-xs md:input-md w-full input-bordered mb-2 placeholder-black"
