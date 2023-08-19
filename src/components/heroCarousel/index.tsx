@@ -14,7 +14,7 @@ const HeroCarousel = ({ children }: any) => {
 
   return (
     <div className="relative">
-      <div className=" w-[100%] h-fit lg:h-[650px] overflow-hidden ">
+      <div className=" w-[100%] h-fit lg:h-[420px] overflow-hidden ">
         <Swiper navigation loop modules={[Navigation]} className="mySwiper">
           <SwiperSlide>
             <Image

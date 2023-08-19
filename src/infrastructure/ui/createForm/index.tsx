@@ -31,31 +31,31 @@ const CreateForm = () => {
     interface ImageData {
         file: any;
         imageUrl: string | null;
-      }
-      
-      const handleFileChange = (file: any, boxNumber: any, coverImage: any) => {
+    }
+
+    const handleFileChange = (file: any, boxNumber: any, coverImage: any) => {
         const updatedImages: ImageData[] = coverImages.map((imageData) => ({
-          file: imageData ? imageData.file : null,
-          imageUrl: imageData ? imageData.imageUrl : null,
+            file: imageData ? imageData.file : null,
+            imageUrl: imageData ? imageData.imageUrl : null,
         }));
         const coverImageValues = [...coverImages];
         let imageUrl = URL.createObjectURL(file);
-      
+
         for (let i = 0; i < updatedImages.length; i++) {
-          if (updatedImages[i].file === null) {
-            updatedImages[i] = {
-              file: file,
-              imageUrl: imageUrl,
-            };
-            coverImageValues[i] = coverImage;
-            break;
-          }
+            if (updatedImages[i].file === null) {
+                updatedImages[i] = {
+                    file: file,
+                    imageUrl: imageUrl,
+                };
+                coverImageValues[i] = coverImage;
+                break;
+            }
         }
-      
+
         setCoverImages(updatedImages);
-      };
-      
-    
+    };
+
+
 
     console.log(coverImages);
 
@@ -95,55 +95,75 @@ const CreateForm = () => {
 
     return (
         <>
-
-            <form onSubmit={handleSubmit} className='flex flex-col max-md:items-center'>
-                <div className='border-2 border-grey-200 px-10 py-5 mb-10'>
-                    <label className="flex flex-col md:flex-row items-start justify-start gap-10 py-2 w-full">
-                        <div className='flex flex-col items-start justify-center gap-2 lg:w-[550px]'>
-                            <div className='flex flex-row gap-2'>
-                                <p>Title</p>
-                                <p>wajib</p>
-                            </div>
-                            <p>Nama produk min. 40 karakter dengan memasukkan merek, jenis produk, warna, bahan, atau tipe.
-                            </p>
+            <h1 className='font-inter text-[30px] font-semibold mb-[32px] mt-[42px]'>Tambah Iklan</h1>
+            <form onSubmit={handleSubmit} className='flex flex-col max-md:items-center md:gap-[42px]'>
+                <label className="flex flex-col md:flex-row items-start justify-start md:justify-between gap-10 py-2 w-full">
+                    <div className='flex flex-col items-start justify-center gap-2 lg:w-[550px]'>
+                        <h2 className='text-black font-satoshi font-bold text-[22px]'>Informasi Produk*</h2>
+                        <div className='font-inter text-[#425379] text-[16px] flex flex-col gap-[12px]'>
+                            <p>Pastikan setiap produk yang diiklankan tidak melanggar <br /> Hak Kekayaan Intelektual merek lain.</p>
+                            <p>Disarankan menggunakan huruf kapital di awal kalimat <br /> dan hindari kapital berlebih.</p>
                         </div>
-                        <input
-                            type="text"
-                            name="title"
-                            value={formState.title}
-                            onChange={(e) =>
-                                setFormState((prevState) => ({
-                                    ...prevState,
-                                    [e.target.name]: e.target.value,
-                                }))
-                            }
-                            className="border border-gray-300 px-2 py-1 w-full"
-                        />
-                    </label>
-                    <label className="flex flex-col md:flex-row items-start justify-start gap-10 py-2 w-full">
-                        <div className='flex flex-col items-start justify-center gap-2 md:w-[550px]'>
-                            <div className='flex flex-row gap-2'>
-                                <p>Deskripsi</p>
-                                <p>wajib</p>
-                            </div>
-                            <p>Pastikan deskripsi produk memuat penjelasan detail terkait produkmu agar pembeli mudah mengerti dan menemukan produkmu.
 
-                                Disarankan untuk tidak memasukkan info nomor HP, e-mail, dsb. ke dalam deskripsi produk untuk melindungi data pribadimu.</p>
+                    </div>
+                    <input
+                        type="text"
+                        name="title"
+                        placeholder='Custom Baju Anak (Jenis/ Kategori Produk) + TokoBaju (Merek)'
+                        value={formState.title}
+                        onChange={(e) =>
+                            setFormState((prevState) => ({
+                                ...prevState,
+                                [e.target.name]: e.target.value,
+                            }))
+                        }
+                        className="border border-gray-300 px-[24px] py-[16px] w-[648px] h-[56px] rounded-[8px] outline-none"
+                    />
+                </label>
+
+                <label className="flex flex-col md:flex-row items-start justify-start md:justify-between gap-10 py-2 w-full">
+                    <div className='flex flex-col items-start justify-center gap-2 md:w-[550px]'>
+                        <h2 className='text-black font-satoshi font-bold text-[22px]'>Deskripsi Produk*</h2>
+                        <div className='font-inter text-[#425379] text-[16px] flex flex-col gap-[12px]'>
+                            <p>Pastikan setiap produk yang diiklankan tidak melanggar <br /> Hak Kekayaan Intelektual merek lain.</p>
+                            <p>Disarankan menggunakan huruf kapital di awal kalimat <br /> dan hindari kapital berlebih.</p>
                         </div>
-                        <textarea
-                            value={formState.description}
-                            name='description'
-                            onChange={(e) =>
-                                setFormState((prevState) => ({
-                                    ...prevState,
-                                    [e.target.name]: e.target.value,
-                                }))
-                            }
-                            className="border border-gray-300 px-2 py-1 h-[200px] w-full"
+                    </div>
+                    <textarea
+                        value={formState.description}
+                        name='description'
+                        onChange={(e) =>
+                            setFormState((prevState) => ({
+                                ...prevState,
+                                [e.target.name]: e.target.value,
+                            }))
+                        }
+                        className="border border-gray-300 px-[24px] py-[16px] w-[648px] h-[200px] rounded-[8px] outline-none"
 
-                        />
-                    </label>
+                    />
+                </label>
+
+                <div className="flex flex-col md:flex-row items-start justify-start md:justify-between gap-10 py-2 w-full">
+                    <div className='flex flex-col items-start justify-center gap-2 md:w-[550px]'>
+                        <h2 className='text-black font-satoshi font-bold text-[22px]'>Foto Produk*</h2>
+                        <div className='font-inter w-[420px] text-[#425379] text-[16px] flex flex-col gap-[12px]'>
+                            <p>Format gambar berupa .jpg .jpeg .png dengan ukuran minimum adalah 300x300px (untuk gambar dengan kualitas optimal disarankan menggunakan 700x700px).</p>
+                            <p>Pilih foto produk dengan cara mengklik gambar atau tarik dan letakkan hingga 5 foto sekaligus. Upload minimal 2 foto yang menarik dan berbeda-beda untuk menarik perhatian pembeli.</p>
+                        </div>
+                    </div>
+                    <div className='flex flex-col md:flex-row items-center md:items-start gap-5'>
+                        {coverImages.map((coverImage, index) => (
+                            <FileInputBox
+                                key={index}
+                                boxNumber={index + 1}
+                                onChange={handleFileChange}
+                                coverImage={coverImage}
+                            />
+
+                        ))}
+                    </div>
                 </div>
+
                 <div className='border-2 border-grey-200 px-10 py-5 mb-10'>
                     <label className="flex flex-col items-start justify-start">
                         Price (Min):
@@ -200,13 +220,13 @@ const CreateForm = () => {
                                 const value = e.target.value;
                                 // Validate phone number length (12 digits)
                                 if (e.target.name === 'phone_number_whatsapp' && value.length == 12) {
-                                  return; // Do not update the state for phone numbers with other than 12 digits
+                                    return; // Do not update the state for phone numbers with other than 12 digits
                                 }
                                 setFormState((prevState) => ({
-                                  ...prevState,
-                                  [e.target.name]: value,
+                                    ...prevState,
+                                    [e.target.name]: value,
                                 }));
-                              }}
+                            }}
                             className="border border-gray-300 px-2 py-1"
                         />
                     </label>
@@ -220,28 +240,18 @@ const CreateForm = () => {
                                 const value = e.target.value;
                                 // Validate phone number length (12 digits)
                                 if (e.target.name === 'phone_number_contact' && value.length == 12) {
-                                  return; // Do not update the state for phone numbers with other than 12 digits
+                                    return; // Do not update the state for phone numbers with other than 12 digits
                                 }
                                 setFormState((prevState) => ({
-                                  ...prevState,
-                                  [e.target.name]: value,
+                                    ...prevState,
+                                    [e.target.name]: value,
                                 }));
-                              }}
+                            }}
                             className="border border-gray-300 px-2 py-1"
                         />
                     </label>
                     <div className='my-5'></div>
-                    <div className='flex flex-col md:flex-row items-center md:items-start gap-5'>
-                        {coverImages.map((coverImage, index) => (
-                            <FileInputBox
-                                key={index}
-                                boxNumber={index + 1}
-                                onChange={handleFileChange}
-                                coverImage={coverImage}
-                            />
 
-                        ))}
-                    </div>
                 </div>
                 <button className='btn mb-5' type="submit">Create Post</button>
             </form>

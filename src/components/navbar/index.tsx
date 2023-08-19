@@ -23,7 +23,7 @@ const Navbar = ({token}: any) => {
 
 
   return (
-    <div className='bg-white-200 w-full shadow-md flex flex-row justify-between px-8 py-2 z-10'>
+    <div className='bg-white drop-shadow-md w-full flex flex-row justify-between px-8 lg:px-[240px] py-2'>
       <Link href={'/'}>
         <div className='flex items-center justify-center'>
           <Image src='/images/logoMitrain.svg' width={60} height={60} alt='logo-mitrain' />

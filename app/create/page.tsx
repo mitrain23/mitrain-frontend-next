@@ -1,13 +1,16 @@
 
+import Navbar from '@/src/components/navbar';
 import CreateForm from '@/src/infrastructure/ui/createForm';
 import LayoutTemplate from '@/src/utils/layout';
 import React, { useState } from 'react';
 
 const Create = () => {
     return (
-        <LayoutTemplate>
-            <CreateForm />
-        </LayoutTemplate>
+        <>
+            <LayoutTemplate>
+                <CreateForm />
+            </LayoutTemplate>
+        </>
     );
 };
 
