@@ -4,7 +4,7 @@ import { PostsRepository, responseDelete } from "@/src/infrastructure/services/p
 
 
 export class DeletePostImpl implements deletePost {
-    execute(id: number): Promise<responseDelete> {
+    execute(id: string): Promise<responseDelete> {
         return PostsRepository.deletePost(id);
     }
 }

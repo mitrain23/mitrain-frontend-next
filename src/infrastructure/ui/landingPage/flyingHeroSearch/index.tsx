@@ -5,12 +5,14 @@ import React from 'react'
 import Background from '../../../../../public/images/dummyIconProfle.svg'
 import Select from 'react-select';
 import CustomSelect from './customSelect';
+import Link from 'next/link';
 
 const FlyingHeroSearch = () => {
 
-    
+
     return (
         <div className="bg-white font-inter shadow-md rounded-[16px] mx-auto w-[980px] h-fit absolute z-10 bottom-[-150px] sm:bottom-[-90px] right-0 left-0 px-[42px] py-[36px] flex flex-col items-center sm:items-stretch" style={{ zIndex: 1 }}>
+            
             <div className='flex flex-row items-center text-[16px] mb-[24px] cursor-pointer'>
                 <h1>Vendor</h1>
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -32,16 +34,22 @@ const FlyingHeroSearch = () => {
                             <option>Han Solo</option>
                             <option>Greedo</option>
                         </select> */}
-                        <CustomSelect />
-                        <select className="select w-[432px] h-[56px]">
+                        {/* <CustomSelect />  */}
+                        <select className="select w-[432px] h-[56px] text-[#757575] font-medium">
+                            <option disabled selected>Pilih Lokasi</option>
+                            <option>Bandung</option>
+                        </select>
+                        <select className="select w-[432px] h-[56px] text-[#757575] font-medium">
                             <option disabled selected>Jenis</option>
-                            <option>Han Solo</option>
-                            <option>Greedo</option>
+                            <option>Konveksi</option>
+                            <option>Distributor</option>
                         </select>
                     </div>
                     <div className='flex flex-row gap-[16px]'>
-                        <input type="text" placeholder="Apa yang sedang anda cari?" className="input input-bordered w-[648px] h-[56px] placeholder:text-black" />
-                        <button className='bg-color5 w-[232px] px-[82px] py-[16px] text-white rounded-[8px] font-medium'>Search</button>
+                        <input type="text" placeholder="Apa yang sedang anda cari?" className="input input-bordered w-[648px] h-[56px] placeholder:text-[#757575]" />
+                        <Link href={'/results'}>
+                            <button className='bg-color5 w-[232px] px-[82px] py-[16px] text-white rounded-[8px] font-medium'>Search</button>
+                        </Link>
                     </div>
                 </form>
             </div>

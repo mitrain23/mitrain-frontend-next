@@ -2,5 +2,5 @@ import { responseDelete } from "@/src/infrastructure/services/posts/postsReposit
 import { Post } from "../entities/post";
 
 export interface deletePost {
-    execute(id: number): Promise<responseDelete>;
+    execute(id: string): Promise<responseDelete>;
 }

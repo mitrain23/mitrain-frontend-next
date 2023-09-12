@@ -6,11 +6,9 @@ import React, { useState } from 'react';
 
 const Create = () => {
     return (
-        <>
-            <LayoutTemplate>
-                <CreateForm />
-            </LayoutTemplate>
-        </>
+        <LayoutTemplate>
+            <CreateForm />
+        </LayoutTemplate>
     );
 };
 

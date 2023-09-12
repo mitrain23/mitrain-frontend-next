@@ -1,7 +1,5 @@
 
-
-
-import Navbar from '@/src/components/navbar'
+// import Navbar from '@/src/components/navbar'
 import './globals.css'
 import { Inter } from 'next/font/google'
 import { useEffect, useState } from 'react'
@@ -10,7 +8,8 @@ import QueryClientWrapper from '@/src/utils/Wrapper/QueryClientWrapper'
 import { getCookie, setCookie } from 'cookies-next'
 import { cookies } from 'next/headers'
 import Footer from '@/src/infrastructure/ui/global/footer'
-// import Navbar from '@/src/infrastructure/ui/global/navbar'
+import SubNavbar from '@/src/infrastructure/ui/global/subNavbar'
+import Navbar from '@/src/infrastructure/ui/global/navbar'
 
 
 export const metadata = {
@@ -27,14 +26,15 @@ export default function RootLayout({
 
   const cookieStore = cookies()
   const token = cookieStore.get('token')
+
+  
   
 
   return (
     <html data-theme="light" lang="en">
       <body>
-        <QueryClientWrapper>
-          <Navbar token={token?.value} />
-          {/* <Navbar /> */}
+        <QueryClientWrapper token={token}  > {/* subNavbar & navbar inside the queryClientWrapper */}
+          {/* <Navbar token={token?.value} /> */}
           {children}
           <Footer />
         </QueryClientWrapper>

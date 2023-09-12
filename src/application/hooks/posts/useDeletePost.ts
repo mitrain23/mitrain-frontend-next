@@ -3,7 +3,7 @@ import { DeletePostImpl } from "../../usecases/posts/deletePostUseCaseImpl"
 
 
 
-export const useDeletePost = (id: number) => {
+export const useDeletePost = (id: string) => {
     const queryClient = useQueryClient();
     const deletePostQuery = useMutation(async () => {
         const deletePost = new DeletePostImpl()
@@ -11,6 +11,7 @@ export const useDeletePost = (id: number) => {
     }, {
         onSuccess: () => {
             queryClient.invalidateQueries('postByAuthor');
+            window.location.reload();
         }
     })  
 

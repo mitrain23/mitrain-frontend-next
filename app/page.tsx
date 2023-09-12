@@ -5,6 +5,8 @@ import Recommendation from '@/src/infrastructure/ui/landingPage/recommendation'
 import Testimoni from '@/src/infrastructure/ui/landingPage/testimoni'
 import LayoutTemplate from '@/src/utils/layout'
 
+
+
 export default function Home() {
   return (
     <main>
@@ -17,9 +19,9 @@ export default function Home() {
         <div className='mb-[80px]' />
         <BingungCariSupplier />
         <div className='mb-[80px]' />
-        <Testimoni />
+        {/* <Testimoni /> */}
       </LayoutTemplate>
-      <div className='mb-[104px]' />
+      {/* <div className='mb-[104px]' /> */}
     </main>
   )
 }

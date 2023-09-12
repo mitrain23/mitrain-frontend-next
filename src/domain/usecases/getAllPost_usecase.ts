@@ -1,6 +1,6 @@
 import { Post } from "../entities/post";
 
 export interface GetAllPostUseCase {
-  execute(): Promise<Post[] | null>;
+  execute(pageNumber: number): Promise<Post[] | null>;
 }
 

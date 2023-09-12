@@ -5,19 +5,19 @@ import Logo from '../logo'
 
 const Footer = () => {
     return (
-        <div className='h-[108px] px-[240px] text-white w-full bg-[#020831] flex flex-col md:flex-row justify-between items-center'>
+        <div className='h-fit px-[24px] py-[24px] md:px-[240px] text-white w-full bg-[#020831] flex flex-col md:flex-row md:justify-between items-center'>
             <div>
                 <Logo />
             </div>
             <div>
-                <ul className='flex flex-row items-center gap-[16px] font-inter'>
+                <ul className='hidden md:flex md:flex-row md:items-center gap-[16px] font-inter'>
                     <li>index</li>
                     <li>index</li>
                     <li>index</li>
                     <li>index</li>
                 </ul>
             </div>
-            <div>
+            <div className='hidden md:flex'>
                 social icon
             </div>
         </div>

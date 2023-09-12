@@ -1,14 +1,38 @@
-import { UseQueryResult, useQuery } from "react-query"
-import { GetPostByAuthorImpl } from "../../usecases/posts/getPostByAuthorUseCaseImpl"
-import { Post } from "@/src/domain/entities/post";
+'use client';
+import { useEffect, useState } from 'react';
+import { GetPostByAuthorImpl } from '../../usecases/posts/getPostByAuthorUseCaseImpl';
+import { GetPostByAuthorResponse } from '@/src/infrastructure/models/getPostByAuthorResponse';
 
+export const useGetPostByAuthor = (id: string | null) => {
+  const [data, setData] = useState<GetPostByAuthorResponse | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
 
-export const useGetPostByAuthor = (id: number): UseQueryResult<Post[] | null> => {
-    const getPostByAuthorQuery = useQuery('postByAuthor', async () => {
-        const getPostByAuthor = new GetPostByAuthorImpl();
-        return getPostByAuthor.execute(id);
-    })
+      try {
+        if (id !== null) {
+          const getPostByAuthor = new GetPostByAuthorImpl();
+          const response = await getPostByAuthor.execute(id);
+          setData(response);
+          setIsError(false);
+        } else {
+          // Handle the case when id is null
+          setData(null);
+          setIsError(false);
+        }
+      } catch (error) {
+        // Handle any errors here
+        setIsError(true);
+      }
 
-    return getPostByAuthorQuery
-}
+      setIsLoading(false);
+    };
+
+    fetchData();
+  }, [id]);
+
+  return { data, isLoading, isError };
+};

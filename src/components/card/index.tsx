@@ -11,8 +11,9 @@ const Image = dynamic(() => import('next/image'), { loading: () => <div>Loading.
 // Inside the component
 const Card = ({ data, deletePost }: { data: Post, deletePost?: boolean }) => {
     // console.log(data.title)
+console.log(process.env.BASE_URL)
     const [imageLoaded, setImageLoaded] = useState(false);
-    const Image1 = `https://2af1-2a02-4780-10-d402-00-1.ngrok-free.app/images/${data.image?.[0]?.name}`;
+    const Image1 = `https://0152-2a02-4780-10-d402-00-1.ngrok-free.app/images/${data.image?.[0]?.name}`;
     const handleImageLoad = useCallback(() => {
         setImageLoaded(true);
     }, []);
