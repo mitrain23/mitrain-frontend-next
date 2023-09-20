@@ -26,8 +26,8 @@ const BingungCariSupplier = () => {
 
     return (
         <div className='flex flex-col md:flex-row md:gap-[52px] md:items-center '>
-            <div className='w-[704px] bg-slate-300 h-[360px] rounded-[36px]'>
-                <Image src={imageDummy} className='rounded-[36px] h-full' alt='' />
+            <div className='w-full md:w-[704px] bg-slate-300 h-[360px] rounded-[36px]'>
+                <Image src={imageDummy} className='rounded-[36px] h-full object-cover' alt='' />
             </div>
             <div>
                 <h1 className='font-satoshi text-[48px] font-bold text-black mb-[32px]'>Bingung Cari Supplier?</h1>

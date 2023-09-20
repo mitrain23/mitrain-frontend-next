@@ -2,7 +2,7 @@ import React from 'react'
 
 const SearchBar = () => {
   return (
-    <div className='flex items-center gap-[16px] w-[400px] h-[56px] rounded-[32px] bg-[#F6F6F6] px-[24px] py-[16px]'>
+    <div className='flex items-center gap-[16px] max-w-[400px] h-[56px] rounded-[32px] bg-[#F6F6F6] px-[24px] py-[16px]'>
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
         <mask id="mask0_22_152" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
           <rect width="24" height="24" fill="#D9D9D9" />

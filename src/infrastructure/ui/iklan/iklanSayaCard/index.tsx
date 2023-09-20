@@ -65,7 +65,7 @@ const IklanSayaCard = ({ data, index }: { data: Datum, index: number }) => {
                 </div>
                 <div className='flex flex-col md:w-[400px]'>
                     <h1 className='font-satoshi text-[#020831] text-[20px] font-bold truncate'>{data.title}</h1>
-                    <p className='text-[#6F7277] font-satoshi text-[16px] font-medium'>{data.location}</p>
+                    <p className='text-[#6F7277] font-satoshi text-[16px] font-medium capitalize'>{data.location.toLowerCase()}</p>
                 </div>
                 <div className='self-center font-satoshi text-[18px] text-[#020831]'>
                     <h1>Rp {data.priceMin} - Rp {data.priceMax}</h1>

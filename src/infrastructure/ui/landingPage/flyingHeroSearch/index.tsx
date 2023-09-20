@@ -11,7 +11,7 @@ const FlyingHeroSearch = () => {
 
 
     return (
-        <div className="bg-white font-inter shadow-md rounded-[16px] mx-auto w-[980px] h-fit absolute z-10 bottom-[-150px] sm:bottom-[-90px] right-0 left-0 px-[42px] py-[36px] flex flex-col items-center sm:items-stretch" style={{ zIndex: 1 }}>
+        <div className="bg-white font-inter shadow-md rounded-[16px] mx-auto max-w-[980px] h-fit absolute z-10 bottom-[-150px] sm:bottom-[-90px] right-0 left-0 px-[42px] py-[36px] flex flex-col items-center sm:items-stretch" style={{ zIndex: 1 }}>
             
             <div className='flex flex-row items-center text-[16px] mb-[24px] cursor-pointer'>
                 <h1>Vendor</h1>
