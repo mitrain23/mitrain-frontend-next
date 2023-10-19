@@ -9,6 +9,7 @@ import React, { useEffect, useState } from 'react'
 import { cookies } from 'next/headers'
 import { useGetPostByAuthor } from '@/src/application/hooks/posts/useGetPostByAuthor';
 import { GetPostByAuthorResponse } from '@/src/infrastructure/models/getPostByAuthorResponse';
+import ProtectedRoute from '@/src/utils/auth/protectedRoute';
 
 interface parsedUser {
   id: string;
@@ -41,12 +42,12 @@ const Page = () => {
 
   if (isLoading) {
     return <div className='min-h-screen'>
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-      <div className="w-[150px] h-[100px] flex item-center justify-center rounded-sm bg-white">
-        <span className="loading loading-spinner loading-lg text-info"></span>
+      <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+        <div className="w-[150px] h-[100px] flex item-center justify-center rounded-sm bg-white">
+          <span className="loading loading-spinner loading-lg text-info"></span>
+        </div>
       </div>
     </div>
-  </div>
   }
 
 
@@ -54,14 +55,14 @@ const Page = () => {
 
 
   return (
-    <LayoutTemplate>
-      <div>
-        <h1 className='font-inter font-semibold text-[30px] mb-[32px]'>Iklan Saya</h1>
-        <FilterBar />
-        <IklanSayaContainer data={data} />
-
-      </div>
-    </LayoutTemplate>
+    
+      <LayoutTemplate>
+        <div>
+          <h1 className='font-inter font-semibold text-[30px] mb-[32px]'>Iklan Saya</h1>
+          <FilterBar />
+          <IklanSayaContainer data={data} />
+        </div>
+      </LayoutTemplate>
   )
 }
 

@@ -33,18 +33,18 @@ const CreateForm = () => {
 
     const formatPrice = (input: any) => {
         return input.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-      };
-    
-      const handleInputChange = (e: any) => {
+    };
+
+    const handleInputChange = (e: any) => {
         const { name, value } = e.target;
-    
+
         // Format the input value and update the state
         const formattedValue = formatPrice(value);
         setFormState((prevState) => ({
-          ...prevState,
-          [name]: formattedValue
+            ...prevState,
+            [name]: formattedValue
         }));
-      };
+    };
 
 
     const [formState, setFormState] = useState<FormState>({
@@ -79,25 +79,25 @@ const CreateForm = () => {
 
     useEffect(() => {
         // if (selectedProvince) {
-            console.log(selectedProvince)
-            fetch(`https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${selectedProvince}.json`)
-                .then((response) => response.json())
-                .then((data) => {
-                    console.log(data, 'doihwandoiaidnwani')
-                    // Set the fetched cities in the cities state
-                    setCities(data);
+        console.log(selectedProvince)
+        fetch(`https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${selectedProvince}.json`)
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data, 'doihwandoiaidnwani')
+                // Set the fetched cities in the cities state
+                setCities(data);
 
-                })
-                .catch((error) => {
-                    console.error('Error fetching cities:', error);
-                });
+            })
+            .catch((error) => {
+                console.error('Error fetching cities:', error);
+            });
         // }
     }, [selectedProvince]);
 
 
     useEffect(() => {
         console.log(formState.location);
-      }, [formState.location]);
+    }, [formState.location]);
 
 
     // handleFileChange
@@ -111,8 +111,11 @@ const CreateForm = () => {
             file: imageData ? imageData.file : null,
             imageUrl: imageData ? imageData.imageUrl : null,
         }));
+        let imageUrl = null;
         const coverImageValues = [...coverImages];
-        let imageUrl = URL.createObjectURL(file);
+        if (file != null) {
+            imageUrl = URL.createObjectURL(file);
+        }
 
         for (let i = 0; i < updatedImages.length; i++) {
             if (updatedImages[i].file === null) {
@@ -203,7 +206,7 @@ const CreateForm = () => {
                                 [e.target.name]: e.target.value,
                             }))
                         }
-                        className="border border-gray-300 px-[24px] py-[16px] w-[648px] h-[56px] rounded-[8px] outline-none"
+                        className="border border-gray-300 px-[24px] py-[16px] w-full md:w-[648px] h-[56px] rounded-[8px] outline-none"
                     />
                 </label>
 
@@ -223,9 +226,11 @@ const CreateForm = () => {
                                 [e.target.name]: e.target.value,
                             }))
                         }
-                        className="select select-bordered w-[648px]  font-inter text-[#6F7277] font-normal text-[16px]">
+                        className="select select-bordered w-full md:w-[648px] font-inter text-[#6F7277] font-normal text-[16px]">
                         <option disabled value=''>Pilih Kategori</option>
                         <option>Konveksi</option>
+                        <option>Others</option>
+
                     </select>
                 </label>
 
@@ -246,7 +251,7 @@ const CreateForm = () => {
                                 [e.target.name]: e.target.value,
                             }))
                         }
-                        className="border border-gray-300 px-[24px] py-[16px] w-[648px] h-[200px] rounded-[8px] outline-none"
+                        className="border border-gray-300 px-[24px] py-[16px] w-full md:w-[648px] h-[200px] rounded-[8px] outline-none"
 
                     />
                 </label>
@@ -254,12 +259,12 @@ const CreateForm = () => {
                 <div className="flex flex-col md:flex-row items-start justify-start md:justify-between gap-10 py-2 w-full">
                     <div className='flex flex-col items-start justify-center gap-2 md:w-[550px]'>
                         <h2 className='text-black font-satoshi font-bold text-[22px]'>Foto Produk*</h2>
-                        <div className='font-inter w-[420px] text-[#425379] text-[16px] flex flex-col gap-[12px]'>
+                        <div className='font-inter w-full md:w-[420px] text-[#425379] text-[16px] flex flex-col gap-[12px]'>
                             <p>Format gambar berupa .jpg .jpeg .png dengan ukuran minimum adalah 300x300px (untuk gambar dengan kualitas optimal disarankan menggunakan 700x700px).</p>
                             <p>Pilih foto produk dengan cara mengklik gambar atau tarik dan letakkan hingga 5 foto sekaligus. Upload minimal 2 foto yang menarik dan berbeda-beda untuk menarik perhatian pembeli.</p>
                         </div>
                     </div>
-                    <div className='flex flex-col md:flex-row items-center md:items-start gap-5'>
+                    <div className='flex flex-wrap flex-row items-center justify-center md:items-start gap-5'>
                         {coverImages.map((coverImage, index) => (
                             <FileInputBox
                                 key={index}
@@ -279,8 +284,8 @@ const CreateForm = () => {
                             Masukkan harga minimum dan maksimum produk yang <br /> Anda tawarkan agar pembeli paham tentang harga yang <br /> Anda tawarkan.
                         </div>
                     </div>
-                    <div className='flex flex-col gap-[24px]'>
-                        <div className="form-control w-[648px]">
+                    <div className='flex flex-col gap-[24px] w-full md:w-[648px]'>
+                        <div className="form-control w-full md:w-[648px]">
                             <label className="input-group">
                                 <span className='bg-[#F3F4F5]'>Rp</span>
                                 <input
@@ -290,12 +295,12 @@ const CreateForm = () => {
                                     className="input input-bordered focus:outline-none w-full"
                                     value={formState.priceMin}
                                     onChange={handleInputChange}
-                                    
+
                                 />
                             </label>
                         </div>
                         <div className="form-control">
-                            <label className="input-group w-[648px]">
+                            <label className="input-group w-full md:w-[648px]">
                                 <span className='bg-[#F3F4F5]'>Rp</span>
                                 <input
                                     type="text"
@@ -304,7 +309,7 @@ const CreateForm = () => {
                                     className="input input-bordered focus:outline-none w-full"
                                     value={formState.priceMax}
                                     onChange={handleInputChange}
-                                     />
+                                />
                             </label>
                         </div>
                     </div>
@@ -351,7 +356,7 @@ const CreateForm = () => {
                                 setSelectedProvince(selectedProvinceObject?.id);
                                 setCities([]);
                             }}
-                            className="select select-bordered w-[648px] font-inter text-[#6F7277] font-normal text-[16px]"
+                            className="select select-bordered w-full md:w-[648px] font-inter text-[#6F7277] font-normal text-[16px]"
                         >
                             <option disabled value=''>Pilih Provinsi</option>
                             {provinces.map((province: any) => (
@@ -371,7 +376,7 @@ const CreateForm = () => {
                                     setFormState((prevState) => ({
                                         ...prevState,
                                         location: e.target.value || '',
-                                      }));
+                                    }));
                                 }}
                                 className="select select-bordered w-[648px] font-inter text-[#6F7277] font-normal text-[16px]"
                             >
@@ -395,7 +400,7 @@ const CreateForm = () => {
                         </div>
 
                     </div>
-                    <div className='flex flex-col gap-[24px]'>
+                    <div className='flex flex-col gap-[24px] w-full md:w-[648px]'>
                         <input
                             type="text"
                             name='phoneIntContact'
@@ -407,7 +412,7 @@ const CreateForm = () => {
                                     [e.target.name]: e.target.value,
                                 }))
                             }
-                            className="border border-gray-300 px-[24px] py-[16px] w-[648px] h-[56px] rounded-[8px] outline-none"
+                            className="border border-gray-300 px-[24px] py-[16px] h-[56px] rounded-[8px] outline-none"
                         />
                         <input
                             type="text"
@@ -420,7 +425,7 @@ const CreateForm = () => {
                                     [e.target.name]: e.target.value,
                                 }))
                             }
-                            className="border border-gray-300 px-[24px] py-[16px] w-[648px] h-[56px] rounded-[8px] outline-none"
+                            className="border border-gray-300 px-[24px] py-[16px] h-[56px] rounded-[8px] outline-none "
                         />
                     </div>
 

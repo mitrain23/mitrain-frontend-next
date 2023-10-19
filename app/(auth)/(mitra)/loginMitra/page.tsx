@@ -29,7 +29,7 @@ const Page = () => {
 
   return (
     <LayoutTemplate>
-      <div className='w-[500px] h-[300px] bg-white rounded-md shadow-md mx-auto'>
+      <div className='w-full max-w-[500px] h-[300px] bg-white rounded-md shadow-md mx-auto'>
         <h1 className='text-center'>Masuk</h1>
         <form onSubmit={handleSubmit}>
           <div className='mb-4'>

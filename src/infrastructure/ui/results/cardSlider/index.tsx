@@ -11,7 +11,12 @@ import SwiperCore, { Grid, Pagination } from "swiper";
 SwiperCore.use([Pagination]);
 
 
-const CardSlider = () => {
+const CardSlider = ({ data }: any) => {
+
+
+    console.log(data);
+
+
     // const swiperRef = useRef();
     const swiperRef = useRef<any | null>(null);
     const sliderSettings = {
@@ -23,7 +28,7 @@ const CardSlider = () => {
             slidesPerView: 1,
             spaceBetween: 30,
             grid: {
-                rows: 2
+                rows: 1
             }
 
         },
@@ -31,7 +36,7 @@ const CardSlider = () => {
             slidesPerView: 2,
             spaceBetween: 30,
             grid: {
-                rows: 2
+                rows: 1
             }
 
         },
@@ -39,7 +44,7 @@ const CardSlider = () => {
             slidesPerView: 3,
             spaceBetween: 30,
             grid: {
-                rows: 2
+                rows: 1
             }
 
         },
@@ -47,7 +52,7 @@ const CardSlider = () => {
             slidesPerView: 4,
             spaceBetween: 30,
             grid: {
-                rows: 2
+                rows: 1
             }
 
         },
@@ -90,9 +95,9 @@ const CardSlider = () => {
 
             <div>
                 <Swiper
-                modules={[Grid]}
+                    modules={[Grid]}
                     slidesPerView={4}
-                    grid={{ rows: 2, fill: 'row'}}
+                    grid={{ rows: 1, fill: 'row' }}
                     breakpoints={sliderSettings}
                     onBeforeInit={(swiper) => {
                         swiperRef.current = swiper;
@@ -102,37 +107,15 @@ const CardSlider = () => {
                     className="mySwiper"
                 >
 
+                    {data.map((item: any, index: number) => {
+                        return (
+                            <SwiperSlide>
+                                <Card data={item} />
+                            </SwiperSlide>
+                        )
+                    })}
 
-                    <SwiperSlide>
-                        <Card />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <Card />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <Card />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <Card />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <Card />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <Card />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <Card />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <Card />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <Card />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <Card />
-                    </SwiperSlide>
+
                 </Swiper>
             </div>
 

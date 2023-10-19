@@ -5,7 +5,7 @@ const LayoutTemplate = ({ children, background = 'bg-[#FDFDFF]' }: {
     background?: string
 }, ) => {
     return (
-        <div className={`px-[24px] py-[24px]  lg:px-[240px] md:px-10 md:py-[42px] ${background} min-h-screen`} >
+        <div className={`px-[24px] py-[24px] xl:px-[240px] md:px-[100px] md:py-[42px] ${background} min-h-screen`} >
             {children}
         </div>
     )

@@ -21,8 +21,6 @@ const Results = () => {
 
 
 
-
-
   const searchParams = useSearchParams()
   const search = searchParams.get('search');
   const lokasi = searchParams.get('lokasi');
@@ -100,7 +98,7 @@ const Results = () => {
       </div>
       <Pagination handlePageChange={handlePageChange} />
       <div className='mb-[48px]'></div>
-      <CardSlider />
+      <CardSlider data={getAllPostByFilterQuery.data} />
     </LayoutTemplate>
   )
 }

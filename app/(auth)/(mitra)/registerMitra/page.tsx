@@ -32,11 +32,19 @@ const Page = () => {
         phoneIntWhatsapp: '',
     });
     const [coverImages, setCoverImages] = useState(Array(5).fill(null));
+    const [selectedFile, setSelectedFile] = useState(null);
 
     const formData = new FormData();
     const registerMitra = useRegisterMitra();
 
 
+
+
+    // Handle the file input's onChange event
+    const handleFileChange = (e: any) => {
+        const file = e.target.files[0];
+        setSelectedFile(file);
+    };
 
     const handleSubmit = async (e: any) => {
         e.preventDefault();
@@ -46,6 +54,9 @@ const Page = () => {
             if (formState.hasOwnProperty(key)) {
                 formData.append(key, formState[key]);
             }
+        }
+        if (selectedFile) {
+            formData.append("images", selectedFile);
         }
 
         try {
@@ -175,16 +186,16 @@ const Page = () => {
                         />
                     </label>
 
-                    <div className="flex flex-col md:flex-row items-start justify-start md:justify-between gap-10 py-2 w-full">
+                    <div className="flex flex-col md:flex-row items-start justify-start md:justify-between md:items-center gap-10 py-2 w-full">
                         <div className='flex flex-col items-start justify-center gap-2 md:w-[550px]'>
                             <h2 className='text-black font-satoshi font-bold text-[22px]'>Foto Mitra</h2>
                             <div className='font-inter w-[420px] text-[#425379] text-[16px] flex flex-col gap-[12px]'>
                                 <p>Format gambar berupa .jpg .jpeg .png dengan ukuran minimum adalah 300x300px (untuk gambar dengan kualitas optimal disarankan menggunakan 700x700px).</p>
-                                <p>Pilih foto produk dengan cara mengklik gambar atau tarik dan letakkan hingga 5 foto sekaligus. Upload minimal 2 foto yang menarik dan berbeda-beda untuk menarik perhatian pembeli.</p>
+                                <p>Pilih foto produk dengan cara mengklik gambar. Upload foto yang menarik dan berbeda-beda untuk menarik perhatian pembeli.</p>
                             </div>
                         </div>
                         <div className='flex flex-col md:flex-row items-center md:items-start gap-5'>
-
+                            <input type="file" onChange={handleFileChange} />
                         </div>
                     </div>
 

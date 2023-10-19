@@ -12,8 +12,13 @@ import { useState } from "react";
 
 
 export default function Page({ params }: { params: { slug: number } }) {
-  console.log(params.slug)
-  const getPostByIdQuery = useGetPostById(`${params.slug}`);
+  // console.log(params.slug.toString().split('-'))
+  const paramsSlug = params.slug.toString().split('-')
+  console.log(paramsSlug)
+  const paramsForApi = paramsSlug.slice(0, 5).join('-');
+  console.log(paramsForApi);
+
+  const getPostByIdQuery = useGetPostById(`${paramsForApi}`);
   if (getPostByIdQuery.isLoading) {
     return <div className='min-h-screen'>
       <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
@@ -31,11 +36,8 @@ export default function Page({ params }: { params: { slug: number } }) {
   return (
 
     <LayoutTemplate>
-      {/* <HeaderDetails image={getPostByIdQuery.data?.image} data={getPostByIdQuery.data} />
-      <DeskripsiDetails data={getPostByIdQuery.data} /> */}
       <HeaderDetails data={getPostByIdQuery.data} />
       <DescriptionDetails data={getPostByIdQuery.data} />
-
     </LayoutTemplate>
   )
 }

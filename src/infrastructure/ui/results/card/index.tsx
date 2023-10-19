@@ -19,7 +19,7 @@ const Card = ({ data }: CardProps) => {
 
 
   return (
-    <Link href={`details/${data?.id}`}>
+    <Link href={`details/${data?.id}-${encodeURIComponent(data?.title)}`}>
       <div className='mb-[38px]'>
         <div className=''>
           <Image src={Image1} alt='' width={0} height={0} sizes="100vw" className='w-full h-[160px] object-cover bg-cover rounded-[12px] mb-[18px]' />

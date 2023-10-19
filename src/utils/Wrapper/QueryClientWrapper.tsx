@@ -27,8 +27,8 @@ const QueryClientWrapper = ({ children, token }: { children: React.ReactNode, to
 
   return (
     <QueryClientProvider client={queryClient}>
-      {showSubNavbar && <SubNavbar />}
-      {showNavbarLandingPage ? <Navbar isResults={false} token={token} /> : <Navbar isResults={true} token={token} />}
+      {/* {showSubNavbar && <SubNavbar />}
+      {showNavbarLandingPage ? <Navbar isResults={false} token={token} /> : <Navbar isResults={true} token={token} />} */}
       {children}
     </QueryClientProvider>
   );

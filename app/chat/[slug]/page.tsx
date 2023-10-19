@@ -19,7 +19,7 @@ const Page = () => {
                     <MessageHighlights />
 
                 </div>
-                <div className='border-[1px] border-[#E7E7E7] pb-[36px] relative px-[24px]'>
+                <div className='border-[1px] border-[#E7E7E7] pb-[36px] px-[24px]'>
                     <div className='flex flex-col h-full'>
                         <div>
                             <MessageTopBar />

@@ -5,8 +5,6 @@ import LoginUserUseCaseImpl from "../../usecases/userAuth/loginUserUseCaseImpl";
 
 
 
-
-
 export const useLoginUser = () => {
 
   const router = useRouter();
@@ -16,8 +14,8 @@ export const useLoginUser = () => {
     try {
       const loginUserUseCase = new LoginUserUseCaseImpl();
       const response = await loginUserUseCase.execute(credentials);
-      Cookies.set('token', response.token, { expires: 1 });  // expiration time (e.g., 1 day)
-      Cookies.set('user', JSON.stringify(response.data), { expires: 1 });
+      Cookies.set('token', response.token, { expires: 1 / 8 });  // expiration time (e.g., 1 day)
+      Cookies.set('user', JSON.stringify(response.data), { expires: 1 / 8 });
       localStorage.setItem('user', JSON.stringify(response.data));
       window.location.href = "/results";
       return response;

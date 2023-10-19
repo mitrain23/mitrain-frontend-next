@@ -28,8 +28,8 @@ const Filter = () => {
 
     return (
         <div className=''>
-            <div className='hidden md:flex flex-row justify-between items-center mb-[36px]'>
-                <div className='flex flex-row items-center gap-[24px]'>
+            <div className='hidden lg:flex flex-row justify-between items-center mb-[36px]'>
+                <div className='flex flex-row items-center gap-[24px] z-10'>
                     <h1 className='font-inter text-[16px] font-semibold text-[#020831]'>Harga</h1>
                     <div className="form-control">
                         <label className="input-group">
@@ -37,28 +37,28 @@ const Filter = () => {
                             <input type="text" placeholder="Harga Minimum" className="input input-bordered focus:outline-none" />
                         </label>
                     </div>
-
                     <div className="form-control">
                         <label className="input-group">
                             <span>Rp</span>
-                            <input type="text" placeholder="Harga Maksimum" className="input input-bordered focus:outline-none" />
+                            <input type="text" placeholder="Harga Minimum" className="input input-bordered focus:outline-none" />
                         </label>
                     </div>
+
+
 
                 </div>
                 <div className='flex flex-row items-center gap-[24px]'>
                     <h1 className='font-inter text-[16px] font-semibold text-[#020831]'>Urutkan</h1>
                     <select className="select select-bordered w-full max-w-xs font-inter text-[#6F7277] font-normal text-[16px]">
                         <option disabled selected>Paling Sesuai</option>
-                        <option>Han Solo</option>
-                        <option>Greedo</option>
+                        
                     </select>
                 </div>
 
             </div>
 
 
-            <div className='flex flex-row items-center py-[14px] px-[24px] gap-[42px] md:hidden  w-[151px] h-[48px] rounded-[8px] border-[1px] border-[#D9D9D9] bg-white  mb-[32px] mt-[16px]' onClick={() => setOpen(open => !open)} >
+            <div className='flex flex-row items-center py-[14px] px-[24px] gap-[42px] lg:hidden  w-[151px] h-[48px] rounded-[8px] border-[1px] border-[#D9D9D9] bg-white  mb-[32px] mt-[16px]' onClick={() => setOpen(open => !open)} >
                 <h1>Filter</h1>
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                     <mask id="mask0_264_3793" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">

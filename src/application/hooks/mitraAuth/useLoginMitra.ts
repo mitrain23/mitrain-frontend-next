@@ -17,8 +17,8 @@ export const useLoginMitra = () => {
     try {
       const loginMitraUseCase = new LoginMitraUseCaseImpl();
       const response = await loginMitraUseCase.execute(formData);
-      Cookies.set('token', response.token, { expires: 1 });  // expiration time (e.g., 1 day)
-      Cookies.set('user', JSON.stringify(response.data), { expires: 1 });
+      Cookies.set('token', response.token, { expires: 1 / 8 });  // expiration time (e.g., 1 day)
+      Cookies.set('user', JSON.stringify(response.data), { expires: 1 / 8});
       localStorage.setItem('user', JSON.stringify(response.data));
       window.location.href = "/results";
       return response;

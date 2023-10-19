@@ -9,7 +9,7 @@ const RecommendationCard = ({ data }: { data: any }) => {
     const Image1 = `${API_BASE_URL}/images/${data?.images?.[0]?.url}`;
 
     return (
-        <div className='w-[100%] md:w-[318px] font-satoshi flex flex-col'>
+        <div className='font-satoshi flex flex-col'>
             <Image src={Image1} alt='' width={0} height={0} sizes="100vw" className='w-full h-[160px] object-cover bg-cover rounded-[12px] mb-[18px]' />
             <div className='flex flex-col mt-[18px]'>
                 <div>

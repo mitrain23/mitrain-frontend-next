@@ -10,7 +10,6 @@ const Recommendation = () => {
 
   if (getAllPostByFilterQuery.data) {
     console.log(getAllPostByFilterQuery.data)
-    // const data = getAllPostByFilterQuery.data.data
   }
 
   if (getAllPostByFilterQuery.isLoading) {
@@ -21,7 +20,7 @@ const Recommendation = () => {
         </div>
       </div>
     </div>
-  } 
+  }
 
 
 
@@ -30,10 +29,12 @@ const Recommendation = () => {
       <div className='heading text-center text-[32px] font-bold mb-[32px]'>
         Rekomendasi untuk anda
       </div>
-      <div className='flex flex-col md:flex-row flex-wrap gap-[32px] justify-center'>
+      <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 place-items-center md:place-items-start max-lg:gap-10 gap-[32px] my-4">
         {getAllPostByFilterQuery.data?.slice(0, 4).map((item, index) => {
           return (
-            <RecommendationCard data={item}/>
+            <div className='w-full'>
+              <RecommendationCard data={item} />
+            </div>
           )
         })}
       </div>

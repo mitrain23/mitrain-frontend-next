@@ -13,7 +13,7 @@ const MobileHero = () => {
             <select className="select w-full h-[56px] text-[#757575] font-medium">
                 <option disabled selected>Jenis</option>
                 <option>Konveksi</option>
-                <option>Distributor</option>
+                <option>Others</option>
             </select>
         </div>
         <div className='flex flex-col gap-[16px]'>

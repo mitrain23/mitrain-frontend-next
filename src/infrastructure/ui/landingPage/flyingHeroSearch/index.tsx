@@ -42,7 +42,7 @@ const FlyingHeroSearch = () => {
                         <select className="select w-[432px] h-[56px] text-[#757575] font-medium">
                             <option disabled selected>Jenis</option>
                             <option>Konveksi</option>
-                            <option>Distributor</option>
+                            <option>Others</option>
                         </select>
                     </div>
                     <div className='flex flex-row gap-[16px]'>
