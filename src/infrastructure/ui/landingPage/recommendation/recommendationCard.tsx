@@ -1,13 +1,29 @@
 import React from "react";
 import Image from "next/image";
 import { Button } from "@/src/components/ui/button";
+import { Post } from "@/src/domain/entities/post";
 
-const RecommendationCard = ({ data }: { data: any }) => {
+// FIXME: entity desync
+// type TProps = {
+//   data: Post & {
+//     images?: {
+//       url: string;
+//     }[];
+//     priceMax: Post["price_max"];
+//     priceMin: Post["price_min"];
+//   };
+// };
+
+type TProps = {
+  data: any;
+};
+
+const RecommendationCard: React.FC<TProps> = ({ data }) => {
   const API_BASE_URL = process.env.BASE_URL;
   const Image1 = `${API_BASE_URL}/images/${data?.images?.[0]?.url}`;
 
   return (
-    <div className="font-satoshi flex flex-col">
+    <div className="font-satoshi flex flex-col w-full">
       <Image
         src={Image1}
         alt=""

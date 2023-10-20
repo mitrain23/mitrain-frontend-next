@@ -1,7 +1,5 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
-import { BottomSheet } from "react-spring-bottom-sheet";
-import "react-spring-bottom-sheet/dist/style.css";
 
 const Filter = () => {
   const [open, setOpen] = useState(false);
@@ -89,7 +87,12 @@ const Filter = () => {
           </g>
         </svg>
       </div>
-
+    </div>
+  );
+};
+// TODO: Sheet nya shadcn ui aja
+/**
+ *
       <BottomSheet open={open} onDismiss={() => setOpen(!open)} blocking={true}>
         <div
           className="flex flex-col px-[16px] py-[16px] gap-[12px]"
@@ -138,8 +141,6 @@ const Filter = () => {
           </div>
         </div>
       </BottomSheet>
-    </div>
-  );
-};
+ */
 
 export default Filter;

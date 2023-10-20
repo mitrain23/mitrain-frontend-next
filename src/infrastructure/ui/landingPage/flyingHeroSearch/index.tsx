@@ -49,7 +49,7 @@ const FlyingHeroSearch = () => {
 
       {/* dropdown lokasi */}
       <div>
-        <form action="" className="flex flex-col gap-[16px]">
+        <form className="flex flex-col gap-[16px]">
           <div className="flex flex-row gap-[32px]">
             <Select>
               <SelectTrigger className="w-1/2 h-[56px] leading-[24px] text-[#757575] bg-[#fbfbfb] rounded-[8px] border-none">
