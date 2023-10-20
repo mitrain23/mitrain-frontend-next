@@ -8,6 +8,7 @@ const Recommendation = () => {
   const getAllPostByFilterQuery = useGetAllPost(1);
 
   if (getAllPostByFilterQuery.data) {
+    // TODO: i need .env
     console.log(getAllPostByFilterQuery.data);
   }
 

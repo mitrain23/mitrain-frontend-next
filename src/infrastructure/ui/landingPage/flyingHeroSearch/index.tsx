@@ -1,9 +1,6 @@
 "use client";
 
 import React from "react";
-import Background from "../../../../../public/images/dummyIconProfle.svg";
-import Select from "react-select";
-import CustomSelect from "./customSelect";
 import Link from "next/link";
 
 const FlyingHeroSearch = () => {
@@ -50,14 +47,20 @@ const FlyingHeroSearch = () => {
                             <option>Greedo</option>
                         </select> */}
             {/* <CustomSelect />  */}
-            <select className="select w-[432px] h-[56px] text-[#757575] font-medium">
-              <option disabled selected>
+            <select
+              className="select w-[432px] h-[56px] text-[#757575] font-medium"
+              defaultValue={"default"}
+            >
+              <option disabled value="default">
                 Pilih Lokasi
               </option>
               <option>Bandung</option>
             </select>
-            <select className="select w-[432px] h-[56px] text-[#757575] font-medium">
-              <option disabled selected>
+            <select
+              className="select w-[432px] h-[56px] text-[#757575] font-medium"
+              defaultValue={"default"}
+            >
+              <option disabled value="default">
                 Jenis
               </option>
               <option>Konveksi</option>

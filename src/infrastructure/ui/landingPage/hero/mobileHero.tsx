@@ -6,14 +6,20 @@ const MobileHero = () => {
     <div className="w-full px-[24px]">
       <form action="" className="flex flex-col gap-[16px]">
         <div className="flex flex-row gap-[32px]">
-          <select className="select w-full h-[56px] text-[#757575] font-medium">
-            <option disabled selected>
+          <select
+            className="select w-full h-[56px] text-[#757575] font-medium"
+            defaultValue={"default"}
+          >
+            <option disabled value="default">
               Pilih Lokasi
             </option>
             <option>Bandung</option>
           </select>
-          <select className="select w-full h-[56px] text-[#757575] font-medium">
-            <option disabled selected>
+          <select
+            className="select w-full h-[56px] text-[#757575] font-medium"
+            defaultValue={"default"}
+          >
+            <option disabled value="default">
               Jenis
             </option>
             <option>Konveksi</option>
