@@ -1,7 +1,7 @@
-'use client';
-import { useEffect, useState } from 'react';
-import { GetPostByAuthorImpl } from '../../usecases/posts/getPostByAuthorUseCaseImpl';
-import { GetPostByAuthorResponse } from '@/src/infrastructure/models/getPostByAuthorResponse';
+"use client";
+import { useEffect, useState } from "react";
+import { GetPostByAuthorImpl } from "../../usecases/posts/getPostByAuthorUseCaseImpl";
+import { GetPostByAuthorResponse } from "@/src/infrastructure/models/getPostByAuthorResponse";
 
 export const useGetPostByAuthor = (id: string | null) => {
   const [data, setData] = useState<GetPostByAuthorResponse | null>(null);

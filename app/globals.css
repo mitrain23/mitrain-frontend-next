@@ -3,7 +3,6 @@
   padding: 0;
 }
 
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -23,9 +22,5 @@
 }
 
 body {
- background-color: white;
+  background-color: white;
 }
-
-
-
-

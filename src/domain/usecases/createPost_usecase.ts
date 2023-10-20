@@ -1,6 +1,5 @@
 import { Post } from "../entities/post";
 
-
 export interface createPost {
-    execute(data: FormData): Promise<Post>;
+  execute(data: FormData): Promise<Post>;
 }

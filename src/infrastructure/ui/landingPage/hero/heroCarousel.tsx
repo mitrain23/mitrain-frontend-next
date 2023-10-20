@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import React, { useRef, useState } from "react";
 // Import Swiper React components
@@ -8,17 +8,14 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { Navigation } from "swiper";
 
-
 const HeroCarousel = ({ children }: any) => {
-
-
   return (
     <div className="relative">
       <div className=" w-[100%] h-fit lg:h-[420px] overflow-hidden ">
         <Swiper navigation loop modules={[Navigation]} className="mySwiper">
           <SwiperSlide>
             <Image
-              className='w-full h-auto'
+              className="w-full h-auto"
               sizes="100vw"
               width={0}
               height={0}
@@ -27,7 +24,6 @@ const HeroCarousel = ({ children }: any) => {
             />
           </SwiperSlide>
         </Swiper>
-
       </div>
       {children}
     </div>

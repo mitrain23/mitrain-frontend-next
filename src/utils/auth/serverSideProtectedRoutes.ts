@@ -1,22 +1,18 @@
-import React from 'react'
-import { cookies } from "next/headers"
-import { redirect } from 'next/navigation'
-
-
+import React from "react";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 const ServerSideProtectedRoutes = ({ children }: any) => {
+  const cookieStore = cookies();
+  const token = cookieStore.get("token");
+  console.log(token);
 
-    const cookieStore = cookies()
-    const token = cookieStore.get('token')
-    console.log(token)
+  if (!token) {
+    console.log("No token");
+    redirect("/loginMitra");
+  }
 
-    if(!token) {
-        console.log("No token")
-        redirect('/loginMitra')
-    }
+  return children;
+};
 
-
-    return children
-}
-
-export default ServerSideProtectedRoutes
+export default ServerSideProtectedRoutes;
