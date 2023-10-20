@@ -1,11 +1,9 @@
 import React from "react";
 import Image from "next/image";
-import image1 from "../../../../../public/images/dummyfullhd.png";
-import { Post } from "@/src/domain/entities/post";
+import { Button } from "@/src/components/ui/button";
 
 const RecommendationCard = ({ data }: { data: any }) => {
   const API_BASE_URL = process.env.BASE_URL;
-
   const Image1 = `${API_BASE_URL}/images/${data?.images?.[0]?.url}`;
 
   return (
@@ -16,7 +14,7 @@ const RecommendationCard = ({ data }: { data: any }) => {
         width={0}
         height={0}
         sizes="100vw"
-        className="w-full h-[160px] object-cover bg-cover rounded-[12px] mb-[18px]"
+        className="w-full h-[160px] bg-primary object-cover bg-cover rounded-[12px] mb-[18px]"
       />
       <div className="flex flex-col mt-[18px]">
         <div>
@@ -33,9 +31,12 @@ const RecommendationCard = ({ data }: { data: any }) => {
         <h1 className="overflow-hidden text-ellipsis text-[22px] font-bold truncate">
           Rp {data.priceMin} - Rp {data.priceMax}
         </h1>
-        <button className="w-fit py-[12px] px-[36px] rounded-[27px] hover:bg-color5 hover:text-white border-[1px] border-slate-200">
-          Contact Seller
-        </button>
+        <Button
+          variant="outline"
+          className="rounded-full h-[48px] hover:bg-[#020831] hover:text-white hover:border-[#020831]"
+        >
+          Hubungi Mitra
+        </Button>
       </div>
     </div>
   );

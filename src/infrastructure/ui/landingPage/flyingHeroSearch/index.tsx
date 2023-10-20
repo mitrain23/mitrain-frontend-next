@@ -2,6 +2,16 @@
 
 import React from "react";
 import Link from "next/link";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/src/components/ui/select";
+import { Input } from "@/src/components/ui/input";
+import { Button } from "@/src/components/ui/button";
 
 const FlyingHeroSearch = () => {
   return (
@@ -41,42 +51,54 @@ const FlyingHeroSearch = () => {
       <div>
         <form action="" className="flex flex-col gap-[16px]">
           <div className="flex flex-row gap-[32px]">
-            {/* <select className="select w-full">
-                            <option disabled selected>Lokasi</option>
-                            <option>Han Solo</option>
-                            <option>Greedo</option>
-                        </select> */}
-            {/* <CustomSelect />  */}
-            <select
-              className="select w-[432px] h-[56px] text-[#757575] font-medium"
-              defaultValue={"default"}
-            >
-              <option disabled value="default">
-                Pilih Lokasi
-              </option>
-              <option>Bandung</option>
-            </select>
-            <select
-              className="select w-[432px] h-[56px] text-[#757575] font-medium"
-              defaultValue={"default"}
-            >
-              <option disabled value="default">
-                Jenis
-              </option>
-              <option>Konveksi</option>
-              <option>Others</option>
-            </select>
+            <Select>
+              <SelectTrigger className="w-1/2 h-[56px] leading-[24px] text-[#757575] bg-[#fbfbfb] rounded-[8px] border-none">
+                <SelectValue placeholder="Pilih Lokasi" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem
+                    className="h-[56px] cursor-pointer"
+                    value="bandung"
+                  >
+                    Bandung
+                  </SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+
+            <Select>
+              <SelectTrigger className="w-1/2 h-[56px] leading-[24px] text-[#757575] bg-[#fbfbfb] rounded-[8px] border-none">
+                <SelectValue placeholder="Jenis" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem
+                    value="konveksi"
+                    className="h-[56px] cursor-pointer"
+                  >
+                    Konveksi
+                  </SelectItem>
+                  <SelectItem
+                    value="others"
+                    className="h-[56px] cursor-pointer"
+                  >
+                    Others
+                  </SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
           </div>
-          <div className="flex flex-row gap-[16px]">
-            <input
+          <div className="grid grid-cols-12 gap-[16px]">
+            <Input
               type="text"
               placeholder="Apa yang sedang anda cari?"
-              className="input input-bordered w-[648px] h-[56px] placeholder:text-[#757575]"
+              className="col-span-8 h-[56px] bg-[#FBFBFB] border-none rounded-[8px] placeholder:text-[#757575]"
             />
-            <Link href={"/results"}>
-              <button className="bg-color5 w-[232px] px-[82px] py-[16px] text-white rounded-[8px] font-medium">
-                Search
-              </button>
+            <Link href={"/results"} className="col-span-4">
+              <Button className="w-full h-[56px] text-white border-none rounded-[8px] bg-[#0066c9] hover:bg-[#0054A5] text-lg">
+                Cari
+              </Button>
             </Link>
           </div>
         </form>

@@ -10,8 +10,10 @@ const Recommendation = () => {
   if (getAllPostByFilterQuery.data) {
     // TODO: i need .env
     console.log(getAllPostByFilterQuery.data);
+    console.log(getAllPostByFilterQuery.isLoading);
   }
 
+  // TODO: transform into single components called <Loading/>
   if (getAllPostByFilterQuery.isLoading) {
     return (
       <div className="min-h-screen">
@@ -32,7 +34,7 @@ const Recommendation = () => {
       <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 place-items-center md:place-items-start max-lg:gap-10 gap-[32px] my-4">
         {getAllPostByFilterQuery.data?.slice(0, 4).map((item, index) => {
           return (
-            <div className="w-full">
+            <div className="w-full" key={index}>
               <RecommendationCard data={item} />
             </div>
           );

@@ -1,14 +1,9 @@
 // import Navbar from '@/src/components/navbar'
 import "./globals.css";
 import { Inter } from "next/font/google";
-import { useEffect, useState } from "react";
-import { decodeToken } from "@/src/utils/auth/decodeToken";
 import QueryClientWrapper from "@/src/utils/Wrapper/QueryClientWrapper";
-import { getCookie, setCookie } from "cookies-next";
 import { cookies } from "next/headers";
 import Footer from "@/src/infrastructure/ui/global/footer";
-import SubNavbar from "@/src/infrastructure/ui/global/subNavbar";
-import Navbar from "@/src/infrastructure/ui/global/navbar";
 
 export const metadata = {
   title: "Mitrain",
@@ -24,7 +19,7 @@ export default function RootLayout({
   const token = cookieStore.get("token");
 
   return (
-    <html data-theme="light" lang="en">
+    <html data-theme="light" lang="en" suppressHydrationWarning>
       <body>
         <QueryClientWrapper token={token}>
           {" "}
