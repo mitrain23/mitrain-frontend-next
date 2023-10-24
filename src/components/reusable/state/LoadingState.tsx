@@ -20,7 +20,7 @@ const LoadingState: React.FC<TProps> = ({
   return (
     <>
       {isLoading
-        ? [...Array(loadingCount)].map((_) => loadingFallback)
+        ? [...Array(loadingCount)].map((_, idx) => loadingFallback)
         : children}
     </>
   );
