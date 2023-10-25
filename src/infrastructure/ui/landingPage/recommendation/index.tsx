@@ -5,7 +5,7 @@ import RecommendationCard from "./recommendationCard";
 import { useGetAllPost } from "@/src/application/hooks/posts/useGetAllPost";
 import { Skeleton } from "@/src/components/ui/skeleton";
 import { Button } from "@/src/components/ui/button";
-import LoadingState from "@/src/components/reusable/state/LoadingState";
+import LoadingState from "@/src/infrastructure/ui/global/state/loading";
 
 const RecommendationLoading = () => {
   return (

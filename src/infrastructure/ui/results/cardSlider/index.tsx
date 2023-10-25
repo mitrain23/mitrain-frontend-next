@@ -6,6 +6,8 @@ import "swiper/css/grid";
 import "swiper/css/pagination";
 import Card from "../card";
 import SwiperCore, { Grid, Pagination } from "swiper";
+import ArrowRightIcon from "@/public/svg/arrow_right.svg";
+import ArrowLeftIcon from "@/public/svg/arrow_left.svg";
 
 // install Swiper modules
 SwiperCore.use([Pagination]);
@@ -59,69 +61,17 @@ const CardSlider = ({ data }: any) => {
           </h1>
         </div>
         <div className="navigation-arrow flex flex-row-reverse gap-2 items-end max-lg:hidden">
-          <div onClick={() => swiperRef.current?.slideNext()}>
-            <svg
-              className="bg-slate-300 hover:bg-[#1659E6] rounded-full"
-              xmlns="http://www.w3.org/2000/svg"
-              width="36"
-              height="36"
-              viewBox="0 0 36 36"
-              fill="none"
-            >
-              <circle cx="18" cy="18" r="18" />
-              <mask
-                id="mask0_165_713"
-                maskUnits="userSpaceOnUse"
-                x="6"
-                y="6"
-                width="24"
-                height="24"
-              >
-                <rect x="6" y="6" width="24" height="24" fill="#D9D9D9" />
-              </mask>
-              <g mask="url(#mask0_165_713)">
-                <path
-                  d="M20 24L18.6 22.55L22.15 19H10V17H22.15L18.6 13.45L20 12L26 18L20 24Z"
-                  fill="white"
-                />
-              </g>
-            </svg>
+          <div
+            onClick={() => swiperRef.current?.slideNext()}
+            className="bg-slate-300 hover:bg-[#1659E6] rounded-full"
+          >
+            <ArrowRightIcon />
           </div>
           <div
             onClick={() => swiperRef.current?.slidePrev()}
             className="bg-slate-300 hover:bg-[#1659E6] rounded-full"
           >
-            <svg
-              className=""
-              xmlns="http://www.w3.org/2000/svg"
-              width="36"
-              height="36"
-              viewBox="0 0 36 36"
-              fill="none"
-            >
-              <circle cx="18" cy="18" r="18" />
-              <mask
-                id="mask0_165_708"
-                maskUnits="userSpaceOnUse"
-                x="6"
-                y="6"
-                width="24"
-                height="24"
-              >
-                <rect
-                  width="24"
-                  height="24"
-                  transform="matrix(-1 0 0 1 30 6)"
-                  fill="#D9D9D9"
-                />
-              </mask>
-              <g mask="url(#mask0_165_708)">
-                <path
-                  d="M16 24L17.4 22.55L13.85 19H26V17H13.85L17.4 13.45L16 12L10 18L16 24Z"
-                  fill="#F2F2F2"
-                />
-              </g>
-            </svg>
+            <ArrowLeftIcon />
           </div>
         </div>
       </div>
@@ -140,7 +90,7 @@ const CardSlider = ({ data }: any) => {
         >
           {data.map((item: any, index: number) => {
             return (
-              <SwiperSlide>
+              <SwiperSlide key={index}>
                 <Card data={item} />
               </SwiperSlide>
             );

@@ -39,6 +39,7 @@ const FlyingHeroSearch = () => {
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
+                  {/* TODO: Ngambil dari API kayak /create */}
                   <SelectItem
                     className="h-[56px] cursor-pointer"
                     value="bandung"

@@ -1,20 +1,41 @@
 "use client";
 
-import React, { useCallback, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
-// import Card from '@/src/components/card'
-import Search from "@/src/components/search";
 import { useGetAllPost } from "@/src/application/hooks/posts/useGetAllPost";
 import Pagination from "@/src/infrastructure/ui/results/pagination";
-import axios from "axios";
-import { useGetAllPostByFilter } from "@/src/application/hooks/posts/useGetAllPostByFilter";
 import { PostFilter } from "@/src/domain/entities/postFilter";
 import Card from "@/src/infrastructure/ui/results/card";
 import LayoutTemplate from "@/src/utils/layout";
 import Filter from "@/src/infrastructure/ui/results/filter";
 import CardSlider from "@/src/infrastructure/ui/results/cardSlider";
-import { Post } from "@/src/domain/entities/post";
+import LoadingState from "@/src/infrastructure/ui/global/state/loading";
+import { Skeleton } from "@/src/components/ui/skeleton";
+import { Alert, AlertDescription, AlertTitle } from "@/src/components/ui/alert";
+
+const CardLoading = () => {
+  return (
+    <div className="w-full mb-[18px]">
+      <Skeleton className="w-full h-[160px] rounded-[12px] mb-[18px] bg-primary" />
+      <div className="content">
+        <div className="flex flex-col gap-[6px] mb-[12px]">
+          <Skeleton className="font-satoshi text-[22px] bg-primary/80 font-bold text-[#020831]">
+            &nbsp;
+          </Skeleton>
+          <Skeleton className="font-inter w-6/12 text-[#425379] bg-primary/60 text-[16px]">
+            &nbsp;
+          </Skeleton>
+        </div>
+        <Skeleton className="mitra-premium w-5/12 flex flex-row bg-primary/70 gap-1 mb-[12px]">
+          &nbsp;
+        </Skeleton>
+        <Skeleton className="font-bold lg:text-[22px] bg-primary font-satoshi text-[#020831]">
+          &nbsp;
+        </Skeleton>
+      </div>
+    </div>
+  );
+};
 
 const Results = () => {
   const searchParams = useSearchParams();
@@ -37,26 +58,18 @@ const Results = () => {
     getAllPostByFilterQuery.refetch();
   }, [pageNumber]);
 
-  if (getAllPostByFilterQuery.isLoading) {
+  if (getAllPostByFilterQuery.isError) {
     return (
-      <div className="min-h-screen">
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="w-[150px] h-[100px] flex item-center justify-center rounded-sm bg-white">
-            <span className="loading loading-spinner loading-lg text-info"></span>
-          </div>
-        </div>
-      </div>
+      <Alert variant="destructive">
+        <AlertTitle>Oops</AlertTitle>
+        <AlertDescription>
+          Seperti nya ada yang error dari sisi server
+        </AlertDescription>
+      </Alert>
     );
   }
 
-  if (getAllPostByFilterQuery.isError) {
-    return <div>Error</div>;
-  }
-
-  if (getAllPostByFilterQuery.data) {
-    console.log(getAllPostByFilterQuery.data);
-    // const data = getAllPostByFilterQuery.data.data
-  }
+  console.log(getAllPostByFilterQuery.data);
 
   const handlePageChange = (data: number) => {
     setPageNumber(data);
@@ -73,17 +86,54 @@ const Results = () => {
         <h1>Konveksi Baju</h1>
       </div>
       <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 place-items-center md:place-items-start max-lg:gap-10 gap-[32px] my-4">
-        {getAllPostByFilterQuery.data?.map((item, index) => {
-          return (
-            <div className="w-full" key={item.id}>
-              <Card data={item} />
-            </div>
-          );
-        })}
+        <LoadingState
+          loadingFallback={<CardLoading />}
+          loadingCount={4}
+          isLoading={getAllPostByFilterQuery.isLoading}
+        >
+          {!getAllPostByFilterQuery.data?.length && (
+            <Alert>
+              <AlertTitle>Maaf</AlertTitle>
+              <AlertDescription>
+                Data yang dicari tidak ditemukan
+              </AlertDescription>
+            </Alert>
+          )}
+          {getAllPostByFilterQuery.data?.map((item) => {
+            return (
+              <div className="w-full" key={item.id}>
+                <Card data={item} />
+              </div>
+            );
+          })}
+        </LoadingState>
       </div>
       <Pagination handlePageChange={handlePageChange} />
       <div className="mb-[48px]"></div>
-      <CardSlider data={getAllPostByFilterQuery.data} />
+      <div
+        className={
+          getAllPostByFilterQuery.isLoading
+            ? "flex lg:flex-row flex-col gap-4"
+            : ""
+        }
+      >
+        <LoadingState
+          loadingFallback={<CardLoading />}
+          loadingCount={4}
+          isLoading={getAllPostByFilterQuery.isLoading}
+        >
+          {!getAllPostByFilterQuery.data?.length ? (
+            <Alert>
+              <AlertTitle>Maaf</AlertTitle>
+              <AlertDescription>
+                Data yang dicari tidak ditemukan
+              </AlertDescription>
+            </Alert>
+          ) : (
+            <CardSlider data={getAllPostByFilterQuery.data} />
+          )}
+        </LoadingState>
+      </div>
     </LayoutTemplate>
   );
 };

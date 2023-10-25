@@ -23,15 +23,15 @@ const MobileHero = () => {
       <form action="" className="flex flex-col gap-[16px]">
         <div className="flex gap-0">
           <Select>
-            <SelectTrigger className="w-1/2 h-[56px] leading-[24px] text-[#757575] bg-[#fff] rounded-[8px] rounded-r-none border border-[#d9d9d9]">
+            <SelectTrigger className="w-1/2 h-[56px] leading-[24px] text-[#757575] bg-[#fff] rounded-[8px] rounded-r-none border border-[#d9d9d9] focus:ring-[#d9d9d9]">
               <div className="flex items-center space-x-2">
-                {/* FIXME: Icon nya gepeng */}
                 <LocationIcon />
                 <SelectValue placeholder="Semua Lokasi" />
               </div>
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
+                {/* TODO: Ngambil dari API kayak /create */}
                 <SelectItem className="h-[56px] cursor-pointer" value="bandung">
                   Bandung
                 </SelectItem>
@@ -40,7 +40,7 @@ const MobileHero = () => {
           </Select>
 
           <Select>
-            <SelectTrigger className="w-1/2 h-[56px] leading-[24px] text-[#757575] bg-[#fff] rounded-[8px] rounded-l-none border border-[#d9d9d9]">
+            <SelectTrigger className="w-1/2 h-[56px] leading-[24px] text-[#757575] bg-[#fff] rounded-[8px] rounded-l-none border border-[#d9d9d9] focus:ring-[#d9d9d9]">
               <SelectValue placeholder="Jenis" />
             </SelectTrigger>
             <SelectContent>
@@ -62,7 +62,7 @@ const MobileHero = () => {
           <Input
             type="text"
             placeholder="Temukan Yang Anda Cari"
-            className="bg-white border border-[#d9d9d9] w-full h-[56px] placeholder:text-[#757575]"
+            className="bg-white border border-[#d9d9d9] w-full h-[56px] placeholder:text-[#757575] focus-visible:ring-[#d9d9d9]"
           />
           <Link href={"/results"}>
             <Button className="bg-[#0066C9] w-full h-[44px] text-white rounded-[8px] font-medium">

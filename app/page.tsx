@@ -1,4 +1,4 @@
-import Navbar from "@/src/infrastructure/ui/global/navbar";
+import LandingPageNavbar from "@/src/infrastructure/ui/global/navbar/landingPage";
 import BingungCariSupplier from "@/src/infrastructure/ui/landingPage/bingungCariSupplier";
 import { Hero } from "@/src/infrastructure/ui/landingPage/hero";
 import MobileHero from "@/src/infrastructure/ui/landingPage/hero/mobileHero";
@@ -8,7 +8,7 @@ import LayoutTemplate from "@/src/utils/layout";
 export default function Home() {
   return (
     <>
-      <Navbar isResults={false} />
+      <LandingPageNavbar />
       <main>
         {/* hero */}
         <div className="hidden md:block">

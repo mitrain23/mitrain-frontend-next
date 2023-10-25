@@ -25,9 +25,6 @@ const Navbar = ({
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMenuOpenResults, setIsMenuOpenResults] = useState(false);
 
-  // TODO: ini buat apa?
-  console.log(isMenuOpenResults);
-
   const [isMitra, setIsMitra] = useState(false);
   const handleMenuToggle = () => {
     setIsMenuOpen(!isMenuOpen);
