@@ -12,7 +12,7 @@ const LandingPageNavbar = () => {
 
   return (
     <>
-      <nav className="drop-shadow-md w-full h-[92px] bg-white flex items-center justify-between px-8 xl:px-[240px] md:px-[100px] py-2 relative z-10">
+      <nav className="drop-shadow-md w-full h-[92px] bg-white flex items-center justify-between px-8 xl:px-[240px] md:px-[100px] py-2 relative z-20">
         <Link href={"/"} className="flex flex-row gap-[16px] items-center">
           <div className="w-[60px] h-[60px]">
             <Image
@@ -23,7 +23,7 @@ const LandingPageNavbar = () => {
               className="w-full"
             />
           </div>
-          <h1 className="hidden md:block font-satoshi text-[20px] font-bold text-[#0054A5]">
+          <h1 className="font-satoshi text-[20px] font-bold text-[#0054A5]">
             MitraIn ID
           </h1>
         </Link>
@@ -79,8 +79,8 @@ const LandingPageNavbar = () => {
       </nav>
       {/* Mobile Nav Menu */}
       {isMenuOpen && (
-        <div className="bg-white fixed inset-0 h-full flex flex-col justify-center items-center">
-          <ul className="px-4 text-3xl font-semibold space-y-4">
+        <div className="bg-white fixed inset-0 h-full z-10 flex flex-col px-[24px] justify-center">
+          <ul className="px-4 font-semibold space-y-2 text-xl">
             <li>
               <Link
                 href="/maintenance"
