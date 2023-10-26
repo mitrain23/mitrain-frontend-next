@@ -13,7 +13,6 @@ import FilterIcon from "@/public/svg/filter_mobile.svg";
 import { Sheet, SheetContent, SheetTrigger } from "@/src/components/ui/sheet";
 import { Button } from "@/src/components/ui/button";
 
-// TODO: sheet swipable ?
 const Filter = () => {
   const [open, setOpen] = useState(false);
   const focusRef = useRef<any>();

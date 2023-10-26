@@ -1,8 +1,18 @@
+import { cn } from "@/lib/utils";
 import React from "react";
 
-const SearchBar = () => {
+type TProps = {
+  className?: string;
+};
+
+const SearchBar = ({ className }: TProps) => {
   return (
-    <div className="flex items-center gap-[16px] w-[200px] lg:w-[400px] h-[56px] rounded-[32px] bg-[#F6F6F6] px-[24px] py-[16px]">
+    <div
+      className={cn(
+        "flex items-center gap-[16px] w-full lg:w-[400px] h-[56px] rounded-[32px] bg-[#F6F6F6] px-[24px] py-[16px]",
+        className,
+      )}
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
