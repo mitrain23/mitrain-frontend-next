@@ -98,16 +98,16 @@ const IklanSayaCard = ({ data, index }: { data: Datum; index: number }) => {
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                   <AlertDialogHeader>
-                    <AlertDialogTitle>Confirm Deletion</AlertDialogTitle>
+                    <AlertDialogTitle>
+                      Apakah anda yakin ingin menghapus iklan tersebut ?
+                    </AlertDialogTitle>
                     <AlertDialogDescription>
-                      Are you sure you want to delete this item?
+                      Iklan yang dihapus tidak dapat di kembalikan lagi
                     </AlertDialogDescription>
                   </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction className="bg-destructive">
-                      Delete
-                    </AlertDialogAction>
+                  <AlertDialogFooter className="lg:flex-col-reverse lg:space-x-0 gap-2">
+                    <AlertDialogCancel>Batalkan</AlertDialogCancel>
+                    <AlertDialogAction>Ya, hapus sekarang</AlertDialogAction>
                   </AlertDialogFooter>
                 </AlertDialogContent>
               </AlertDialog>
