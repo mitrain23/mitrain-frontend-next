@@ -37,7 +37,7 @@ const FilterBar = () => {
         <h1 className="font-inter text-[16px] font-semibold text-[#020831] whitespace-nowrap">
           Berdasarkan Lokasi
         </h1>
-        <Select>
+        <Select defaultValue="kota-bandung">
           <SelectTrigger className="px-6 max-w-xs font-inter text-[#6F7277] font-normal text-[16px] border border-[#D9D9D9] rounded-full h-[56px]">
             <SelectValue placeholder="Lokasi" />
           </SelectTrigger>
