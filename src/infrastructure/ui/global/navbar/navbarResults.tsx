@@ -26,7 +26,7 @@ interface parsedUser {
 }
 
 /** TODO:
- * - Mobile nav item menu
+ * - Memahami logic
  */
 const NavbarResults = ({
   isResults = false,

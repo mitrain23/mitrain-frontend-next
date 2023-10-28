@@ -143,7 +143,7 @@ const Filter = () => {
               </div>
             </div>
           </div>
-          <Button className="bg-[#0066C9] w-full mt-[13px] font-bold">
+          <Button className="bg-[#0066C9] w-full mt-[13px] font-bold mt-10">
             Terapkan Filter
           </Button>
         </SheetContent>

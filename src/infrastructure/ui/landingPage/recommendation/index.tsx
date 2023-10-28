@@ -10,20 +10,20 @@ import LoadingState from "@/src/infrastructure/ui/global/state/loading";
 const RecommendationLoading = () => {
   return (
     <div className="w-full">
-      <Skeleton className="w-full h-[160px] bg-primary rounded-[12px]" />
+      <Skeleton className="w-full h-[160px] rounded-[12px]" />
       <div className="flex flex-col mt-[18px]">
         <div>
-          <Skeleton className="overflow-hidden text-ellipsis text-[22px] bg-primary/80 font-bold truncate">
+          <Skeleton className="overflow-hidden text-ellipsis text-[22px] font-bold truncate">
             &nbsp;
           </Skeleton>
-          <Skeleton className="text-[16px] w-8/12 bg-primary/60 font-inter font-medium text-[#425379] mt-1">
+          <Skeleton className="text-[16px] w-8/12 font-inter font-medium text-[#425379] mt-1">
             &nbsp;
           </Skeleton>
         </div>
       </div>
 
       <div className="flex flex-col mt-[14px] gap-[18px]">
-        <Skeleton className="overflow-hidden text-ellipsis text-[22px] bg-primary/90 font-bold truncate">
+        <Skeleton className="overflow-hidden text-ellipsis text-[22px] font-bold truncate">
           &nbsp;
         </Skeleton>
         <Button
