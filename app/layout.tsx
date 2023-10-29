@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import QueryClientWrapper from "@/src/utils/Wrapper/QueryClientWrapper";
 import { cookies } from "next/headers";
 import Footer from "@/src/infrastructure/ui/global/footer";
+import ProgressProvider from "@/src/infrastructure/ui/global/provider/ProgressProvider";
 
 export const metadata = {
   title: "Mitrain",
@@ -21,12 +22,12 @@ export default function RootLayout({
   return (
     <html data-theme="light" lang="en" suppressHydrationWarning>
       <body>
-        <QueryClientWrapper token={token}>
-          {" "}
-          {/* subNavbar & navbar inside the queryClientWrapper */}
-          {children}
-          <Footer />
-        </QueryClientWrapper>
+        <ProgressProvider>
+          <QueryClientWrapper token={token}>
+            {children}
+            <Footer />
+          </QueryClientWrapper>
+        </ProgressProvider>
       </body>
     </html>
   );

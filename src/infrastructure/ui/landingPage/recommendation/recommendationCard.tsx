@@ -49,7 +49,7 @@ const RecommendationCard: React.FC<TProps> = ({ data }) => {
         </h1>
         <Button
           variant="outline"
-          className="rounded-full h-[48px] hover:bg-[#020831] hover:text-white hover:border-[#020831]"
+          className="rounded-full h-[48px] hover:bg-[#020831] hover:text-white hover:border-[#020831] text-[16px]"
         >
           Hubungi Mitra
         </Button>

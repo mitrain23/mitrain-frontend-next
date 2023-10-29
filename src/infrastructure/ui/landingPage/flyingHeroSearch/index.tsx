@@ -31,7 +31,7 @@ const FlyingHeroSearch = () => {
         <form className="flex flex-col gap-[16px]">
           <div className="flex flex-row gap-[32px]">
             <Select>
-              <SelectTrigger className="w-1/2 h-[56px] leading-[24px] text-[#757575] bg-[#fbfbfb] rounded-[8px] border-none">
+              <SelectTrigger className="w-1/2 h-[56px] leading-[24px] text-[#757575] text-[16px] bg-[#fbfbfb] rounded-[8px] border-none">
                 <div className="flex items-center space-x-2">
                   <LocationIcon />
                   <SelectValue placeholder="Semua Lokasi" />
@@ -51,7 +51,7 @@ const FlyingHeroSearch = () => {
             </Select>
 
             <Select>
-              <SelectTrigger className="w-1/2 h-[56px] leading-[24px] text-[#757575] bg-[#fbfbfb] rounded-[8px] border-none">
+              <SelectTrigger className="w-1/2 h-[56px] leading-[24px] text-[#757575] text-[16px] bg-[#fbfbfb] rounded-[8px] border-none">
                 <SelectValue placeholder="Jenis" />
               </SelectTrigger>
               <SelectContent>
@@ -76,10 +76,10 @@ const FlyingHeroSearch = () => {
             <Input
               type="text"
               placeholder="Apa yang sedang anda cari?"
-              className="col-span-8 h-[56px] bg-[#FBFBFB] border-none rounded-[8px] placeholder:text-[#757575]"
+              className="col-span-8 h-[56px] bg-[#FBFBFB] border-none rounded-[8px] placeholder:text-[#757575] text-[16px]"
             />
             <Link href={"/results"} className="col-span-4">
-              <Button className="w-full h-[56px] text-white border-none rounded-[8px] bg-[#0066c9] hover:bg-[#0054A5] text-lg">
+              <Button className="w-full h-[56px] text-white border-none rounded-[8px] text-[16px] bg-[#0066c9] hover:bg-[#0054A5] text-lg">
                 Cari
               </Button>
             </Link>

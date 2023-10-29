@@ -110,7 +110,11 @@ const Results = () => {
       <Pagination handlePageChange={handlePageChange} />
       <div className="mb-[48px]"></div>
       <div
-        className={getAllPostByFilterQuery.isLoading ? "flex space-x-4" : ""}
+        className={
+          getAllPostByFilterQuery.isLoading
+            ? "flex md:flex-row flex-col gap-4"
+            : ""
+        }
       >
         <LoadingState
           loadingFallback={<CardLoading />}

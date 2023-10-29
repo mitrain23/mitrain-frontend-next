@@ -24,10 +24,10 @@ const BingungCariSupplier = () => {
 
   return (
     <div className="flex flex-col md:flex-row md:gap-[52px] md:items-center ">
-      <div className="w-full md:w-[704px] bg-slate-300 h-[360px] rounded-[36px]">
+      <div className="w-full md:w-[704px] bg-slate-300 rounded-[36px]">
         <Image
           src={imageDummy}
-          className="rounded-[36px] h-full object-cover"
+          className="rounded-[36px] aspect-video object-cover"
           alt=""
         />
       </div>
