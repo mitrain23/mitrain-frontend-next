@@ -4,7 +4,7 @@ import { GetPostByAuthorResponse } from "@/src/infrastructure/models/getPostByAu
 import { PostsRepository } from "@/src/infrastructure/services/posts/postsRepository";
 
 export class GetPostByAuthorImpl implements getPostByAuthor {
-    execute(id: string | null): Promise<GetPostByAuthorResponse | null> {
-        return PostsRepository.getPostByAuthor(id);
-    }
+  execute(id: string | null): Promise<GetPostByAuthorResponse | null> {
+    return PostsRepository.getPostByAuthor(id);
+  }
 }

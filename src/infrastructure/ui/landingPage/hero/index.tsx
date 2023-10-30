@@ -1,17 +1,12 @@
-'use client';
-import React, { useCallback, useEffect, useRef, useState } from 'react'
-import FlyingHeroSearch from '../flyingHeroSearch'
-import Link from 'next/link';
-import HeroCarousel from './heroCarousel';
-
+"use client";
+import React from "react";
+import FlyingHeroSearch from "../flyingHeroSearch";
+import HeroCarousel from "./heroCarousel";
 
 export const Hero = () => {
-
-    
-
-    return (
-        <HeroCarousel>
-            <FlyingHeroSearch />
-        </HeroCarousel>
-    )
-}
+  return (
+    <HeroCarousel>
+      <FlyingHeroSearch />
+    </HeroCarousel>
+  );
+};

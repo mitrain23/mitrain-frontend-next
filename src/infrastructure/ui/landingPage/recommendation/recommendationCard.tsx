@@ -1,31 +1,61 @@
-import React from 'react'
-import Image from 'next/image'
-import image1 from '../../../../../public/images/dummyfullhd.png'
-import { Post } from '@/src/domain/entities/post'
+import React from "react";
+import Image from "next/image";
+import { Button } from "@/src/components/ui/button";
+import { Post } from "@/src/domain/entities/post";
 
-const RecommendationCard = ({ data }: { data: any }) => {
-    const API_BASE_URL = process.env.BASE_URL;
+// FIXME: entity desync
+// type TProps = {
+//   data: Post & {
+//     images?: {
+//       url: string;
+//     }[];
+//     priceMax: Post["price_max"];
+//     priceMin: Post["price_min"];
+//   };
+// };
 
-    const Image1 = `${API_BASE_URL}/images/${data?.images?.[0]?.url}`;
+type TProps = {
+  data: any;
+};
 
-    return (
-        <div className='font-satoshi flex flex-col'>
-            <Image src={Image1} alt='' width={0} height={0} sizes="100vw" className='w-full h-[160px] object-cover bg-cover rounded-[12px] mb-[18px]' />
-            <div className='flex flex-col mt-[18px]'>
-                <div>
-                    <h1 className='overflow-hidden text-ellipsis text-[22px] font-bold truncate'>{data.title}</h1>
-                    <p className='text-[16px] font-inter font-medium text-[#425379]'>More than 10 years experience</p>
-                </div>
-            </div>
+const RecommendationCard: React.FC<TProps> = ({ data }) => {
+  const API_BASE_URL = process.env.BASE_URL;
+  const Image1 = `${API_BASE_URL}/images/${data?.images?.[0]?.url}`;
 
-            <div className='flex flex-col mt-[14px] gap-[18px]'>
-                <h1 className='overflow-hidden text-ellipsis text-[22px] font-bold truncate'>Rp {data.priceMin} - Rp {data.priceMax}</h1>
-                <button className='w-fit py-[12px] px-[36px] rounded-[27px] hover:bg-color5 hover:text-white border-[1px] border-slate-200'>
-                    Contact Seller
-                </button>
-            </div>
+  return (
+    <div className="font-satoshi flex flex-col w-full">
+      <Image
+        src={Image1}
+        alt=""
+        width={0}
+        height={0}
+        sizes="100vw"
+        className="w-full h-[160px] bg-primary object-cover bg-cover rounded-[12px] mb-[18px]"
+      />
+      <div className="flex flex-col mt-[18px]">
+        <div>
+          <h1 className="overflow-hidden text-ellipsis text-[22px] font-bold truncate">
+            {data.title}
+          </h1>
+          <p className="text-[16px] font-inter font-medium text-[#425379]">
+            More than 10 years experience
+          </p>
         </div>
-    )
-}
+      </div>
 
-export default RecommendationCard
+      <div className="flex flex-col mt-[14px] gap-[18px]">
+        <h1 className="overflow-hidden text-ellipsis text-[22px] font-bold truncate">
+          Rp {data.priceMin} - Rp {data.priceMax}
+        </h1>
+        <Button
+          variant="outline"
+          className="rounded-full h-[48px] hover:bg-[#020831] hover:text-white hover:border-[#020831] text-[16px]"
+        >
+          Hubungi Mitra
+        </Button>
+      </div>
+    </div>
+  );
+};
+
+export default RecommendationCard;

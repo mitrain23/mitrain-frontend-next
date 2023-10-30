@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const SecondaryNavbar = () => {
-  return (
-    <div>SecondaryNavbar</div>
-  )
-}
+  return <div>SecondaryNavbar</div>;
+};
 
-export default SecondaryNavbar
+export default SecondaryNavbar;
