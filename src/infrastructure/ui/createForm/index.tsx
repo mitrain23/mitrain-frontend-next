@@ -1,10 +1,8 @@
 "use client";
 
-import { Post } from "@/src/domain/entities/post";
 import React, { useEffect, useState } from "react";
 import FileInputBox from "./fileInputBox";
 import { useCreatePost } from "@/src/application/hooks/posts/useCreatePost";
-import { decodeToken } from "@/src/utils/auth/decodeToken";
 import { Input } from "@/src/components/ui/input";
 import {
   Select,
@@ -15,6 +13,8 @@ import {
 } from "@/src/components/ui/select";
 import { Textarea } from "@/src/components/ui/textarea";
 import { Button } from "@/src/components/ui/button";
+import { Province } from "@/src/domain/entities/province";
+import { City } from "@/src/domain/entities/city";
 
 interface FormState {
   title: string;
@@ -30,16 +30,6 @@ interface FormState {
 interface ImageData {
   file: File | null;
   imageUrl: string | null;
-}
-
-interface Province {
-  id: string;
-  name: string;
-}
-
-interface City {
-  id: string;
-  name: string;
 }
 
 const CreateForm = () => {
@@ -70,9 +60,9 @@ const CreateForm = () => {
   });
   const [coverImages, setCoverImages] = useState(Array(5).fill(null));
   const [provinces, setProvinces] = useState<Province[]>([]);
-  const [selectedProvince, setSelectedProvince] = useState<any>("");
+  const [selectedProvinceId, setSelectedProvinceId] = useState<string>("");
   const [cities, setCities] = useState<City[]>([]);
-  const [selectedCities, setSelectedCities] = useState<any>("");
+  const [selectedCityId, setSelectedCityId] = useState<string>("");
 
   useEffect(() => {
     fetch("https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json")
@@ -89,9 +79,9 @@ const CreateForm = () => {
 
   useEffect(() => {
     // if (selectedProvince) {
-    console.log(selectedProvince);
+    console.log(selectedProvinceId);
     fetch(
-      `https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${selectedProvince}.json`,
+      `https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${selectedProvinceId}.json`,
     )
       .then((response) => response.json())
       .then((data) => {
@@ -103,17 +93,11 @@ const CreateForm = () => {
         console.error("Error fetching cities:", error);
       });
     // }
-  }, [selectedProvince]);
+  }, [selectedProvinceId]);
 
   useEffect(() => {
     console.log(formState.location);
   }, [formState.location]);
-
-  // handleFileChange
-  interface ImageData {
-    file: any;
-    imageUrl: string | null;
-  }
 
   const handleFileChange = (file: any, boxNumber: any, coverImage: any) => {
     const updatedImages: ImageData[] = coverImages.map((imageData) => ({
@@ -151,7 +135,7 @@ const CreateForm = () => {
     Object.entries(formState).forEach(([key, value]) => {
       formData.append(key, value);
     });
-    coverImages.forEach((coverImage, index) => {
+    coverImages.forEach((coverImage) => {
       formData.append("images", coverImage.file);
     });
 
@@ -370,14 +354,14 @@ const CreateForm = () => {
           <div className="flex flex-col gap-[24px]">
             <Select
               name="province"
-              value={selectedProvince}
+              value={selectedProvinceId}
               onValueChange={(value) => {
                 const selectedProvinceId = value;
                 const selectedProvinceObject = provinces.find(
                   (province: any) => province.id === selectedProvinceId,
                 );
 
-                setSelectedProvince(selectedProvinceObject?.id);
+                setSelectedProvinceId(selectedProvinceObject?.id || "");
                 setCities([]);
               }}
             >
@@ -397,16 +381,16 @@ const CreateForm = () => {
               </SelectContent>
             </Select>
 
-            {selectedProvince && (
+            {selectedProvinceId && (
               <Select
                 name="city"
-                value={selectedCities}
+                value={selectedCityId}
                 onValueChange={(value) => {
                   setFormState((prev) => ({
                     ...prev,
                     location: value,
                   }));
-                  setSelectedCities(value);
+                  setSelectedCityId(value);
                 }}
               >
                 <SelectTrigger className="w-full lg:w-[648px] font-inter text-[#6F7277] font-normal text-[16px] h-[56px]">

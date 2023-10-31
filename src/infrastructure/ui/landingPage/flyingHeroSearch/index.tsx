@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import {
   Select,
@@ -14,9 +14,30 @@ import { Input } from "@/src/components/ui/input";
 import { Button } from "@/src/components/ui/button";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
 import LocationIcon from "@/public/svg/location.svg";
+import { Province } from "@/src/domain/entities/province";
+import { City } from "@/src/domain/entities/city";
+import { Separator } from "@/src/components/ui/separator";
 
-const FlyingHeroSearch = () => {
-  const [provinces, setProvinces] = useState([]);
+type TProps = {
+  provinces: Province[];
+};
+
+const FlyingHeroSearch: React.FC<TProps> = ({ provinces }) => {
+  const [selectedProvinceId, setSelectedProvinceId] = useState<string>("");
+
+  const [cities, setCities] = useState<City[]>([]);
+  const [selectedCityId, setSelectedCityId] = useState<string>("");
+
+  useEffect(() => {
+    fetch(
+      `https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${selectedProvinceId}.json`,
+    )
+      .then((res) => res.json())
+      .then((data) => setCities(data))
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [selectedProvinceId]);
 
   return (
     <div
@@ -32,7 +53,16 @@ const FlyingHeroSearch = () => {
       <div>
         <form className="flex flex-col gap-[16px]">
           <div className="flex flex-row gap-[32px]">
-            <Select>
+            <Select
+              onValueChange={(selectedProvinceId) => {
+                const selectedProvince = provinces.find(
+                  (province) => province.id === selectedProvinceId,
+                );
+
+                setSelectedProvinceId(selectedProvince?.id || "");
+                setCities([]);
+              }}
+            >
               <SelectTrigger className="w-1/2 h-[56px] leading-[24px] text-[#757575] text-[16px] bg-[#fbfbfb] rounded-[8px] border-none">
                 <div className="flex items-center space-x-2">
                   <LocationIcon />
@@ -41,13 +71,15 @@ const FlyingHeroSearch = () => {
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
-                  {/* TODO: Ngambil dari API kayak /create */}
-                  <SelectItem
-                    className="h-[56px] cursor-pointer"
-                    value="bandung"
-                  >
-                    Bandung
-                  </SelectItem>
+                  {provinces.map((province, idx) => (
+                    <SelectItem
+                      className="h-[56px] cursor-pointer"
+                      value={province.id}
+                      key={idx}
+                    >
+                      {province.name}
+                    </SelectItem>
+                  ))}
                 </SelectGroup>
               </SelectContent>
             </Select>
@@ -74,6 +106,31 @@ const FlyingHeroSearch = () => {
               </SelectContent>
             </Select>
           </div>
+
+          {selectedProvinceId && (
+            <Select
+              value={selectedCityId}
+              onValueChange={(selectedCityId) => {
+                setSelectedCityId(selectedCityId);
+              }}
+            >
+              <SelectTrigger className="w-full h-[56px] leading-[24px] text-[#757575] text-[16px] bg-[#fbfbfb] rounded-[8px] border-none">
+                <SelectValue placeholder="Pilih Kota/Kabupaten" />
+              </SelectTrigger>
+              <SelectGroup>
+                <SelectContent>
+                  {cities.map((city, idx) => (
+                    <SelectItem className="h-[56px]" value={city.id} key={idx}>
+                      {city.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </SelectGroup>
+            </Select>
+          )}
+
+          <Separator className="my-2" />
+
           <div className="grid grid-cols-12 gap-[16px]">
             <Input
               type="text"

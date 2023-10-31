@@ -23,22 +23,12 @@ import {
   Datum,
   GetPostByAuthorResponse,
 } from "@/src/infrastructure/models/getPostByAuthorResponse";
-import { DotsVerticalIcon, DropdownMenuIcon } from "@radix-ui/react-icons";
+import { DotsVerticalIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import React, { useState } from "react";
 import EditIcon from "@/public/svg/edit.svg";
 
 const IklanSayaCard = ({ data, index }: { data: Datum; index: number }) => {
-  const [showDelete, setShowDelete] = useState(false);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-
-  const handleShowDelete = () => {
-    setShowDelete(!showDelete);
-  };
-  const handleShowDeleteModal = () => {
-    setShowDeleteModal(!showDeleteModal);
-  };
-
   const deletePostQuery = useDeletePost(data.id);
 
   const handleDelete = async (e: any) => {
@@ -46,7 +36,6 @@ const IklanSayaCard = ({ data, index }: { data: Datum; index: number }) => {
     console.log(data.id);
     try {
       await deletePostQuery?.mutate();
-      setShowDeleteModal(!showDeleteModal);
     } catch (err) {
       console.log(err);
     }

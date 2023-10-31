@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Select,
   SelectContent,
@@ -8,12 +10,34 @@ import {
 } from "@/src/components/ui/select";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import LocationIcon from "@/public/svg/location_mobile.svg";
 import { Input } from "@/src/components/ui/input";
 import { Button } from "@/src/components/ui/button";
+import { City } from "@/src/domain/entities/city";
+import { Province } from "@/src/domain/entities/province";
 
-const MobileHero = () => {
+type TProps = {
+  provinces: Province[];
+};
+
+const MobileHero: React.FC<TProps> = ({ provinces }) => {
+  const [selectedProvinceId, setSelectedProvinceId] = useState<string>("");
+
+  const [cities, setCities] = useState<City[]>([]);
+  const [selectedCityId, setSelectedCityId] = useState<string>("");
+
+  useEffect(() => {
+    fetch(
+      `https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${selectedProvinceId}.json`,
+    )
+      .then((res) => res.json())
+      .then((data) => setCities(data))
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [selectedProvinceId]);
+
   return (
     <div className="w-full px-[24px]">
       <div className="flex space-x-1 items-center text-[16px] mb-[24px] cursor-pointer">
@@ -22,7 +46,17 @@ const MobileHero = () => {
       </div>
       <form action="" className="flex flex-col gap-[16px]">
         <div className="flex gap-0">
-          <Select>
+          <Select
+            onValueChange={(selectedProvinceId) => {
+              const selectedProvince = provinces.find(
+                (province) => province.id === selectedProvinceId,
+              );
+
+              setSelectedProvinceId(selectedProvince?.id || "");
+              setCities([]);
+              setSelectedCityId("");
+            }}
+          >
             <SelectTrigger className="w-1/2 h-[56px] leading-[24px] text-[#757575] bg-[#fff] rounded-[8px] rounded-r-none border border-[#d9d9d9] focus:ring-[#d9d9d9]">
               <div className="flex items-center space-x-2">
                 <LocationIcon />
@@ -31,10 +65,15 @@ const MobileHero = () => {
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                {/* TODO: Ngambil dari API kayak /create */}
-                <SelectItem className="h-[56px] cursor-pointer" value="bandung">
-                  Bandung
-                </SelectItem>
+                {provinces.map((province, idx) => (
+                  <SelectItem
+                    key={idx}
+                    className="h-[56px] cursor-pointer"
+                    value={province.id}
+                  >
+                    {province.name}
+                  </SelectItem>
+                ))}
               </SelectGroup>
             </SelectContent>
           </Select>
@@ -58,6 +97,27 @@ const MobileHero = () => {
             </SelectContent>
           </Select>
         </div>
+        {selectedProvinceId && (
+          <Select
+            value={selectedCityId}
+            onValueChange={(selectedCityId) => {
+              setSelectedCityId(selectedCityId);
+            }}
+          >
+            <SelectTrigger className="w-full h-[56px] leading-[24px] text-[#757575] bg-[#fff] rounded-[8px] border border-[#d9d9d9] focus:ring-[#d9d9d9]">
+              <SelectValue placeholder="Pilih Kota/Kabupaten" />
+            </SelectTrigger>
+            <SelectGroup>
+              <SelectContent>
+                {cities.map((city, idx) => (
+                  <SelectItem className="h-[56px]" value={city.id} key={idx}>
+                    {city.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </SelectGroup>
+          </Select>
+        )}
         <div className="flex flex-col gap-[16px]">
           <Input
             type="text"
