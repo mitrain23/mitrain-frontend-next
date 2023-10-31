@@ -39,8 +39,7 @@ const IklanSayaCard = ({ data, index }: { data: Datum; index: number }) => {
     setShowDeleteModal(!showDeleteModal);
   };
 
-  // FIXME: react hook
-  const deletePostQuery = data.id ? useDeletePost(data.id) : null;
+  const deletePostQuery = useDeletePost(data.id);
 
   const handleDelete = async (e: any) => {
     e.preventDefault();
@@ -107,7 +106,9 @@ const IklanSayaCard = ({ data, index }: { data: Datum; index: number }) => {
                   </AlertDialogHeader>
                   <AlertDialogFooter className="lg:flex-col-reverse lg:space-x-0 gap-2">
                     <AlertDialogCancel>Batalkan</AlertDialogCancel>
-                    <AlertDialogAction>Ya, hapus sekarang</AlertDialogAction>
+                    <AlertDialogAction onClick={handleDelete}>
+                      Ya, hapus sekarang
+                    </AlertDialogAction>
                   </AlertDialogFooter>
                 </AlertDialogContent>
               </AlertDialog>

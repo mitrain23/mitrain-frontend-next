@@ -1,9 +1,7 @@
 "use client";
 
 import { useGetPostByAuthor } from "@/src/application/hooks/posts/useGetPostByAuthor";
-import Card from "@/src/components/card";
 import { decodeToken } from "@/src/utils/auth/decodeToken";
-import React from "react";
 
 const ProfilePage = () => {
   const userId = decodeToken();

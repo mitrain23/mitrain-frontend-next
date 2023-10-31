@@ -26,7 +26,7 @@ const Page = () => {
           </h1>
           <div className="font-inter font-light">
             <p>We aplogize for any inconvenienced caused.</p>
-            <p>We've almost done.</p>
+            <p>We&apos;ve almost done.</p>
           </div>
         </div>
       </div>

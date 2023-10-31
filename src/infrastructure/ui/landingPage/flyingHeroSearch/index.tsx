@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import {
   Select,
@@ -16,6 +16,8 @@ import { ChevronDownIcon } from "@radix-ui/react-icons";
 import LocationIcon from "@/public/svg/location.svg";
 
 const FlyingHeroSearch = () => {
+  const [provinces, setProvinces] = useState([]);
+
   return (
     <div
       className="bg-white font-inter shadow-md rounded-[16px] mx-auto max-w-[980px] h-fit absolute z-10 bottom-[-150px] sm:bottom-[-90px] right-0 left-0 px-[42px] py-[36px] flex flex-col items-center sm:items-stretch"
