@@ -15,6 +15,7 @@ interface parsedUser {
   isMitra: boolean;
 }
 
+// TODO: revisi design
 const Navbar = ({
   isResults = false,
   token,

@@ -58,7 +58,7 @@ const MobileHero: React.FC<TProps> = ({ provinces }) => {
             }}
           >
             <SelectTrigger className="w-1/2 h-[56px] leading-[24px] text-[#757575] bg-[#fff] rounded-[8px] rounded-r-none border border-[#d9d9d9] focus:ring-[#d9d9d9]">
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-2 truncate">
                 <LocationIcon />
                 <SelectValue placeholder="Semua Lokasi" />
               </div>

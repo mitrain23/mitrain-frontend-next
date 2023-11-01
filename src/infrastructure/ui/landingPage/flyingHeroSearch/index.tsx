@@ -129,8 +129,6 @@ const FlyingHeroSearch: React.FC<TProps> = ({ provinces }) => {
             </Select>
           )}
 
-          <Separator className="my-2" />
-
           <div className="grid grid-cols-12 gap-[16px]">
             <Input
               type="text"

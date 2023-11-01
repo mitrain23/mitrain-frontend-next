@@ -27,6 +27,7 @@ interface parsedUser {
 
 /** TODO:
  * - Memahami logic
+ * - Revisi design
  */
 const NavbarResults = ({
   isResults = false,
