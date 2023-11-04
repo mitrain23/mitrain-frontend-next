@@ -27,7 +27,7 @@ interface parsedUser {
 
 /** TODO:
  * - Memahami logic
- * - Revisi design
+ * - Revisi design (ketika sudah login)
  */
 const NavbarResults = ({
   isResults = false,
@@ -181,7 +181,7 @@ const NavbarResults = ({
             </div>
 
             {token == null ? (
-              <Button className="space-x-2 w-full">
+              <Button className="space-x-2 w-full h-[48px]">
                 <PersonIcon />
                 <Link href={"/login"} className="cursor-pointer">
                   Sign In

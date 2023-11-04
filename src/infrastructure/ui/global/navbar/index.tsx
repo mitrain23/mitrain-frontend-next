@@ -15,7 +15,7 @@ interface parsedUser {
   isMitra: boolean;
 }
 
-// TODO: revisi design
+// FIXME: ini di delete aja kali yak? kan udh ada `navbarLandingPage`
 const Navbar = ({
   isResults = false,
   token,

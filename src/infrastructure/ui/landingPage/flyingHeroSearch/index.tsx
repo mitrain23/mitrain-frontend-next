@@ -16,7 +16,6 @@ import { ChevronDownIcon } from "@radix-ui/react-icons";
 import LocationIcon from "@/public/svg/location.svg";
 import { Province } from "@/src/domain/entities/province";
 import { City } from "@/src/domain/entities/city";
-import { Separator } from "@/src/components/ui/separator";
 
 type TProps = {
   provinces: Province[];

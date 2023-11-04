@@ -126,7 +126,6 @@ const CreateForm = () => {
 
   console.log(coverImages);
 
-  // TODO: isLoading
   const createPost = useCreatePost();
 
   const handleSubmit = async (e: any) => {
