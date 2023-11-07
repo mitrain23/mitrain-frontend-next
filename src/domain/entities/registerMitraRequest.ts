@@ -1,7 +1,7 @@
 export default interface RegisterMitraRequest {
   email: string;
-  password: string;
   name: string;
+  password: string;
   address: string;
   phoneIntWhatsapp: string;
   phoneIntContact: string;
