@@ -1,4 +1,5 @@
 import { Province } from "@/src/domain/entities/province";
+import Footer from "@/src/infrastructure/ui/global/footer";
 import LandingPageNavbar from "@/src/infrastructure/ui/global/navbar/landingPage";
 import BingungCariSupplier from "@/src/infrastructure/ui/landingPage/bingungCariSupplier";
 import { Hero } from "@/src/infrastructure/ui/landingPage/hero";
@@ -42,6 +43,7 @@ export default async function Home() {
         </LayoutTemplate>
         {/* <div className='mb-[104px]' /> */}
       </main>
+      <Footer />
     </>
   );
 }

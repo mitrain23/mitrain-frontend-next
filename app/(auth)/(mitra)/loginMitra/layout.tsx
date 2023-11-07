@@ -13,8 +13,8 @@ const layout = ({ children }: { children: React.ReactNode }) => {
   const token = cookieStore.get("token");
 
   return (
-    <div className="h-screen relative">
-      <div className="flex justify-between h-full">
+    <>
+      <div className="flex justify-between h-screen">
         <div className="md:w-1/2 w-full">
           <nav className="px-[24px] py-[24px] xl:px-[240px] md:px-[100px] md:py-[42px]">
             <Link href={"/"} className="flex flex-row gap-[16px] items-center">
@@ -45,7 +45,7 @@ const layout = ({ children }: { children: React.ReactNode }) => {
         </div>
       </div>
       <Footer />
-    </div>
+    </>
   );
 };
 

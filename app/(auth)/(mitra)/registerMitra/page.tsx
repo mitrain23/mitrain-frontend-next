@@ -1,42 +1,32 @@
 "use client";
 
 import { useRegisterMitra } from "@/src/application/hooks/mitraAuth/useRegisterMitra";
+import RegisterMitraRequest from "@/src/domain/entities/RegisterMitraRequest";
 import LayoutTemplate from "@/src/utils/layout";
 import React, { useState } from "react";
 
-interface IFormState {
-  [key: string]: string;
-  name: string;
-  email: string;
-  password: string;
-  categoryName: string;
-  description: string;
-  address: string;
-  phoneIntContact: string;
-  phoneIntWhatsapp: string;
-}
-
 const Page = () => {
-  const [formState, setFormState] = useState<IFormState>({
+  const [formState, setFormState] = useState<RegisterMitraRequest>({
     name: "",
     email: "",
     password: "",
-    categoryName: "",
+    categoryName: "Kaos",
     description: "",
     address: "",
     phoneIntContact: "",
     phoneIntWhatsapp: "",
     experience: "10",
+    images: [],
   });
-  const [coverImages, setCoverImages] = useState(Array(5).fill(null));
-  const [selectedFile, setSelectedFile] = useState(null);
+
+  const [selectedFile, setSelectedFile] = useState<File>();
 
   const formData = new FormData();
   const registerMitra = useRegisterMitra();
 
   // Handle the file input's onChange event
-  const handleFileChange = (e: any) => {
-    const file = e.target.files[0];
+  const handleFileChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+    const file = e.target.files?.[0];
     setSelectedFile(file);
   };
 
@@ -44,11 +34,10 @@ const Page = () => {
     e.preventDefault();
     console.log(formState);
 
-    for (const key in formState) {
-      if (formState.hasOwnProperty(key)) {
-        formData.append(key, formState[key]);
-      }
+    for (const [key, data] of Object.entries(formState)) {
+      formData.append(key, data);
     }
+
     if (selectedFile) {
       formData.append("images", selectedFile);
     }
@@ -86,7 +75,7 @@ const Page = () => {
               type="text"
               name="name"
               placeholder="Adit Saputra"
-              value={formState.title}
+              value={formState.name}
               onChange={(e) =>
                 setFormState((prevState) => ({
                   ...prevState,
@@ -110,7 +99,7 @@ const Page = () => {
               type="text"
               name="email"
               placeholder="john.doe@mitrain.id"
-              value={formState.title}
+              value={formState.email}
               onChange={(e) =>
                 setFormState((prevState) => ({
                   ...prevState,
@@ -134,7 +123,7 @@ const Page = () => {
               type="text"
               name="password"
               placeholder="john.doe@mitrain.id"
-              value={formState.title}
+              value={formState.password}
               onChange={(e) =>
                 setFormState((prevState) => ({
                   ...prevState,
@@ -231,7 +220,8 @@ const Page = () => {
             </div>
             <select
               name="address"
-              value={formState.location}
+              value={formState.address}
+              defaultValue="default"
               onChange={(e) =>
                 setFormState((prevState) => ({
                   ...prevState,
@@ -240,10 +230,10 @@ const Page = () => {
               }
               className="select select-bordered w-[648px]  font-inter text-[#6F7277] font-normal text-[16px]"
             >
-              <option disabled selected>
+              <option disabled value="default">
                 Pilih Lokasi
               </option>
-              <option>Bandung</option>
+              <option value="bandung">Bandung</option>
             </select>
           </label>
 
@@ -262,7 +252,7 @@ const Page = () => {
                 type="text"
                 name="phoneIntContact"
                 placeholder="Nomor HP Pribadi*"
-                value={formState.phone_number_contact}
+                value={formState.phoneIntContact}
                 onChange={(e) =>
                   setFormState((prevState) => ({
                     ...prevState,
@@ -275,7 +265,7 @@ const Page = () => {
                 type="text"
                 name="phoneIntWhatsapp"
                 placeholder="Nomor WhatsApp*"
-                value={formState.phone_number_whatsapp}
+                value={formState.phoneIntWhatsapp}
                 onChange={(e) =>
                   setFormState((prevState) => ({
                     ...prevState,

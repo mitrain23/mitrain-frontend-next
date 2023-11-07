@@ -14,12 +14,12 @@ const layout = ({ children }: { children: React.ReactNode }) => {
   const token = cookieStore.get("token");
 
   return (
-    <div className="min-h-screen relative">
+    <>
       <SubNavbar />
       <NavbarResults token={token} />
       {children}
       <Footer />
-    </div>
+    </>
   );
 };
 
