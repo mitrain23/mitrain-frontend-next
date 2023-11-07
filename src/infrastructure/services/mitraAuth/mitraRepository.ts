@@ -8,7 +8,7 @@ const API_BASE_URL = process.env.BASE_URL;
 export class MitraRepository {
   static registerMitra = async (data: FormData): Promise<Mitra> => {
     const response = await axios.post(
-      `${API_BASE_URL}/api/register/mitra`,
+      `${API_BASE_URL}/api/auth/registerMitra`,
       data,
     );
     console.log(response.data.data);
@@ -19,7 +19,7 @@ export class MitraRepository {
     credentials: user,
   ): Promise<LoginMitraResponse> => {
     const response = await axios.post(
-      `${API_BASE_URL}/api/login/mitra`,
+      `${API_BASE_URL}/api/auth/login`,
       credentials,
     );
     console.log(response.data);

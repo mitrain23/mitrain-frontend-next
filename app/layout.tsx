@@ -23,10 +23,7 @@ export default function RootLayout({
     <html data-theme="light" lang="en" suppressHydrationWarning>
       <body>
         <ProgressProvider>
-          <QueryClientWrapper token={token}>
-            {children}
-            <Footer />
-          </QueryClientWrapper>
+          <QueryClientWrapper token={token}>{children}</QueryClientWrapper>
         </ProgressProvider>
       </body>
     </html>

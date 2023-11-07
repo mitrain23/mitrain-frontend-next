@@ -9,7 +9,7 @@ interface IFormState {
   name: string;
   email: string;
   password: string;
-  category: string;
+  categoryName: string;
   description: string;
   address: string;
   phoneIntContact: string;
@@ -21,11 +21,12 @@ const Page = () => {
     name: "",
     email: "",
     password: "",
-    category: "",
+    categoryName: "",
     description: "",
     address: "",
     phoneIntContact: "",
     phoneIntWhatsapp: "",
+    experience: "10",
   });
   const [coverImages, setCoverImages] = useState(Array(5).fill(null));
   const [selectedFile, setSelectedFile] = useState(null);
@@ -53,6 +54,7 @@ const Page = () => {
     }
 
     try {
+      console.log(formData);
       const response = await registerMitra(formData);
       console.log(response);
     } catch (error) {
@@ -155,8 +157,8 @@ const Page = () => {
               </div>
             </div>
             <select
-              name="category"
-              value={formState.category}
+              name="categoryName"
+              value={formState.categoryName}
               onChange={(e) =>
                 setFormState((prevState) => ({
                   ...prevState,

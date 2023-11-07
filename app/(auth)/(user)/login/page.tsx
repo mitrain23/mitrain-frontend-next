@@ -40,7 +40,7 @@ const Page = () => {
   };
 
   return (
-    <div className="flex min-h-screen items-center px-[24px] xl:px-[240px] md:px-[100px] font-inter">
+    <div className="flex items-center px-[24px] xl:px-[240px] md:px-[100px] font-inter">
       <div>
         <h1 className="text-[#0F172A] text-lg lg:text-[48px] text-lg font-bold">
           Welcome Back
@@ -113,7 +113,7 @@ const Page = () => {
 
             <p className="text-[#797979] mt-4 text-center">
               Don&apos;t have an account?{" "}
-              <Link href="/registerMitra" className="font-bold text-black">
+              <Link href="/register" className="font-bold text-black">
                 Sign up for free
               </Link>
             </p>

@@ -1,6 +1,7 @@
 import { cookies } from "next/headers";
 import Link from "next/link";
 import Image from "next/image";
+import Footer from "@/src/infrastructure/ui/global/footer";
 
 export const metadata = {
   title: "Mitrain Konveksi",
@@ -12,7 +13,7 @@ const layout = ({ children }: { children: React.ReactNode }) => {
   const token = cookieStore.get("token");
 
   return (
-    <>
+    <div className="min-h-screen relative">
       <nav className="px-[24px] py-[24px] xl:px-[240px] md:px-[100px] md:py-[42px]">
         <Link href={"/"} className="flex flex-row gap-[16px] items-center">
           <div className="w-[60px] h-[60px]">
@@ -30,7 +31,8 @@ const layout = ({ children }: { children: React.ReactNode }) => {
         </Link>
       </nav>
       {children}
-    </>
+      <Footer />
+    </div>
   );
 };
 
