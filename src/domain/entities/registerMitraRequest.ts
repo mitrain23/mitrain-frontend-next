@@ -8,9 +8,5 @@ export default interface RegisterMitraRequest {
   categoryName: string;
   experience: string;
   description: string;
-  images: RegisterMitraImage[];
-}
-
-interface RegisterMitraImage {
-  url: string;
+  images: File[] | File;
 }

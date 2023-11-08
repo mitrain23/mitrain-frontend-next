@@ -385,9 +385,14 @@ const CreateForm = () => {
                 name="city"
                 value={selectedCityId}
                 onValueChange={(value) => {
+                  const province = provinces.find(
+                    (province) => province.id === selectedProvinceId,
+                  )?.name;
+                  const city = cities.find((city) => city.id === value)?.name;
+
                   setFormState((prev) => ({
                     ...prev,
-                    location: value,
+                    location: `${province} - ${city}`,
                   }));
                   setSelectedCityId(value);
                 }}
