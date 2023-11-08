@@ -392,7 +392,7 @@ const CreateForm = () => {
 
                   setFormState((prev) => ({
                     ...prev,
-                    location: `${province} - ${city}`,
+                    location: `${city}, ${province}`,
                   }));
                   setSelectedCityId(value);
                 }}

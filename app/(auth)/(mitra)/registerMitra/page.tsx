@@ -18,7 +18,6 @@ import {
   SelectValue,
 } from "@/src/components/ui/select";
 import { Textarea } from "@/src/components/ui/textarea";
-// import RegisterMitraRequest from "@/src/domain/entities/RegisterMitraRequest";
 import { City } from "@/src/domain/entities/city";
 import { Province } from "@/src/domain/entities/province";
 import LayoutTemplate from "@/src/utils/layout";
@@ -41,7 +40,6 @@ const formSchema = z.object({
 
 const API_BASE_URL = process.env.BASE_URL;
 
-// TODO: transform it into 😎
 const Page = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -66,10 +64,7 @@ const Page = () => {
   const [cities, setCities] = useState<City[]>([]);
   const [selectedCityId, setSelectedCityId] = useState<string>("");
 
-  const [location, setLocation] = useState("");
-
-  const formData = new FormData();
-  const registerMitra = useRegisterMitra();
+  const [address, setAddress] = useState("");
 
   // Handle the file input's onChange event
   const handleFileChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -77,13 +72,17 @@ const Page = () => {
     setSelectedFile(file);
   };
 
+  const registerMitra = useRegisterMitra();
+
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
+    const formData = new FormData();
+
     if (selectedFile) {
       formData.append("images", selectedFile);
     }
 
-    if (location) {
-      formData.append("address", location);
+    if (address) {
+      formData.append("address", address);
     }
 
     for (const [key, data] of Object.entries(values)) {
@@ -381,7 +380,7 @@ const Page = () => {
                       const city = cities.find((city) => city.id === value)
                         ?.name;
 
-                      setLocation(`${province} - ${city}`);
+                      setAddress(`${city}, ${province}`);
 
                       setSelectedCityId(value);
                     }}
