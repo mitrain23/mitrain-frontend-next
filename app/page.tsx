@@ -6,6 +6,7 @@ import { Hero } from "@/src/infrastructure/ui/landingPage/hero";
 import MobileHero from "@/src/infrastructure/ui/landingPage/hero/mobileHero";
 import Recommendation from "@/src/infrastructure/ui/landingPage/recommendation";
 import LayoutTemplate from "@/src/utils/layout";
+import { cookies } from "next/headers";
 
 const getProvinces = async (): Promise<Province[]> => {
   const req = await fetch(
@@ -17,11 +18,14 @@ const getProvinces = async (): Promise<Province[]> => {
 };
 
 export default async function Home() {
+  const cookieStore = cookies();
+  const token = cookieStore.get("token");
+
   const provinces: Province[] = await getProvinces();
 
   return (
     <>
-      <LandingPageNavbar />
+      <LandingPageNavbar token={token} />
       <main>
         {/* hero */}
         <div className="hidden md:block">

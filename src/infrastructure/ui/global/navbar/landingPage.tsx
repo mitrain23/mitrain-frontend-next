@@ -7,8 +7,13 @@ import { Button } from "@/src/components/ui/button";
 import { Cross1Icon } from "@radix-ui/react-icons";
 import HamburgerIcon from "@/public/svg/hamburger.svg";
 import { Separator } from "@/src/components/ui/separator";
+import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 
-const LandingPageNavbar = () => {
+type TProps = {
+  token?: RequestCookie;
+};
+
+const LandingPageNavbar: React.FC<TProps> = ({ token }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
@@ -40,28 +45,31 @@ const LandingPageNavbar = () => {
             </Link>
           </li>
 
-          <Separator
-            orientation="vertical"
-            className="h-[40px] w-[1px] bg-[#D3D3D3]"
-          />
-
-          <li>
-            <Link href={"/login"}>
-              <Button
-                variant="outline"
-                className="px-[42px] py-[12px] h-[48px] rounded-[8px] cursor-pointer"
-              >
-                Masuk
-              </Button>
-            </Link>
-          </li>
-          <li>
-            <Link href={"/register"}>
-              <Button className="bg-[#020831] text-white px-[42px] py-[12px] h-[48px] rounded-[8px] cursor-pointer">
-                Daftar
-              </Button>
-            </Link>
-          </li>
+          {!token && (
+            <>
+              <Separator
+                orientation="vertical"
+                className="h-[40px] w-[1px] bg-[#D3D3D3]"
+              />
+              <li>
+                <Link href={"/login"}>
+                  <Button
+                    variant="outline"
+                    className="px-[42px] py-[12px] h-[48px] rounded-[8px] cursor-pointer"
+                  >
+                    Masuk
+                  </Button>
+                </Link>
+              </li>
+              <li>
+                <Link href={"/register"}>
+                  <Button className="bg-[#020831] text-white px-[42px] py-[12px] h-[48px] rounded-[8px] cursor-pointer">
+                    Daftar
+                  </Button>
+                </Link>
+              </li>
+            </>
+          )}
         </ul>
 
         {/* Hamburger Icon */}

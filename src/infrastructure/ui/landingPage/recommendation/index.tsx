@@ -6,6 +6,8 @@ import { useGetAllPost } from "@/src/application/hooks/posts/useGetAllPost";
 import { Skeleton } from "@/src/components/ui/skeleton";
 import { Button } from "@/src/components/ui/button";
 import LoadingState from "@/src/infrastructure/ui/global/state/loading";
+import { Alert, AlertDescription, AlertTitle } from "@/src/components/ui/alert";
+import EmptyState from "../../global/state/empty";
 
 const RecommendationLoading = () => {
   return (
@@ -52,9 +54,11 @@ const Recommendation = () => {
           loadingFallback={<RecommendationLoading />}
           loadingCount={4}
         >
-          {getRecommendedPost.data
-            ?.slice(0, 4)
-            .map((post, idx) => <RecommendationCard data={post} key={idx} />)}
+          <EmptyState data={getRecommendedPost.data}>
+            {getRecommendedPost.data
+              ?.slice(0, 4)
+              .map((post, idx) => <RecommendationCard data={post} key={idx} />)}
+          </EmptyState>
         </LoadingState>
       </div>
     </div>

@@ -3,6 +3,7 @@ import { PostFilter } from "@/src/domain/entities/postFilter";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { GetPostByAuthorResponse } from "../../models/getPostByAuthorResponse";
+import { PostDetailResponse } from "../../models/getPostDetailResponse";
 
 const API_BASE_URL = process.env.BASE_URL;
 
@@ -15,13 +16,13 @@ export interface responseDelete {
 export class PostsRepository {
   static getAllPost = async (pageNumber: number): Promise<Post[]> => {
     const response = await fetch(
-      `${API_BASE_URL}/api/allPosts?page=${pageNumber}&pageSize=10`,
+      `${API_BASE_URL}/api/post?page=${pageNumber}&pageSize=10`,
     );
     const data = await response.json();
     return data.data;
   };
 
-  static getPostById = async (id: string): Promise<Post> => {
+  static getPostById = async (id: string): Promise<PostDetailResponse> => {
     console.log(id);
     const response = await fetch(`${API_BASE_URL}/api/post/${id}`, {
       headers: {
@@ -36,7 +37,7 @@ export class PostsRepository {
   static createPost = async (data: FormData) => {
     // const token = localStorage.getItem('token');
     const token = Cookies.get("token");
-    const response = await axios.post(`${API_BASE_URL}/api/create`, data, {
+    const response = await axios.post(`${API_BASE_URL}/api/post`, data, {
       headers: {
         Authorization: token ? `Bearer ${token}` : "",
         "Content-Type": "multipart/form-data",
@@ -66,7 +67,7 @@ export class PostsRepository {
     const token = Cookies.get("token");
     console.log(token);
     console.log(id);
-    const response = await fetch(`${API_BASE_URL}/api/postAuthor/${id}`, {
+    const response = await fetch(`${API_BASE_URL}/api/post/postAuthor/${id}`, {
       headers: {
         Authorization: token ? `Bearer ${token}` : "",
         "ngrok-skip-browser-warning": "69420",

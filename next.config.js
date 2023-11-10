@@ -4,7 +4,7 @@ const nextConfig = {
     domains: [
       "localhost",
       "0152-2a02-4780-10-d402-00-1.ngrok-free.app",
-      "api.mitrainid.com",
+      "api-dev.mitrainid.com",
       "static.nike.com",
     ],
   },

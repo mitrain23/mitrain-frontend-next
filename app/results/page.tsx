@@ -12,6 +12,7 @@ import CardSlider from "@/src/infrastructure/ui/results/cardSlider";
 import LoadingState from "@/src/infrastructure/ui/global/state/loading";
 import { Skeleton } from "@/src/components/ui/skeleton";
 import { Alert, AlertDescription, AlertTitle } from "@/src/components/ui/alert";
+import EmptyState from "@/src/infrastructure/ui/global/state/empty";
 
 const CardLoading = () => {
   return (
@@ -58,17 +59,6 @@ const Results = () => {
     getAllPostByFilterQuery.refetch();
   }, [pageNumber]);
 
-  if (getAllPostByFilterQuery.isError) {
-    return (
-      <Alert>
-        <AlertTitle>Maaf</AlertTitle>
-        <AlertDescription>
-          Data yang dicari tidak ditemukan / Kosong
-        </AlertDescription>
-      </Alert>
-    );
-  }
-
   const handlePageChange = (data: number) => {
     setPageNumber(data);
     setFormData((prev) => ({
@@ -89,22 +79,15 @@ const Results = () => {
           loadingCount={4}
           isLoading={getAllPostByFilterQuery.isLoading}
         >
-          {!getAllPostByFilterQuery.data?.length ? (
-            <Alert>
-              <AlertTitle>Maaf</AlertTitle>
-              <AlertDescription>
-                Data yang dicari tidak ditemukan / Kosong
-              </AlertDescription>
-            </Alert>
-          ) : (
-            getAllPostByFilterQuery.data?.map((item) => {
+          <EmptyState data={getAllPostByFilterQuery.data}>
+            {getAllPostByFilterQuery.data?.map((item) => {
               return (
                 <div className="w-full" key={item.id}>
                   <Card data={item} />
                 </div>
               );
-            })
-          )}
+            })}
+          </EmptyState>
         </LoadingState>
       </div>
       <Pagination handlePageChange={handlePageChange} />

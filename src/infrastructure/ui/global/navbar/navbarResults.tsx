@@ -143,17 +143,21 @@ const NavbarResults = ({
                   <UserAvatarIcon />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent side="bottom" align="end">
-                  <DropdownMenuItem className="pr-[48px] py-[12px]">
-                    <Link href={"/maintenance"}>Profil Saya</Link>
+                  <DropdownMenuItem className="py-[12px]">
+                    <Link href={"/maintenance"} className="w-full">
+                      Profil Saya
+                    </Link>
                   </DropdownMenuItem>
                   {isMitra && (
-                    <DropdownMenuItem className="pr-[48px] py-[12px]">
-                      <Link href={"/iklan"}>Iklan Saya</Link>
+                    <DropdownMenuItem className="py-[12px]">
+                      <Link href={"/iklan"} className="w-full">
+                        Iklan Saya
+                      </Link>
                     </DropdownMenuItem>
                   )}
                   <DropdownMenuItem
                     onClick={handleLogout}
-                    className="pr-[48px] py-[12px] focus:bg-destructive focus:text-white cursor-pointer"
+                    className="py-[12px] focus:bg-destructive focus:text-white cursor-pointer"
                   >
                     Keluar
                   </DropdownMenuItem>
