@@ -1,5 +1,6 @@
 "use client";
 
+import EditIcon from "@/public/svg/edit.svg";
 import { useDeletePost } from "@/src/application/hooks/posts/useDeletePost";
 import {
   AlertDialog,
@@ -15,18 +16,13 @@ import {
 import { Button } from "@/src/components/ui/button";
 import {
   DropdownMenu,
-  DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuTrigger,
 } from "@/src/components/ui/dropdown-menu";
-import {
-  Datum,
-  GetPostByAuthorResponse,
-} from "@/src/infrastructure/models/getPostByAuthorResponse";
+import { Datum } from "@/src/infrastructure/models/getPostByAuthorResponse";
 import { DotsVerticalIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
-import React, { useState } from "react";
-import EditIcon from "@/public/svg/edit.svg";
 
 const IklanSayaCard = ({ data, index }: { data: Datum; index: number }) => {
   const deletePostQuery = useDeletePost(data.id);
@@ -62,7 +58,7 @@ const IklanSayaCard = ({ data, index }: { data: Datum; index: number }) => {
         </div>
       </div>
       <div className="right flex flex-row gap-[20px] max-md:self-end max-md:mt-4">
-        <Link href={"/maintenance"}>
+        <Link href={"/update/" + data.id}>
           <Button
             size="icon"
             variant="link"

@@ -51,7 +51,7 @@ const Page = () => {
       description: "",
       phoneIntContact: "",
       phoneIntWhatsapp: "",
-      experience: "10",
+      experience: "",
     },
   });
 
@@ -73,6 +73,13 @@ const Page = () => {
   };
 
   const registerMitra = useRegisterMitra();
+  const experiences = [
+    "Kurang dari 1 Tahun",
+    "2 Tahun",
+    "3 Tahun",
+    "5 Tahun",
+    "Lebih dari 5 Tahun",
+  ];
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     const formData = new FormData();
@@ -266,6 +273,43 @@ const Page = () => {
                             key={idx}
                           >
                             {category}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </label>
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="experience"
+              render={({ field }) => (
+                <FormItem>
+                  <label className="flex flex-col md:flex-row items-start justify-start md:justify-between gap-10 py-2 w-full">
+                    <div className="flex flex-col items-start justify-center gap-2 md:w-[550px]">
+                      <h2 className="text-black font-satoshi font-bold text-[22px]">
+                        Pengalaman
+                      </h2>
+                      <div className="font-inter text-[#425379] text-[16px] flex flex-col gap-[12px]">
+                        Pengalaman Pekerjaan Anda
+                      </div>
+                    </div>
+                    <Select onValueChange={field.onChange}>
+                      <FormControl>
+                        <SelectTrigger className="w-full md:w-[648px] font-inter text-[#6F7277] h-[56px] font-normal text-[16px]">
+                          <SelectValue placeholder="Pengalaman" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent className="text-[16px]">
+                        {experiences.map((experience, idx) => (
+                          <SelectItem
+                            className="h-[56px]"
+                            value={experience}
+                            key={idx}
+                          >
+                            {experience}
                           </SelectItem>
                         ))}
                       </SelectContent>
