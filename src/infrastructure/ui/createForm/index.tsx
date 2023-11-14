@@ -30,6 +30,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 interface ImageData {
   file: File | null;
   imageUrl: string | null;
+  id: string | null;
 }
 
 const formSchema = z.object({
@@ -82,6 +83,7 @@ const CreateForm = () => {
   ) => {
     // Get latest data (if null then fill it with { file: null, imageUrl: null }) not Array(5).fill(null))
     let updatedImages: ImageData[] = coverImages.map((imageData) => ({
+      id: null,
       file: imageData ? imageData.file : null,
       imageUrl: imageData ? imageData.imageUrl : null,
     }));
@@ -99,6 +101,7 @@ const CreateForm = () => {
       if (!file && !imageUrl) {
         // Delete Image Logic
         updatedImages[boxNumber - 1] = {
+          id: null,
           file,
           imageUrl,
         };
@@ -113,6 +116,7 @@ const CreateForm = () => {
       ) {
         // Replace Image logic
         updatedImages[boxNumber - 1] = {
+          id: null,
           file,
           imageUrl,
         };
@@ -123,6 +127,7 @@ const CreateForm = () => {
       if (updatedImages[i].file === null) {
         // Insert Image Logic
         updatedImages[i] = {
+          id: null,
           file,
           imageUrl,
         };

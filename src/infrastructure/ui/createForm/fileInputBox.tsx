@@ -10,11 +10,13 @@ type TProps = {
     coverImage: {
       file: File | null;
       imageUrl: string | null;
+      id: string | null;
     },
   ) => void;
   coverImage: {
     file: File | null;
     imageUrl: string | null;
+    id: string | null;
   };
 };
 
@@ -43,6 +45,7 @@ const FileInputBox: React.FC<TProps> = ({
     onChange(uploaded, boxNumber, {
       file: uploaded,
       imageUrl,
+      id: null,
     });
     setSaveImage(uploaded);
   };
@@ -59,6 +62,7 @@ const FileInputBox: React.FC<TProps> = ({
     onChange(null, boxNumber, {
       file: null,
       imageUrl: null,
+      id: null,
     });
     setSaveImage("");
   };

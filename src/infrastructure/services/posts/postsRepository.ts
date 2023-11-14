@@ -4,6 +4,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { GetPostByAuthorResponse } from "../../models/getPostByAuthorResponse";
 import { PostDetailResponse } from "../../models/getPostDetailResponse";
+import { IUpdatePostRequest } from "@/src/domain/entities/updatePostRequest";
 
 const API_BASE_URL = process.env.BASE_URL;
 
@@ -26,7 +27,7 @@ export class PostsRepository {
     console.log(id);
     const response = await fetch(`${API_BASE_URL}/api/post/${id}`, {
       headers: {
-        "ngrok-skip-browser-warning": "69420",
+        // "ngrok-skip-browser-warning": "69420",
       },
     });
     const data = await response.json();
@@ -41,7 +42,7 @@ export class PostsRepository {
       headers: {
         Authorization: token ? `Bearer ${token}` : "",
         "Content-Type": "multipart/form-data",
-        "ngrok-skip-browser-warning": "69420",
+        // "ngrok-skip-browser-warning": "69420",
       },
     });
     console.log(response.data);
@@ -51,13 +52,36 @@ export class PostsRepository {
   static deletePost = async (id: string): Promise<responseDelete> => {
     // const token = localStorage.getItem('token');
     const token = Cookies.get("token");
-    const response = await axios.delete(`${API_BASE_URL}/api/delete/${id}`, {
+    const response = await axios.delete(`${API_BASE_URL}/api/post/${id}`, {
       headers: {
         Authorization: token ? `Bearer ${token}` : "",
-        "ngrok-skip-browser-warning": "69420",
+        // "ngrok-skip-browser-warning": "69420",
       },
     });
+
     console.log(response.data);
+    return response.data;
+  };
+
+  static updatePost = async (
+    data: IUpdatePostRequest,
+    postId: string,
+  ): Promise<Post> => {
+    const token = Cookies.get("token");
+    const response = await axios.put(
+      `${API_BASE_URL}/api/post/${postId}`,
+      data,
+      {
+        headers: {
+          Authorization: token ? `Bearer ${token}` : "",
+          // "ngrok-skip-browser-warning": "69420",
+          // "Access-Control-Allow-Origin": `${API_BASE_URL}`,
+        },
+      },
+    );
+
+    console.log(response);
+
     return response.data;
   };
 
@@ -70,7 +94,7 @@ export class PostsRepository {
     const response = await fetch(`${API_BASE_URL}/api/post/postAuthor/${id}`, {
       headers: {
         Authorization: token ? `Bearer ${token}` : "",
-        "ngrok-skip-browser-warning": "69420",
+        // "ngrok-skip-browser-warning": "69420",
       },
     });
     const data = await response.json();
@@ -87,7 +111,7 @@ export class PostsRepository {
     const response = await fetch(`${API_BASE_URL}/api/allPosts`, {
       method: "GET",
       headers: {
-        "ngrok-skip-browser-warning": "69420",
+        // "ngrok-skip-browser-warning": "69420",
       },
     });
     const data = await response.json();

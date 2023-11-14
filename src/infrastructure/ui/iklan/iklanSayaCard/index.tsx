@@ -31,7 +31,7 @@ const IklanSayaCard = ({ data, index }: { data: Datum; index: number }) => {
     e.preventDefault();
     console.log(data.id);
     try {
-      await deletePostQuery?.mutate();
+      deletePostQuery.mutate();
     } catch (err) {
       console.log(err);
     }
