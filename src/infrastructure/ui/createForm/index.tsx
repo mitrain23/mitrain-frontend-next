@@ -442,6 +442,12 @@ const CreateForm = () => {
                         <FormControl>
                           <Input
                             {...field}
+                            onChange={(e) =>
+                              form.setValue(
+                                "priceMin",
+                                formatPrice(e.target.value),
+                              )
+                            }
                             type="text"
                             placeholder="Harga Minimum"
                             className="w-full border-none rounded-l-none rounded-r-[8px] shadow-none h-[56px] focus-visible:ring-0"
@@ -465,6 +471,12 @@ const CreateForm = () => {
                         <FormControl>
                           <Input
                             {...field}
+                            onChange={(e) =>
+                              form.setValue(
+                                "priceMax",
+                                formatPrice(e.target.value),
+                              )
+                            }
                             type="text"
                             placeholder="Harga Maksimal"
                             className="w-full border-none rounded-l-none rounded-r-[8px] shadow-none h-[56px] focus-visible:ring-0"
@@ -601,8 +613,12 @@ const CreateForm = () => {
 
           <div className="my-5"></div>
 
-          <Button className="w-full h-[56px] text-[16px]" type="submit">
-            Create Post
+          <Button
+            disabled={createPost.isLoading}
+            className="w-full h-[56px] text-[16px]"
+            type="submit"
+          >
+            {createPost.isLoading ? "Loading..." : "Create Post"}
           </Button>
         </form>
       </Form>

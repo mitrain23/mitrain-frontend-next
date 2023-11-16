@@ -72,7 +72,7 @@ const Page = () => {
     setSelectedFile(file);
   };
 
-  const registerMitra = useRegisterMitra();
+  const { registerMitraMutation, isLoading } = useRegisterMitra();
   const experiences = [
     "Kurang dari 1 Tahun",
     "2 Tahun",
@@ -97,7 +97,7 @@ const Page = () => {
     }
 
     try {
-      const response = await registerMitra(formData);
+      const response = await registerMitraMutation(formData);
       console.log(response);
     } catch (error) {
       console.log(error);
@@ -495,8 +495,12 @@ const Page = () => {
               </div>
             </label>
 
-            <Button type="submit" className="w-full my-5 h-[56px] text-[16px]">
-              Gabung
+            <Button
+              disabled={isLoading}
+              type="submit"
+              className="w-full my-5 h-[56px] text-[16px]"
+            >
+              {isLoading ? "Loading..." : "Gabung"}
             </Button>
           </form>
         </Form>

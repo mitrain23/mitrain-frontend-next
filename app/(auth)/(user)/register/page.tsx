@@ -56,7 +56,7 @@ const Page = () => {
 
   const [address, setAddress] = useState("");
 
-  const registerUser = useRegisterUser();
+  const { registerUserMutation, isLoading } = useRegisterUser();
 
   const handleFileChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     const file = e.target.files?.[0];
@@ -79,7 +79,7 @@ const Page = () => {
     }
 
     try {
-      const response = await registerUser(formData);
+      const response = await registerUserMutation(formData);
       console.log(response);
     } catch (error) {
       console.log(error);
@@ -363,8 +363,12 @@ const Page = () => {
               </div>
             </label>
 
-            <Button className="w-full my-5 h-[56px] text-[16px]" type="submit">
-              Gabung
+            <Button
+              disabled={isLoading}
+              className="w-full my-5 h-[56px] text-[16px]"
+              type="submit"
+            >
+              {isLoading ? "Loading..." : "Gabung"}
             </Button>
           </form>
         </Form>

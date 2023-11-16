@@ -32,10 +32,10 @@ const Page = () => {
     },
   });
 
-  const loginUser = useLoginUser();
+  const { loginUserMutation, isLoading } = useLoginUser();
 
   const handleSubmit = (value: z.infer<typeof formSchema>) => {
-    loginUser(value);
+    loginUserMutation(value);
     console.log(value);
   };
 
@@ -97,10 +97,11 @@ const Page = () => {
             </div>
 
             <Button
+              disabled={isLoading}
               type="submit"
               className="md:text-[16px] h-[56px] w-full rounded-[8px] bg-[#020831] font-bold"
             >
-              Sign In
+              {isLoading ? "Loading..." : "Sign In"}
             </Button>
 
             <Button

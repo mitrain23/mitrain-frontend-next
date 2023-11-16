@@ -32,10 +32,10 @@ const Page = () => {
     },
   });
 
-  const loginMitra = useLoginMitra();
+  const { loginMitraMutation, isLoading } = useLoginMitra();
 
   const handleSubmit = (values: z.infer<typeof formSchema>) => {
-    loginMitra(values);
+    loginMitraMutation(values);
   };
 
   return (
@@ -96,10 +96,11 @@ const Page = () => {
             </div>
 
             <Button
+              disabled={isLoading}
               type="submit"
               className="md:text-[16px] h-[56px] w-full rounded-[8px] bg-[#020831] font-bold"
             >
-              Sign In
+              {isLoading ? "Loading..." : "Sign In"}
             </Button>
 
             <Button

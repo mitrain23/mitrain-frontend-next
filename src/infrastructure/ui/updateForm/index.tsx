@@ -569,6 +569,12 @@ const UpdateForm: React.FC<TProps> = ({ data }) => {
                         <FormControl>
                           <Input
                             {...field}
+                            onChange={(e) =>
+                              form.setValue(
+                                "priceMin",
+                                formatPrice(e.target.value),
+                              )
+                            }
                             type="text"
                             placeholder="Harga Minimum"
                             className="w-full border-none rounded-l-none rounded-r-[8px] shadow-none h-[56px] focus-visible:ring-0"
@@ -592,6 +598,12 @@ const UpdateForm: React.FC<TProps> = ({ data }) => {
                         <FormControl>
                           <Input
                             {...field}
+                            onChange={(e) =>
+                              form.setValue(
+                                "priceMax",
+                                formatPrice(e.target.value),
+                              )
+                            }
                             type="text"
                             placeholder="Harga Maksimal"
                             className="w-full border-none rounded-l-none rounded-r-[8px] shadow-none h-[56px] focus-visible:ring-0"
@@ -728,8 +740,12 @@ const UpdateForm: React.FC<TProps> = ({ data }) => {
 
           <div className="my-5"></div>
 
-          <Button className="w-full h-[56px] text-[16px]" type="submit">
-            Update Post
+          <Button
+            disabled={updatePost.isLoading}
+            className="w-full h-[56px] text-[16px]"
+            type="submit"
+          >
+            {updatePost.isLoading ? "Loading..." : "Update Post"}
           </Button>
         </form>
       </Form>
