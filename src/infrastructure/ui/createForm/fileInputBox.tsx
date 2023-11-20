@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, ChangeEvent } from "react";
 
 type TProps = {
   boxNumber: number;
@@ -34,20 +34,32 @@ const FileInputBox: React.FC<TProps> = ({
   };
 
   const [image, setImage] = useState("https://placehold.co/600x400/png");
-  const [saveImage, setSaveImage] = useState(
-    "https://placehold.co/600x400/png",
-  );
-  const handleUploadImage = (e: any) => {
-    const uploaded = e.target.files[0];
-    // setImage(URL.createObjectURL(uploaded))
-    const imageUrl = URL.createObjectURL(uploaded);
+  // const [saveImage, setSaveImage] = useState(
+  //   "https://placehold.co/600x400/png",
+  // );
+  const handleUploadImage = (e: ChangeEvent<HTMLInputElement>) => {
+    const allowedFileTypes = ["image/png", "image/jpeg", "image/gif"];
+    const uploaded = e.target.files?.[0] || null;
 
-    onChange(uploaded, boxNumber, {
-      file: uploaded,
-      imageUrl,
-      id: null,
-    });
-    setSaveImage(uploaded);
+    if (uploaded) {
+      const isAllowedFile = allowedFileTypes.includes(uploaded.type);
+
+      if (!isAllowedFile) {
+        alert("File yg dikirim harus Gambar! (.jpg, .jpeg, .png)");
+        e.target.setAttribute("value", "");
+        return;
+      }
+
+      const imageUrl = URL.createObjectURL(uploaded);
+
+      onChange(uploaded, boxNumber, {
+        file: uploaded,
+        imageUrl,
+        id: null,
+      });
+    }
+    // setImage(URL.createObjectURL(uploaded))
+    // setSaveImage(uploaded);
   };
 
   useEffect(() => {
@@ -64,7 +76,6 @@ const FileInputBox: React.FC<TProps> = ({
       imageUrl: null,
       id: null,
     });
-    setSaveImage("");
   };
 
   return (
@@ -78,6 +89,7 @@ const FileInputBox: React.FC<TProps> = ({
         <input
           className="hidden"
           type="file"
+          accept=".jpg,.png,.jpeg"
           onChange={handleUploadImage}
           ref={fileInputRef}
         />

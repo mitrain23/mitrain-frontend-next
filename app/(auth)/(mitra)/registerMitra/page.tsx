@@ -27,14 +27,18 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+const isMobilePhone = new RegExp(
+  /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/,
+);
+
 const formSchema = z.object({
   name: z.string().min(1),
   email: z.string().email(),
   password: z.string().min(1),
   categoryName: z.string(),
   description: z.string().min(1),
-  phoneIntContact: z.string().min(11),
-  phoneIntWhatsapp: z.string().min(11),
+  phoneIntContact: z.string().regex(isMobilePhone).min(11).max(12),
+  phoneIntWhatsapp: z.string().regex(isMobilePhone).min(11).max(12),
   experience: z.string().min(1),
 });
 
@@ -334,13 +338,16 @@ const Page = () => {
                         memutuskan untuk bergabung sebagai Mitra.
                       </div>
                     </div>
-                    <FormControl>
-                      <Textarea
-                        {...field}
-                        placeholder="Deskripsi"
-                        className="border border-gray-300 px-[24px] py-[16px] md:w-[648px] w-full h-[200px] rounded-[8px] outline-none"
-                      />
-                    </FormControl>
+                    <div>
+                      <FormControl>
+                        <Textarea
+                          {...field}
+                          placeholder="Deskripsi"
+                          className="border border-gray-300 px-[24px] py-[16px] md:w-[648px] w-full h-[200px] rounded-[8px] outline-none"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </div>
                   </label>
                 </FormItem>
               )}

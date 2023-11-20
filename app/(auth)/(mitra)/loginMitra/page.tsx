@@ -103,13 +103,13 @@ const Page = () => {
               {isLoading ? "Loading..." : "Sign In"}
             </Button>
 
-            <Button
-              type="button"
-              variant="outline"
-              className="md:text-[16px] h-[56px] w-full rounded-[8px] font-bold mt-2"
-            >
-              <GoogleIcon /> Sign in with Google
-            </Button>
+            {/* <Button */}
+            {/*   type="button" */}
+            {/*   variant="outline" */}
+            {/*   className="md:text-[16px] h-[56px] w-full rounded-[8px] font-bold mt-2" */}
+            {/* > */}
+            {/*   <GoogleIcon /> Sign in with Google */}
+            {/* </Button> */}
 
             <p className="text-[#797979] mt-4 text-center">
               Don&apos;t have an account?{" "}

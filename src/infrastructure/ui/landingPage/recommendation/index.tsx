@@ -6,7 +6,6 @@ import { useGetAllPost } from "@/src/application/hooks/posts/useGetAllPost";
 import { Skeleton } from "@/src/components/ui/skeleton";
 import { Button } from "@/src/components/ui/button";
 import LoadingState from "@/src/infrastructure/ui/global/state/loading";
-import { Alert, AlertDescription, AlertTitle } from "@/src/components/ui/alert";
 import EmptyState from "../../global/state/empty";
 
 const RecommendationLoading = () => {

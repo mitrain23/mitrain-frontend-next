@@ -40,13 +40,17 @@ interface ImageDataWithFile {
   id: string;
 }
 
+const isMobilePhone = new RegExp(
+  /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/,
+);
+
 const formSchema = z.object({
   title: z.string().min(1),
   description: z.string().min(1),
   priceMin: z.string().min(1),
   priceMax: z.string().min(1),
-  phoneIntContact: z.string().min(1),
-  phoneIntWhatsapp: z.string().min(1),
+  phoneIntContact: z.string().regex(isMobilePhone).min(11).max(12),
+  phoneIntWhatsapp: z.string().regex(isMobilePhone).min(11).max(12),
   category: z.string().min(1),
   experience: z.string().min(1),
   isLiked: z.string(),
@@ -502,13 +506,16 @@ const UpdateForm: React.FC<TProps> = ({ data }) => {
                       </p>
                     </div>
                   </div>
-                  <FormControl>
-                    <Textarea
-                      placeholder="Deskripsi"
-                      {...field}
-                      className="border border-gray-300 px-[24px] py-[16px] w-full md:w-[648px] h-[200px] rounded-[8px] outline-none"
-                    />
-                  </FormControl>
+                  <div>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Deskripsi"
+                        {...field}
+                        className="border border-gray-300 px-[24px] py-[16px] w-full md:w-[648px] h-[200px] rounded-[8px] outline-none"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </div>
                 </label>
               </FormItem>
             )}
@@ -581,6 +588,7 @@ const UpdateForm: React.FC<TProps> = ({ data }) => {
                           />
                         </FormControl>
                       </label>
+                      <FormMessage />
                     </FormItem>
                   )}
                 />
@@ -610,6 +618,7 @@ const UpdateForm: React.FC<TProps> = ({ data }) => {
                           />
                         </FormControl>
                       </label>
+                      <FormMessage />
                     </FormItem>
                   )}
                 />
@@ -715,6 +724,7 @@ const UpdateForm: React.FC<TProps> = ({ data }) => {
                         className="border border-gray-300 px-[24px] py-[16px] h-[56px] rounded-[8px] outline-none placeholder:text-[16px]"
                       />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -732,6 +742,7 @@ const UpdateForm: React.FC<TProps> = ({ data }) => {
                         className="border border-gray-300 px-[24px] py-[16px] h-[56px] rounded-[8px] outline-none placeholder:text-[16px]"
                       />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />

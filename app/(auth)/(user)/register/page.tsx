@@ -26,12 +26,16 @@ import {
 } from "@/src/components/ui/select";
 import axios from "axios";
 
+const isMobilePhone = new RegExp(
+  /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/,
+);
+
 const formSchema = z.object({
   name: z.string().min(1),
   email: z.string().email(),
   password: z.string().min(1),
-  phoneIntContact: z.string().min(11),
-  phoneIntWhatsapp: z.string().min(11),
+  phoneIntContact: z.string().regex(isMobilePhone).min(11).max(12),
+  phoneIntWhatsapp: z.string().regex(isMobilePhone).min(11).max(12),
 });
 
 const Page = () => {
