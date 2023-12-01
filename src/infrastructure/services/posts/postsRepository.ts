@@ -14,13 +14,18 @@ export interface responseDelete {
   data: string;
 }
 
+export const formatPrice = (input: string) => {
+  return input.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+};
+
 export class PostsRepository {
   static getAllPost = async (pageNumber: number): Promise<Post[]> => {
     const response = await fetch(
       `${API_BASE_URL}/api/post?page=${pageNumber}&pageSize=10`,
     );
-    const data = await response.json();
-    return data.data;
+    const { data } = await response.json();
+
+    return data;
   };
 
   static getPostById = async (id: string): Promise<PostDetailResponse> => {
@@ -30,14 +35,14 @@ export class PostsRepository {
         // "ngrok-skip-browser-warning": "69420",
       },
     });
-    const data = await response.json();
-    console.log(data.data);
-    return data.data;
+    const { data } = await response.json();
+
+    return data;
   };
 
   static createPost = async (data: FormData) => {
-    // const token = localStorage.getItem('token');
     const token = Cookies.get("token");
+
     const response = await axios.post(`${API_BASE_URL}/api/post`, data, {
       headers: {
         Authorization: token ? `Bearer ${token}` : "",
@@ -105,17 +110,27 @@ export class PostsRepository {
   static getAllPostByFilter = async (
     postFilter: PostFilter,
   ): Promise<Post[]> => {
-    // console.log(postFilter);
-    const { page, search, price_max, price_min, lokasi } = postFilter;
-    const token = Cookies.get("token");
-    const response = await fetch(`${API_BASE_URL}/api/allPosts`, {
-      method: "GET",
-      headers: {
-        // "ngrok-skip-browser-warning": "69420",
+    const getParams = () => {
+      const params = [];
+
+      for (const [key, value] of Object.entries(postFilter)) {
+        params.push(`${key}=${value}`);
+      }
+
+      return params.join("&");
+    };
+
+    const response = await fetch(
+      `${API_BASE_URL}/api/post/search?${getParams()}`,
+      {
+        method: "GET",
+        headers: {
+          // "ngrok-skip-browser-warning": "69420",
+        },
       },
-    });
+    );
     const data = await response.json();
-    console.log(data);
-    return data.results;
+
+    return data;
   };
 }

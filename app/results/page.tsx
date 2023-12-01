@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
-import { useGetAllPost } from "@/src/application/hooks/posts/useGetAllPost";
+import { usePathname, useSearchParams } from "next/navigation";
+import { useGetAllFilteredPost } from "@/src/application/hooks/posts/useGetAllPost";
 import Pagination from "@/src/infrastructure/ui/results/pagination";
 import { PostFilter } from "@/src/domain/entities/postFilter";
 import Card from "@/src/infrastructure/ui/results/card";
@@ -13,6 +13,7 @@ import LoadingState from "@/src/infrastructure/ui/global/state/loading";
 import { Skeleton } from "@/src/components/ui/skeleton";
 import { Alert, AlertDescription, AlertTitle } from "@/src/components/ui/alert";
 import EmptyState from "@/src/infrastructure/ui/global/state/empty";
+import { useDebounce } from "@/src/application/hooks/global/useDebounce";
 
 const CardLoading = () => {
   return (
@@ -40,36 +41,45 @@ const CardLoading = () => {
 
 const Results = () => {
   const searchParams = useSearchParams();
-  const search = searchParams.get("search");
-  const lokasi = searchParams.get("lokasi");
+  const pathname = usePathname();
 
   const [pageNumber, setPageNumber] = useState(1);
 
+  const [priceMin, setPriceMin] = useState("");
+  const [priceMax, setPriceMax] = useState("");
+
+  const priceMinDebounce = useDebounce(priceMin);
+  const priceMaxDebounce = useDebounce(priceMax);
+
   const [formData, setFormData] = useState<PostFilter>({
-    search: search || "",
-    price_min: "",
-    price_max: "",
-    lokasi: lokasi || "",
+    searchText: searchParams.get("searchText") || "",
+    minPrice: priceMin,
+    maxPrice: priceMin,
+    lokasi: searchParams.get("lokasi") || "",
     page: pageNumber,
   });
 
-  const getAllPostByFilterQuery = useGetAllPost(pageNumber);
+  const getAllFilteredPostQuery = useGetAllFilteredPost(formData);
 
   useEffect(() => {
-    getAllPostByFilterQuery.refetch();
-  }, [pageNumber]);
+    setFormData({
+      ...formData,
+      minPrice: priceMinDebounce,
+      maxPrice: priceMaxDebounce,
+      searchText: searchParams.get("searchText"),
+    });
+
+    getAllFilteredPostQuery.refetch();
+    console.log(`${pathname}/${searchParams}`);
+  }, [pageNumber, priceMinDebounce, priceMaxDebounce, searchParams, pathname]);
 
   const handlePageChange = (data: number) => {
     setPageNumber(data);
-    setFormData((prev) => ({
-      ...prev,
-      page: data,
-    }));
   };
 
   return (
     <LayoutTemplate>
-      <Filter />
+      <Filter setPriceMin={setPriceMin} setPriceMax={setPriceMax} />
       <div className="Heading-Konveksi-Baju font-inter text-[30px] font-semibold text-[#020831]">
         <h1>Konveksi Baju</h1>
       </div>
@@ -77,10 +87,10 @@ const Results = () => {
         <LoadingState
           loadingFallback={<CardLoading />}
           loadingCount={4}
-          isLoading={getAllPostByFilterQuery.isLoading}
+          isLoading={getAllFilteredPostQuery.isLoading}
         >
-          <EmptyState data={getAllPostByFilterQuery.data}>
-            {getAllPostByFilterQuery.data?.map((item) => {
+          <EmptyState data={getAllFilteredPostQuery.data}>
+            {getAllFilteredPostQuery.data?.map((item) => {
               return (
                 <div className="w-full" key={item.id}>
                   <Card data={item} />
@@ -94,7 +104,7 @@ const Results = () => {
       <div className="mb-[48px]"></div>
       <div
         className={
-          getAllPostByFilterQuery.isLoading
+          getAllFilteredPostQuery.isLoading
             ? "flex md:flex-row flex-col gap-4"
             : ""
         }
@@ -102,9 +112,9 @@ const Results = () => {
         <LoadingState
           loadingFallback={<CardLoading />}
           loadingCount={4}
-          isLoading={getAllPostByFilterQuery.isLoading}
+          isLoading={getAllFilteredPostQuery.isLoading}
         >
-          {!getAllPostByFilterQuery.data?.length ? (
+          {!getAllFilteredPostQuery.data?.length ? (
             <Alert>
               <AlertTitle>Maaf</AlertTitle>
               <AlertDescription>
@@ -112,7 +122,7 @@ const Results = () => {
               </AlertDescription>
             </Alert>
           ) : (
-            <CardSlider data={getAllPostByFilterQuery.data} />
+            <CardSlider data={getAllFilteredPostQuery.data} />
           )}
         </LoadingState>
       </div>

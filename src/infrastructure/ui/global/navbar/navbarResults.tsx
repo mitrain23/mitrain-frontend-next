@@ -43,7 +43,6 @@ const API_BASE_URL = process.env.BASE_URL;
 
 /** TODO:
  * - Memahami logic
- * - Revisi design (ketika sudah login)
  */
 const NavbarResults = ({
   isResults = false,

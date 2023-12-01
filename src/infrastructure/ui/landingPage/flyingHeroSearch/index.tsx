@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import {
   Select,
@@ -26,6 +26,29 @@ const FlyingHeroSearch: React.FC<TProps> = ({ provinces }) => {
 
   const [cities, setCities] = useState<City[]>([]);
   const [selectedCityId, setSelectedCityId] = useState<string>("");
+
+  const [search, setSearch] = useState("");
+
+  const getSearchParams = useCallback(() => {
+    const params = [];
+
+    if (search) {
+      params.push("searchText=" + search);
+    }
+
+    const city = cities.find((city) => city.id === selectedCityId)?.name;
+    const province = provinces.find(
+      (province) => province.id === selectedProvinceId,
+    )?.name;
+
+    if (city && province) {
+      params.push("lokasi=" + city + ", " + province);
+    }
+
+    console.log(params);
+
+    return params.join("&");
+  }, [search, selectedCityId, selectedProvinceId]);
 
   useEffect(() => {
     fetch(
@@ -133,8 +156,9 @@ const FlyingHeroSearch: React.FC<TProps> = ({ provinces }) => {
               type="text"
               placeholder="Apa yang sedang anda cari?"
               className="col-span-8 h-[56px] bg-[#FBFBFB] border-none rounded-[8px] placeholder:text-[#757575] text-[16px]"
+              onChange={(e) => setSearch(e.target.value)}
             />
-            <Link href={"/results"} className="col-span-4">
+            <Link href={`/results?${getSearchParams()}`} className="col-span-4">
               <Button className="w-full h-[56px] text-white border-none rounded-[8px] text-[16px] bg-[#0066c9] hover:bg-[#0054A5] text-lg">
                 Cari
               </Button>

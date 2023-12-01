@@ -13,7 +13,12 @@ import FilterIcon from "@/public/svg/filter_mobile.svg";
 import { Sheet, SheetContent, SheetTrigger } from "@/src/components/ui/sheet";
 import { Button } from "@/src/components/ui/button";
 
-const Filter = () => {
+type TProps = {
+  setPriceMin: (value: React.SetStateAction<string>) => void;
+  setPriceMax: (value: React.SetStateAction<string>) => void;
+};
+
+const Filter: React.FC<TProps> = ({ setPriceMax, setPriceMin }) => {
   const [open, setOpen] = useState(false);
   const focusRef = useRef<any>();
 
@@ -41,6 +46,7 @@ const Filter = () => {
               Rp
             </p>
             <Input
+              onChange={(e) => setPriceMin(e.target.value)}
               type="text"
               placeholder="Harga Minimum"
               className="focus:outline-none focus-visible:ring-[#E5E7E9] h-[56px] rounded-l-none rounded-r-[8px] border-[#E5E7E9] border-l-none"
@@ -51,6 +57,7 @@ const Filter = () => {
               Rp
             </p>
             <Input
+              onChange={(e) => setPriceMax(e.target.value)}
               type="text"
               placeholder="Harga Maksimum"
               className="focus:outline-none focus-visible:ring-[#E5E7E9] h-[56px] rounded-l-none rounded-r-[8px] border-[#E5E7E9] border-l-none"

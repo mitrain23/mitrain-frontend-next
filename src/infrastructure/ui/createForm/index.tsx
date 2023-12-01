@@ -51,10 +51,6 @@ const formSchema = z.object({
 const API_BASE_URL = process.env.BASE_URL;
 
 const CreateForm = () => {
-  const formatPrice = (input: string) => {
-    return input.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-  };
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -171,7 +167,7 @@ const CreateForm = () => {
 
     for (const [key, value] of Object.entries(values)) {
       if (key === "priceMin" || key === "priceMax") {
-        formData.append(key, formatPrice(value));
+        formData.append(key, value.replaceAll(".", ""));
       } else {
         formData.append(key, value);
       }

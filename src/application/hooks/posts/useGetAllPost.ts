@@ -1,6 +1,8 @@
 import { Post } from "@/src/domain/entities/post";
 import { UseQueryResult, useQuery } from "react-query";
 import { GetAllPostUseCaseImpl } from "../../usecases/posts/getAllPostUseCaseImpl";
+import { PostFilter } from "@/src/domain/entities/postFilter";
+import { GetAllFilteredPostImpl } from "../../usecases/posts/getAllFilteredPostUseCase";
 
 export const useGetAllPost = (
   pageNumber: number,
@@ -11,4 +13,15 @@ export const useGetAllPost = (
   });
 
   return getAllPostQuery;
+};
+
+export const useGetAllFilteredPost = (
+  formData: PostFilter,
+): UseQueryResult<Post[] | null> => {
+  const getAllFilteredPost = useQuery(["posts", formData], async () => {
+    const getAllFilteredPostUseCase = new GetAllFilteredPostImpl();
+    return getAllFilteredPostUseCase.execute(formData);
+  });
+
+  return getAllFilteredPost;
 };

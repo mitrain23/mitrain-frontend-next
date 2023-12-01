@@ -11,6 +11,7 @@ import PremiumIcon from "@/public/svg/premium.svg";
 import TruckIcon from "@/public/svg/truck.svg";
 import { Button } from "@/src/components/ui/button";
 import { Separator } from "@/src/components/ui/separator";
+import { formatPrice } from "@/src/infrastructure/services/posts/postsRepository";
 
 const HeaderDetails = ({ data }: { data: any }) => {
   const API_BASE_URL = process.env.BASE_URL;
@@ -73,7 +74,7 @@ const HeaderDetails = ({ data }: { data: any }) => {
           <p>Pengalaman lebih dari 10 tahun</p>
         </div>
         <h1 className="text-[#020831] font-satoshi text-2xl md:text-[32px] font-bold mb-[28px]">
-          Rp {data.priceMin} - Rp {data.priceMax}
+          Rp {formatPrice(data.priceMin)} - Rp {formatPrice(data.priceMax)}
         </h1>
         <div className="flex md:flex-row flex-col gap-[18px] mb-[22px]">
           <Link

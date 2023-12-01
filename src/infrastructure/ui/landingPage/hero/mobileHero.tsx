@@ -10,7 +10,7 @@ import {
 } from "@/src/components/ui/select";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import LocationIcon from "@/public/svg/location_mobile.svg";
 import { Input } from "@/src/components/ui/input";
 import { Button } from "@/src/components/ui/button";
@@ -26,6 +26,29 @@ const MobileHero: React.FC<TProps> = ({ provinces }) => {
 
   const [cities, setCities] = useState<City[]>([]);
   const [selectedCityId, setSelectedCityId] = useState<string>("");
+
+  const [search, setSearch] = useState("");
+
+  const getSearchParams = useCallback(() => {
+    const params = [];
+
+    if (search) {
+      params.push("searchText=" + search);
+    }
+
+    const location =
+      cities.find((city) => city.id === selectedCityId)?.name +
+      ", " +
+      provinces.find((province) => province.id === selectedProvinceId)?.name;
+
+    if (location) {
+      params.push("lokasi=" + location);
+    }
+
+    console.log(params);
+
+    return params.join("&");
+  }, [search, selectedCityId, selectedProvinceId]);
 
   useEffect(() => {
     fetch(
@@ -123,8 +146,9 @@ const MobileHero: React.FC<TProps> = ({ provinces }) => {
             type="text"
             placeholder="Temukan Yang Anda Cari"
             className="bg-white border border-[#d9d9d9] w-full h-[56px] placeholder:text-[#757575] focus-visible:ring-[#d9d9d9]"
+            onChange={(e) => setSearch(e.target.value)}
           />
-          <Link href={"/results"}>
+          <Link href={`/results?${getSearchParams()}`}>
             <Button className="bg-[#0066C9] w-full h-[44px] text-white rounded-[8px] font-medium">
               Cari
             </Button>

@@ -78,10 +78,6 @@ const UpdateForm: React.FC<TProps> = ({ data }) => {
     },
   });
 
-  const formatPrice = (input: string) => {
-    return input.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-  };
-
   const getProvinceIdFromLocation = (location?: string) => {
     if (!location) return "";
 
@@ -261,8 +257,8 @@ const UpdateForm: React.FC<TProps> = ({ data }) => {
       imagesRequestData.push(...newImageData);
     }
 
-    values.priceMin = formatPrice(values.priceMin);
-    values.priceMax = formatPrice(values.priceMax);
+    values.priceMin = values.priceMin.replaceAll(".", "");
+    values.priceMax = values.priceMax.replaceAll(".", "");
 
     const requestData = {
       ...values,
@@ -324,8 +320,8 @@ const UpdateForm: React.FC<TProps> = ({ data }) => {
       form.setValue("description", data.description);
       form.setValue("phoneIntContact", data.phoneIntContact);
       form.setValue("phoneIntWhatsapp", data.phoneIntWhatsapp);
-      form.setValue("priceMin", data.priceMin);
-      form.setValue("priceMax", data.priceMax);
+      form.setValue("priceMin", formatPrice(data.priceMin));
+      form.setValue("priceMax", formatPrice(data.priceMax));
       form.setValue("experience", experiences[experiences.length - 1]);
 
       const tmpArr = Array(5).fill({

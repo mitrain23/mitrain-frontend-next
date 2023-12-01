@@ -21,6 +21,7 @@ import {
   DropdownMenuTrigger,
 } from "@/src/components/ui/dropdown-menu";
 import { Datum } from "@/src/infrastructure/models/getPostByAuthorResponse";
+import { formatPrice } from "@/src/infrastructure/services/posts/postsRepository";
 import { DotsVerticalIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 
@@ -52,7 +53,7 @@ const IklanSayaCard = ({ data, index }: { data: Datum; index: number }) => {
           </div>
           <div className="md:self-center font-satoshi text-[18px] text-[#020831]">
             <h1>
-              Rp {data.priceMin} - Rp {data.priceMax}
+              Rp {formatPrice(data.priceMin)} - Rp {formatPrice(data.priceMax)}
             </h1>
           </div>
         </div>
