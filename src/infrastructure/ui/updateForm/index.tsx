@@ -27,6 +27,7 @@ import { z } from "zod";
 import { PostDetailResponse } from "../../models/getPostDetailResponse";
 import FileInputBox from "../createForm/fileInputBox";
 import { useUpdatePost } from "@/src/application/hooks/posts/useUpdatePost";
+import { formatPrice } from "../../services/posts/postsRepository";
 
 interface ImageData {
   file: File | null;

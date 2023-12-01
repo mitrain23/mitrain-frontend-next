@@ -66,7 +66,7 @@ const Results = () => {
       ...formData,
       minPrice: priceMinDebounce,
       maxPrice: priceMaxDebounce,
-      searchText: searchParams.get("searchText"),
+      searchText: searchParams.get("searchText") || "",
     });
 
     getAllFilteredPostQuery.refetch();

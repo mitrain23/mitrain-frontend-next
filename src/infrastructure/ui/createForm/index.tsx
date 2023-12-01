@@ -26,6 +26,7 @@ import {
   FormMessage,
 } from "@/src/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { formatPrice } from "../../services/posts/postsRepository";
 
 interface ImageData {
   file: File | null;
