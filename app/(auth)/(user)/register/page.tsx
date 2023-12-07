@@ -1,6 +1,5 @@
 "use client";
 
-import { useRegisterUser } from "@/src/application/hooks/userAuth/useRegisterUser";
 import LayoutTemplate from "@/src/utils/layout";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useEffect, useState } from "react";
@@ -25,6 +24,9 @@ import {
   SelectValue,
 } from "@/src/components/ui/select";
 import axios from "axios";
+import { useMutation } from "react-query";
+import UserRepository from "@/src/infrastructure/services/userAuth/userRepository";
+import { useRouter } from "next/navigation";
 
 const isMobilePhone = new RegExp(
   /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/,
@@ -50,6 +52,8 @@ const Page = () => {
     },
   });
 
+  const router = useRouter();
+
   const [selectedFile, setSelectedFile] = useState<File>();
 
   const [provinces, setProvinces] = useState<Province[]>([]);
@@ -60,7 +64,9 @@ const Page = () => {
 
   const [address, setAddress] = useState("");
 
-  const { registerUserMutation, isLoading } = useRegisterUser();
+  const { mutate: registerUser, isLoading } = useMutation({
+    mutationFn: (formData: FormData) => UserRepository.registerUser(formData),
+  });
 
   const handleFileChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     const file = e.target.files?.[0];
@@ -83,8 +89,15 @@ const Page = () => {
     }
 
     try {
-      const response = await registerUserMutation(formData);
-      console.log(response);
+      registerUser(formData, {
+        onSuccess: (data) => {
+          console.log(data);
+          router.push("/login");
+        },
+        onError: (error) => {
+          console.error(error);
+        },
+      });
     } catch (error) {
       console.log(error);
     }

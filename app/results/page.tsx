@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
-import { useGetAllFilteredPost } from "@/src/application/hooks/posts/useGetAllPost";
 import Pagination from "@/src/infrastructure/ui/results/pagination";
 import { PostFilter } from "@/src/domain/entities/postFilter";
 import Card from "@/src/infrastructure/ui/results/card";
