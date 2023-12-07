@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 
-export const decodeToken = (): number | any => {
+export const decodeToken = (): number | null => {
   if (typeof window !== "undefined") {
     const token = localStorage.getItem("token");
     if (token) {

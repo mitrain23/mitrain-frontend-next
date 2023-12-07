@@ -85,16 +85,23 @@ const Results = () => {
   return (
     <LayoutTemplate>
       <Filter setPriceMin={setPriceMin} setPriceMax={setPriceMax} />
-      <div className="Heading-Konveksi-Baju font-inter text-[30px] font-semibold text-[#020831]">
+      <div className="Heading-Konveksi-Baju font-inter text-[30px] font-semibold text-[#020831] mb-4">
         <h1>Konveksi Baju</h1>
       </div>
+
       <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 place-items-center md:place-items-start max-lg:gap-10 gap-[32px] my-4">
         <LoadingState
           loadingFallback={<CardLoading />}
           loadingCount={4}
           isLoading={getAllFilteredPostQuery.isLoading}
         >
-          <EmptyState data={getAllFilteredPostQuery.data}>
+          <EmptyState
+            data={
+              getAllFilteredPostQuery.data?.length &&
+              !getAllFilteredPostQuery.isLoading
+            }
+            customClass="col-span-1 sm:col-span-2 md:col-span-3 lg:col-span-4"
+          >
             {getAllFilteredPostQuery.data?.map((item) => {
               return (
                 <div className="w-full" key={item.id}>
