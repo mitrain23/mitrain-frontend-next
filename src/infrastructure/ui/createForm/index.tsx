@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import FileInputBox from "./fileInputBox";
-import { useCreatePost } from "@/src/application/hooks/posts/useCreatePost";
 import { Input } from "@/src/components/ui/input";
 import {
   Select,
@@ -26,7 +25,12 @@ import {
   FormMessage,
 } from "@/src/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { formatPrice } from "../../services/posts/postsRepository";
+import {
+  PostsRepository,
+  formatPrice,
+} from "../../services/posts/postsRepository";
+import { useMutation } from "react-query";
+import { useRouter } from "next/navigation";
 
 interface ImageData {
   file: File | null;
@@ -65,6 +69,20 @@ const CreateForm = () => {
       experience: "",
     },
   });
+
+  const { mutate: createPost, isLoading } = useMutation({
+    mutationFn: (formData: FormData) => PostsRepository.createPost(formData),
+  });
+
+  const router = useRouter();
+
+  const experiences = [
+    "Kurang dari 1 Tahun",
+    "2 Tahun",
+    "3 Tahun",
+    "5 Tahun",
+    "Lebih dari 5 Tahun",
+  ];
 
   const [coverImages, setCoverImages] = useState<ImageData[]>(
     Array(5).fill(null),
@@ -154,15 +172,6 @@ const CreateForm = () => {
     setCoverImages(tempArrImages);
   };
 
-  const createPost = useCreatePost();
-  const experiences = [
-    "Kurang dari 1 Tahun",
-    "2 Tahun",
-    "3 Tahun",
-    "5 Tahun",
-    "Lebih dari 5 Tahun",
-  ];
-
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     const formData = new FormData();
 
@@ -186,8 +195,11 @@ const CreateForm = () => {
 
     try {
       console.log(formData);
-      const response = await createPost.createPostMutation(formData);
-      console.log(response);
+      createPost(formData, {
+        onSuccess: (data) => {
+          router.push("/iklan");
+        },
+      });
     } catch (error) {
       console.log(error);
     }
@@ -622,11 +634,11 @@ const CreateForm = () => {
           <div className="my-5"></div>
 
           <Button
-            disabled={createPost.isLoading}
+            disabled={isLoading}
             className="w-full h-[56px] text-[16px]"
             type="submit"
           >
-            {createPost.isLoading ? "Loading..." : "Create Post"}
+            {isLoading ? "Loading..." : "Create Post"}
           </Button>
         </form>
       </Form>

@@ -2,11 +2,12 @@
 
 import React from "react";
 import RecommendationCard from "./recommendationCard";
-import { useGetAllPost } from "@/src/application/hooks/posts/useGetAllPost";
 import { Skeleton } from "@/src/components/ui/skeleton";
 import { Button } from "@/src/components/ui/button";
 import LoadingState from "@/src/infrastructure/ui/global/state/loading";
 import EmptyState from "../../global/state/empty";
+import { useQuery } from "react-query";
+import { PostsRepository } from "@/src/infrastructure/services/posts/postsRepository";
 
 const RecommendationLoading = () => {
   return (
@@ -40,7 +41,9 @@ const RecommendationLoading = () => {
 };
 
 const Recommendation = () => {
-  const getRecommendedPost = useGetAllPost(1);
+  const getRecommendedPost = useQuery(["get_recomendation_posts", 1], () =>
+    PostsRepository.getAllPost(1),
+  );
 
   return (
     <div className="font-satoshi">

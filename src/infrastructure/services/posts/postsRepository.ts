@@ -20,10 +20,10 @@ export const formatPrice = (input: string) => {
 
 export class PostsRepository {
   static getAllPost = async (pageNumber: number): Promise<Post[]> => {
-    const response = await fetch(
+    const response = await axios.get(
       `${API_BASE_URL}/api/post?page=${pageNumber}&pageSize=10`,
     );
-    const { data } = await response.json();
+    const { data } = await response.data;
 
     return data;
   };

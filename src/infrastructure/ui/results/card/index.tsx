@@ -13,6 +13,8 @@ const Card = ({ data }: CardProps) => {
 
   const Image1 = `${API_BASE_URL}/images/${data?.images?.[0]?.url}`;
 
+  console.log(data);
+
   return (
     <Link href={`details/${data?.id}-${encodeURIComponent(data?.title)}`}>
       <div className="mb-[38px]">

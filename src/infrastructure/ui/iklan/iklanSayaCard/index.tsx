@@ -1,7 +1,6 @@
 "use client";
 
 import EditIcon from "@/public/svg/edit.svg";
-import { useDeletePost } from "@/src/application/hooks/posts/useDeletePost";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -21,18 +20,32 @@ import {
   DropdownMenuTrigger,
 } from "@/src/components/ui/dropdown-menu";
 import { Datum } from "@/src/infrastructure/models/getPostByAuthorResponse";
-import { formatPrice } from "@/src/infrastructure/services/posts/postsRepository";
+import {
+  PostsRepository,
+  formatPrice,
+} from "@/src/infrastructure/services/posts/postsRepository";
 import { DotsVerticalIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useMutation, useQueryClient } from "react-query";
 
 const IklanSayaCard = ({ data, index }: { data: Datum; index: number }) => {
-  const deletePostQuery = useDeletePost(data.id);
+  const { mutate: deletePost, isLoading } = useMutation({
+    mutationFn: (id: string) => PostsRepository.deletePost(id),
+  });
 
-  const handleDelete = async (e: any) => {
-    e.preventDefault();
+  const router = useRouter();
+  const queryClient = useQueryClient();
+
+  const handleDelete = async () => {
     console.log(data.id);
     try {
-      deletePostQuery.mutate();
+      deletePost(data.id, {
+        onSuccess: (_) => {
+          queryClient.invalidateQueries("get_posts_by_author");
+          router.refresh();
+        },
+      });
     } catch (err) {
       console.log(err);
     }
@@ -92,8 +105,11 @@ const IklanSayaCard = ({ data, index }: { data: Datum; index: number }) => {
                   </AlertDialogHeader>
                   <AlertDialogFooter className="lg:flex-col-reverse lg:space-x-0 gap-2">
                     <AlertDialogCancel>Batalkan</AlertDialogCancel>
-                    <AlertDialogAction onClick={handleDelete}>
-                      Ya, hapus sekarang
+                    <AlertDialogAction
+                      onClick={handleDelete}
+                      disabled={isLoading}
+                    >
+                      {isLoading ? "Proses..." : "Ya, hapus sekarang"}
                     </AlertDialogAction>
                   </AlertDialogFooter>
                 </AlertDialogContent>

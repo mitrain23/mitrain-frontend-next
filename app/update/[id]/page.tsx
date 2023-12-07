@@ -1,9 +1,10 @@
 "use client";
 
-import { useGetPostById } from "@/src/application/hooks/posts/useGetPostById";
+import { PostsRepository } from "@/src/infrastructure/services/posts/postsRepository";
 import UpdateForm from "@/src/infrastructure/ui/updateForm";
 import LayoutTemplate from "@/src/utils/layout";
 import React from "react";
+import { useQuery } from "react-query";
 
 type TProps = {
   params: {
@@ -12,7 +13,9 @@ type TProps = {
 };
 
 const Update: React.FC<TProps> = ({ params }) => {
-  const getPostByIdQuery = useGetPostById(params.id);
+  const getPostByIdQuery = useQuery(["get_post_by_id", params.id], () =>
+    PostsRepository.getPostById(params.id),
+  );
 
   return (
     <LayoutTemplate>

@@ -1,6 +1,5 @@
 "use client";
 
-import { useRegisterMitra } from "@/src/application/hooks/mitraAuth/useRegisterMitra";
 import { Button } from "@/src/components/ui/button";
 import {
   Form,
@@ -20,11 +19,14 @@ import {
 import { Textarea } from "@/src/components/ui/textarea";
 import { City } from "@/src/domain/entities/city";
 import { Province } from "@/src/domain/entities/province";
+import { MitraRepository } from "@/src/infrastructure/services/mitraAuth/mitraRepository";
 import LayoutTemplate from "@/src/utils/layout";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useMutation } from "react-query";
 import { z } from "zod";
 
 const isMobilePhone = new RegExp(
@@ -59,6 +61,8 @@ const Page = () => {
     },
   });
 
+  const router = useRouter();
+
   const [selectedFile, setSelectedFile] = useState<File>();
   const [categories, setCategories] = useState<string[]>([]);
 
@@ -76,7 +80,9 @@ const Page = () => {
     setSelectedFile(file);
   };
 
-  const { registerMitraMutation, isLoading } = useRegisterMitra();
+  const { mutate: registerMitra, isLoading } = useMutation({
+    mutationFn: (formData: FormData) => MitraRepository.registerMitra(formData),
+  });
   const experiences = [
     "Kurang dari 1 Tahun",
     "2 Tahun",
@@ -101,8 +107,12 @@ const Page = () => {
     }
 
     try {
-      const response = await registerMitraMutation(formData);
-      console.log(response);
+      registerMitra(formData, {
+        onSuccess: (data) => {
+          console.log(data);
+          router.push("/loginMitra");
+        },
+      });
     } catch (error) {
       console.log(error);
     }

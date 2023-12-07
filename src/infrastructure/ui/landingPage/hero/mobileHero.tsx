@@ -16,6 +16,7 @@ import { Input } from "@/src/components/ui/input";
 import { Button } from "@/src/components/ui/button";
 import { City } from "@/src/domain/entities/city";
 import { Province } from "@/src/domain/entities/province";
+import axios from "axios";
 
 type TProps = {
   provinces: Province[];
@@ -51,14 +52,13 @@ const MobileHero: React.FC<TProps> = ({ provinces }) => {
   }, [search, selectedCityId, selectedProvinceId]);
 
   useEffect(() => {
-    fetch(
-      `https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${selectedProvinceId}.json`,
-    )
-      .then((res) => res.json())
-      .then((data) => setCities(data))
-      .catch((err) => {
-        console.log(err);
-      });
+    if (selectedProvinceId) {
+      axios
+        .get(
+          `https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${selectedProvinceId}.json`,
+        )
+        .then((response) => setCities(response.data));
+    }
   }, [selectedProvinceId]);
 
   return (

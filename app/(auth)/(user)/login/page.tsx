@@ -1,6 +1,5 @@
 "use client";
 
-import { useLoginUser } from "@/src/application/hooks/userAuth/useLoginUser";
 import { Button } from "@/src/components/ui/button";
 import Link from "next/link";
 import React from "react";
@@ -17,6 +16,11 @@ import {
 } from "@/src/components/ui/form";
 import { Input } from "@/src/components/ui/input";
 import GoogleIcon from "@/public/svg/google_logo.svg";
+import { useMutation } from "react-query";
+import { user } from "@/src/domain/entities/user";
+import UserRepository from "@/src/infrastructure/services/userAuth/userRepository";
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -32,11 +36,22 @@ const Page = () => {
     },
   });
 
-  const { loginUserMutation, isLoading } = useLoginUser();
+  const router = useRouter();
+
+  const { mutate: loginUser, isLoading } = useMutation({
+    mutationFn: (credentials: user) => UserRepository.loginUser(credentials),
+  });
 
   const handleSubmit = (value: z.infer<typeof formSchema>) => {
-    loginUserMutation(value);
-    console.log(value);
+    loginUser(value, {
+      onSuccess: (data) => {
+        Cookies.set("token", data.token, { expires: 1 / 8 });
+        Cookies.set("user", JSON.stringify(data.data), { expires: 1 / 8 });
+        localStorage.setItem("user", JSON.stringify(data.data));
+
+        router.replace("/results");
+      },
+    });
   };
 
   return (

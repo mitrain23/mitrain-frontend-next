@@ -26,8 +26,13 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { PostDetailResponse } from "../../models/getPostDetailResponse";
 import FileInputBox from "../createForm/fileInputBox";
-import { useUpdatePost } from "@/src/application/hooks/posts/useUpdatePost";
-import { formatPrice } from "../../services/posts/postsRepository";
+import {
+  PostsRepository,
+  formatPrice,
+} from "../../services/posts/postsRepository";
+import { useMutation } from "react-query";
+import { IUpdatePostRequest } from "@/src/domain/entities/updatePostRequest";
+import { useRouter } from "next/navigation";
 
 interface ImageData {
   file: File | null;
@@ -78,6 +83,8 @@ const UpdateForm: React.FC<TProps> = ({ data }) => {
       isLiked: "",
     },
   });
+
+  const router = useRouter();
 
   const getProvinceIdFromLocation = (location?: string) => {
     if (!location) return "";
@@ -191,7 +198,16 @@ const UpdateForm: React.FC<TProps> = ({ data }) => {
     setCoverImages(tempArrImages);
   };
 
-  const updatePost = useUpdatePost();
+  const { mutate: updatePost, isLoading } = useMutation({
+    mutationFn: ({
+      data,
+      postId,
+    }: {
+      data: IUpdatePostRequest;
+      postId: string;
+    }) => PostsRepository.updatePost(data, postId),
+  });
+
   const experiences = [
     "Kurang dari 1 Tahun",
     "2 Tahun",
@@ -268,11 +284,15 @@ const UpdateForm: React.FC<TProps> = ({ data }) => {
     };
 
     try {
-      const response = await updatePost.updatePostMutation(
-        requestData,
-        data?.id!,
+      updatePost(
+        { data: requestData, postId: data?.id as string },
+        {
+          onSuccess: (data) => {
+            console.log(data);
+            router.push("/iklan");
+          },
+        },
       );
-      console.log(response);
     } catch (error) {
       console.log(error);
     }
@@ -749,11 +769,11 @@ const UpdateForm: React.FC<TProps> = ({ data }) => {
           <div className="my-5"></div>
 
           <Button
-            disabled={updatePost.isLoading}
+            disabled={isLoading}
             className="w-full h-[56px] text-[16px]"
             type="submit"
           >
-            {updatePost.isLoading ? "Loading..." : "Update Post"}
+            {isLoading ? "Loading..." : "Update Post"}
           </Button>
         </form>
       </Form>

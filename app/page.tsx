@@ -6,15 +6,15 @@ import { Hero } from "@/src/infrastructure/ui/landingPage/hero";
 import MobileHero from "@/src/infrastructure/ui/landingPage/hero/mobileHero";
 import Recommendation from "@/src/infrastructure/ui/landingPage/recommendation";
 import LayoutTemplate from "@/src/utils/layout";
+import axios from "axios";
 import { cookies } from "next/headers";
 
 const getProvinces = async (): Promise<Province[]> => {
-  const req = await fetch(
+  const response = await axios.get(
     "https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json",
   );
-  const res = await req.json();
 
-  return res;
+  return response.data;
 };
 
 export default async function Home() {

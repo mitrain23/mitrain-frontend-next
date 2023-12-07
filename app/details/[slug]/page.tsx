@@ -1,12 +1,10 @@
 "use client";
 
-import { useGetPostById } from "@/src/application/hooks/posts/useGetPostById";
 import { Skeleton } from "@/src/components/ui/skeleton";
 import DescriptionDetails from "@/src/infrastructure/ui/details/descriptionDetails";
 import HeaderDetails from "@/src/infrastructure/ui/details/headerDetails";
 import LoadingState from "@/src/infrastructure/ui/global/state/loading";
 import LayoutTemplate from "@/src/utils/layout";
-import Link from "next/link";
 import WAIcon from "@/public/svg/wa.svg";
 import LikeProductIcon from "@/public/svg/like_product.svg";
 import AddBookmarkIcon from "@/public/svg/add_bookmark.svg";
@@ -14,6 +12,8 @@ import PremiumIcon from "@/public/svg/premium.svg";
 import TruckIcon from "@/public/svg/truck.svg";
 import { Button } from "@/src/components/ui/button";
 import { Separator } from "@/src/components/ui/separator";
+import { useQuery } from "react-query";
+import { PostsRepository } from "@/src/infrastructure/services/posts/postsRepository";
 
 const HeaderDetailsLoading = () => {
   return (
@@ -97,17 +97,13 @@ const HeaderDetailsLoading = () => {
 };
 
 export default function Page({ params }: { params: { slug: number } }) {
-  // console.log(params.slug.toString().split('-'))
   const paramsSlug = params.slug.toString().split("-");
-  console.log(paramsSlug);
   const paramsForApi = paramsSlug.slice(0, 5).join("-");
-  console.log(paramsForApi);
 
-  const getPostByIdQuery = useGetPostById(`${paramsForApi}`);
-
-  if (getPostByIdQuery.data) {
-    console.log(getPostByIdQuery.data);
-  }
+  const getPostByIdQuery = useQuery(
+    ["get_posts_by_id", `${paramsForApi}`],
+    () => PostsRepository.getPostById(paramsForApi),
+  );
 
   return (
     <LayoutTemplate>

@@ -16,6 +16,7 @@ import { ChevronDownIcon } from "@radix-ui/react-icons";
 import LocationIcon from "@/public/svg/location.svg";
 import { Province } from "@/src/domain/entities/province";
 import { City } from "@/src/domain/entities/city";
+import axios from "axios";
 
 type TProps = {
   provinces: Province[];
@@ -51,14 +52,13 @@ const FlyingHeroSearch: React.FC<TProps> = ({ provinces }) => {
   }, [search, selectedCityId, selectedProvinceId]);
 
   useEffect(() => {
-    fetch(
-      `https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${selectedProvinceId}.json`,
-    )
-      .then((res) => res.json())
-      .then((data) => setCities(data))
-      .catch((err) => {
-        console.log(err);
-      });
+    if (selectedProvinceId) {
+      axios
+        .get(
+          `https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${selectedProvinceId}.json`,
+        )
+        .then((response) => setCities(response.data));
+    }
   }, [selectedProvinceId]);
 
   return (

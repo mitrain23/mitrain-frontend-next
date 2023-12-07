@@ -14,6 +14,8 @@ import { Skeleton } from "@/src/components/ui/skeleton";
 import { Alert, AlertDescription, AlertTitle } from "@/src/components/ui/alert";
 import EmptyState from "@/src/infrastructure/ui/global/state/empty";
 import { useDebounce } from "@/src/application/hooks/global/useDebounce";
+import { useQuery } from "react-query";
+import { PostsRepository } from "@/src/infrastructure/services/posts/postsRepository";
 
 const CardLoading = () => {
   return (
@@ -59,11 +61,15 @@ const Results = () => {
     page: pageNumber,
   });
 
-  const getAllFilteredPostQuery = useGetAllFilteredPost(formData);
+  const getAllFilteredPostQuery = useQuery(
+    ["get_filtered_posts", formData],
+    () => PostsRepository.getAllPostByFilter(formData),
+  );
 
   useEffect(() => {
     setFormData({
       ...formData,
+      lokasi: searchParams.get("lokasi") || "",
       minPrice: priceMinDebounce,
       maxPrice: priceMaxDebounce,
       searchText: searchParams.get("searchText") || "",

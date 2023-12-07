@@ -16,7 +16,11 @@ import GoogleIcon from "@/public/svg/google_logo.svg";
 import Link from "next/link";
 import React from "react";
 import { z } from "zod";
-import { useLoginMitra } from "@/src/application/hooks/mitraAuth/useLoginMitra";
+import { useMutation } from "react-query";
+import { user } from "@/src/domain/entities/user";
+import { MitraRepository } from "@/src/infrastructure/services/mitraAuth/mitraRepository";
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -32,10 +36,25 @@ const Page = () => {
     },
   });
 
-  const { loginMitraMutation, isLoading } = useLoginMitra();
+  const router = useRouter();
+
+  const { mutate: loginMitra, isLoading } = useMutation({
+    mutationFn: (formData: user) => MitraRepository.loginMitra(formData),
+  });
 
   const handleSubmit = (values: z.infer<typeof formSchema>) => {
-    loginMitraMutation(values);
+    loginMitra(values, {
+      onSuccess: (data) => {
+        console.log(data);
+        Cookies.set("token", data.token, { expires: 1 / 8 });
+        Cookies.set("user", JSON.stringify(data.data), { expires: 1 / 8 });
+
+        localStorage.setItem("user", JSON.stringify(data.data));
+
+        router.replace("/results");
+      },
+      onError: (error) => console.error(error),
+    });
   };
 
   return (

@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { useDebounce } from "@/src/application/hooks/global/useDebounce";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 type TProps = {
@@ -12,6 +12,7 @@ type TProps = {
 const SearchBar = ({ className }: TProps) => {
   const router = useRouter();
   const pathname = usePathname();
+  const searchParams = useSearchParams();
 
   const [searchText, setSearchText] = useState("");
   const [searchInputFocus, setSearchInputFocus] = useState(false);
@@ -19,7 +20,7 @@ const SearchBar = ({ className }: TProps) => {
   const searchTextDebounce = useDebounce(searchText);
 
   useEffect(() => {
-    if (pathname === "/results") {
+    if (pathname === "/results" && !searchParams.get("searchText")) {
       router.replace(`/results?searchText=${searchTextDebounce}`);
     } else if (searchInputFocus) {
       router.replace(`/results?searchText=${searchTextDebounce}`);
