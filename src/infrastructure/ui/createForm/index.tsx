@@ -31,6 +31,7 @@ import {
 } from "../../services/posts/postsRepository";
 import { useMutation } from "react-query";
 import { useRouter } from "next/navigation";
+import { useToast } from "@/src/components/ui/use-toast";
 
 interface ImageData {
   file: File | null;
@@ -75,6 +76,7 @@ const CreateForm = () => {
   });
 
   const router = useRouter();
+  const { toast } = useToast();
 
   const experiences = [
     "Kurang dari 1 Tahun",
@@ -194,14 +196,28 @@ const CreateForm = () => {
     });
 
     try {
-      console.log(formData);
       createPost(formData, {
         onSuccess: (data) => {
+          toast({
+            title: "Notifikasi",
+            description: "Berhasil membuat iklan baru",
+          });
+
           router.push("/iklan");
+        },
+        onError: (_) => {
+          toast({
+            title: "Notifikasi",
+            description: "Gagal membuat iklan baru",
+          });
         },
       });
     } catch (error) {
       console.log(error);
+      toast({
+        title: "Notifikasi",
+        description: "Gagal membuat iklan baru",
+      });
     }
     setCoverImages(Array(5).fill(null));
   };

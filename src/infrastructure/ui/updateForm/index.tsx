@@ -33,6 +33,7 @@ import {
 import { useMutation } from "react-query";
 import { IUpdatePostRequest } from "@/src/domain/entities/updatePostRequest";
 import { useRouter } from "next/navigation";
+import { useToast } from "@/src/components/ui/use-toast";
 
 interface ImageData {
   file: File | null;
@@ -85,6 +86,7 @@ const UpdateForm: React.FC<TProps> = ({ data }) => {
   });
 
   const router = useRouter();
+  const { toast } = useToast();
 
   const getProvinceIdFromLocation = (location?: string) => {
     if (!location) return "";
@@ -289,14 +291,27 @@ const UpdateForm: React.FC<TProps> = ({ data }) => {
         {
           onSuccess: (data) => {
             console.log(data);
+            toast({
+              title: "Notifikasi",
+              description: "Berhasil mengedit iklan",
+            });
             router.push("/iklan");
+          },
+          onError: (_) => {
+            toast({
+              title: "Notifikasi",
+              description: "Gagal mengedit iklan",
+            });
           },
         },
       );
     } catch (error) {
       console.log(error);
+      toast({
+        title: "Notifikasi",
+        description: "Gagal mengedit iklan",
+      });
     }
-    // setCoverImages(Array(5).fill(null));
   };
 
   useEffect(() => {

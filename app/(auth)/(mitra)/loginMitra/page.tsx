@@ -21,6 +21,7 @@ import { user } from "@/src/domain/entities/user";
 import { MitraRepository } from "@/src/infrastructure/services/mitraAuth/mitraRepository";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
+import { useToast } from "@/src/components/ui/use-toast";
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -36,6 +37,7 @@ const Page = () => {
     },
   });
 
+  const { toast } = useToast();
   const router = useRouter();
 
   const { mutate: loginMitra, isLoading } = useMutation({
@@ -50,10 +52,21 @@ const Page = () => {
         Cookies.set("user", JSON.stringify(data.data), { expires: 1 / 8 });
 
         localStorage.setItem("user", JSON.stringify(data.data));
+        toast({
+          title: "Notifikasi",
+          description: "Menuju halaman utama...",
+        });
 
         router.replace("/results");
       },
-      onError: (error) => console.error(error),
+      onError: (error) => {
+        console.error(error);
+
+        toast({
+          title: "Notifikasi",
+          description: "Error saat login, periksa kembali kredensial anda",
+        });
+      },
     });
   };
 

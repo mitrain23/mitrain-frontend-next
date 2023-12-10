@@ -19,6 +19,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/src/components/ui/dropdown-menu";
+import { useToast } from "@/src/components/ui/use-toast";
 import { Datum } from "@/src/infrastructure/models/getPostByAuthorResponse";
 import {
   PostsRepository,
@@ -35,6 +36,7 @@ const IklanSayaCard = ({ data, index }: { data: Datum; index: number }) => {
   });
 
   const router = useRouter();
+  const { toast } = useToast();
   const queryClient = useQueryClient();
 
   const handleDelete = async () => {
@@ -42,12 +44,27 @@ const IklanSayaCard = ({ data, index }: { data: Datum; index: number }) => {
     try {
       deletePost(data.id, {
         onSuccess: (_) => {
+          toast({
+            title: "Notifikasi",
+            description: "Berhasil menghapus iklan",
+          });
+
           queryClient.invalidateQueries("get_posts_by_author");
           router.refresh();
+        },
+        onError: (_) => {
+          toast({
+            title: "Notifikasi",
+            description: "Gagal menghapus iklan",
+          });
         },
       });
     } catch (err) {
       console.log(err);
+      toast({
+        title: "Notifikasi",
+        description: "Gagal menghapus iklan",
+      });
     }
   };
 

@@ -17,6 +17,7 @@ import {
   SelectValue,
 } from "@/src/components/ui/select";
 import { Textarea } from "@/src/components/ui/textarea";
+import { useToast } from "@/src/components/ui/use-toast";
 import { City } from "@/src/domain/entities/city";
 import { Province } from "@/src/domain/entities/province";
 import { MitraRepository } from "@/src/infrastructure/services/mitraAuth/mitraRepository";
@@ -61,6 +62,7 @@ const Page = () => {
     },
   });
 
+  const { toast } = useToast();
   const router = useRouter();
 
   const [selectedFile, setSelectedFile] = useState<File>();
@@ -110,11 +112,25 @@ const Page = () => {
       registerMitra(formData, {
         onSuccess: (data) => {
           console.log(data);
+          toast({
+            title: "Notifikasi",
+            description: "Berhasil melakukan registrasi",
+          });
           router.push("/loginMitra");
+        },
+        onError: (_) => {
+          toast({
+            title: "Notifikasi",
+            description: "Gagal melakukan registrasi",
+          });
         },
       });
     } catch (error) {
       console.log(error);
+      toast({
+        title: "Notifikasi",
+        description: "Gagal melakukan registrasi",
+      });
     }
   };
 

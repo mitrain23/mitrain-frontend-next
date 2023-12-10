@@ -27,6 +27,7 @@ import axios from "axios";
 import { useMutation } from "react-query";
 import UserRepository from "@/src/infrastructure/services/userAuth/userRepository";
 import { useRouter } from "next/navigation";
+import { useToast } from "@/src/components/ui/use-toast";
 
 const isMobilePhone = new RegExp(
   /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/,
@@ -52,6 +53,7 @@ const Page = () => {
     },
   });
 
+  const { toast } = useToast();
   const router = useRouter();
 
   const [selectedFile, setSelectedFile] = useState<File>();
@@ -92,14 +94,26 @@ const Page = () => {
       registerUser(formData, {
         onSuccess: (data) => {
           console.log(data);
+          toast({
+            title: "Notifikasi",
+            description: "Berhasil melakukan registrasi",
+          });
           router.push("/login");
         },
         onError: (error) => {
           console.error(error);
+          toast({
+            title: "Notifikasi",
+            description: "Gagal melakukan registrasi",
+          });
         },
       });
     } catch (error) {
       console.log(error);
+      toast({
+        title: "Notifikasi",
+        description: "Gagal melakukan registrasi",
+      });
     }
   };
 

@@ -1,10 +1,8 @@
-// import Navbar from '@/src/components/navbar'
 import "./globals.css";
-import { Inter } from "next/font/google";
 import QueryClientWrapper from "@/src/utils/Wrapper/QueryClientWrapper";
 import { cookies } from "next/headers";
-import Footer from "@/src/infrastructure/ui/global/footer";
 import ProgressProvider from "@/src/infrastructure/ui/global/provider/ProgressProvider";
+import { Toaster } from "@/src/components/ui/toaster";
 
 export const metadata = {
   title: "Mitrain",
@@ -23,7 +21,10 @@ export default function RootLayout({
     <html data-theme="light" lang="en" suppressHydrationWarning>
       <body>
         <ProgressProvider>
-          <QueryClientWrapper token={token}>{children}</QueryClientWrapper>
+          <QueryClientWrapper token={token}>
+            {children}
+            <Toaster />
+          </QueryClientWrapper>
         </ProgressProvider>
       </body>
     </html>
