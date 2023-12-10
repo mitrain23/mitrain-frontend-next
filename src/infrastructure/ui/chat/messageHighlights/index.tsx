@@ -7,9 +7,16 @@ import {
 } from "@/src/components/ui/avatar";
 import { Badge } from "@/src/components/ui/badge";
 
-const MessageHighlights = () => {
+type TProps = {
+  selectChat: (id: string) => void;
+};
+
+const MessageHighlights: React.FC<TProps> = ({ selectChat }) => {
   return (
-    <div className="flex flex-row py-[22px] gap-[24px] cursor-pointer">
+    <div
+      className="flex flex-row py-[22px] gap-[24px] cursor-pointer"
+      onClick={() => selectChat("123")}
+    >
       <div>
         <Avatar className="md:w-[62px] md:h-[62px]">
           <AvatarImage />

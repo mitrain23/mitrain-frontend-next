@@ -1,12 +1,18 @@
 "use client";
+
 import React from "react";
 import FlyingHeroSearch from "../flyingHeroSearch";
 import HeroCarousel from "./heroCarousel";
+import { Province } from "@/src/domain/entities/province";
 
-export const Hero = () => {
+type TProps = {
+  provinces: Province[];
+};
+
+export const Hero: React.FC<TProps> = ({ provinces }) => {
   return (
     <HeroCarousel>
-      <FlyingHeroSearch />
+      <FlyingHeroSearch provinces={provinces} />
     </HeroCarousel>
   );
 };

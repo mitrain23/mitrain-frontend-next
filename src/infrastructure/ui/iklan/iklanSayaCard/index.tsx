@@ -1,6 +1,6 @@
 "use client";
 
-import { useDeletePost } from "@/src/application/hooks/posts/useDeletePost";
+import EditIcon from "@/public/svg/edit.svg";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -15,41 +15,56 @@ import {
 import { Button } from "@/src/components/ui/button";
 import {
   DropdownMenu,
-  DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuTrigger,
 } from "@/src/components/ui/dropdown-menu";
+import { useToast } from "@/src/components/ui/use-toast";
+import { Datum } from "@/src/infrastructure/models/getPostByAuthorResponse";
 import {
-  Datum,
-  GetPostByAuthorResponse,
-} from "@/src/infrastructure/models/getPostByAuthorResponse";
-import { DotsVerticalIcon, DropdownMenuIcon } from "@radix-ui/react-icons";
+  PostsRepository,
+  formatPrice,
+} from "@/src/infrastructure/services/posts/postsRepository";
+import { DotsVerticalIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
-import React, { useState } from "react";
-import EditIcon from "@/public/svg/edit.svg";
+import { useRouter } from "next/navigation";
+import { useMutation, useQueryClient } from "react-query";
 
 const IklanSayaCard = ({ data, index }: { data: Datum; index: number }) => {
-  const [showDelete, setShowDelete] = useState(false);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const { mutate: deletePost, isLoading } = useMutation({
+    mutationFn: (id: string) => PostsRepository.deletePost(id),
+  });
 
-  const handleShowDelete = () => {
-    setShowDelete(!showDelete);
-  };
-  const handleShowDeleteModal = () => {
-    setShowDeleteModal(!showDeleteModal);
-  };
+  const router = useRouter();
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
 
-  // FIXME: react hook
-  const deletePostQuery = data.id ? useDeletePost(data.id) : null;
-
-  const handleDelete = async (e: any) => {
-    e.preventDefault();
+  const handleDelete = async () => {
     console.log(data.id);
     try {
-      await deletePostQuery?.mutate();
-      setShowDeleteModal(!showDeleteModal);
+      deletePost(data.id, {
+        onSuccess: (_) => {
+          toast({
+            title: "Notifikasi",
+            description: "Berhasil menghapus iklan",
+          });
+
+          queryClient.invalidateQueries("get_posts_by_author");
+          router.refresh();
+        },
+        onError: (_) => {
+          toast({
+            title: "Notifikasi",
+            description: "Gagal menghapus iklan",
+          });
+        },
+      });
     } catch (err) {
       console.log(err);
+      toast({
+        title: "Notifikasi",
+        description: "Gagal menghapus iklan",
+      });
     }
   };
 
@@ -68,13 +83,13 @@ const IklanSayaCard = ({ data, index }: { data: Datum; index: number }) => {
           </div>
           <div className="md:self-center font-satoshi text-[18px] text-[#020831]">
             <h1>
-              Rp {data.priceMin} - Rp {data.priceMax}
+              Rp {formatPrice(data.priceMin)} - Rp {formatPrice(data.priceMax)}
             </h1>
           </div>
         </div>
       </div>
       <div className="right flex flex-row gap-[20px] max-md:self-end max-md:mt-4">
-        <Link href={"/maintenance"}>
+        <Link href={"/update/" + data.id}>
           <Button
             size="icon"
             variant="link"
@@ -107,7 +122,12 @@ const IklanSayaCard = ({ data, index }: { data: Datum; index: number }) => {
                   </AlertDialogHeader>
                   <AlertDialogFooter className="lg:flex-col-reverse lg:space-x-0 gap-2">
                     <AlertDialogCancel>Batalkan</AlertDialogCancel>
-                    <AlertDialogAction>Ya, hapus sekarang</AlertDialogAction>
+                    <AlertDialogAction
+                      onClick={handleDelete}
+                      disabled={isLoading}
+                    >
+                      {isLoading ? "Proses..." : "Ya, hapus sekarang"}
+                    </AlertDialogAction>
                   </AlertDialogFooter>
                 </AlertDialogContent>
               </AlertDialog>

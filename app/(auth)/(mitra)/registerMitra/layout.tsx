@@ -1,6 +1,6 @@
-import SubNavbar from "@/src/infrastructure/ui/global/subNavbar";
 import { cookies } from "next/headers";
-import Navbar from "@/src/infrastructure/ui/global/navbar";
+import Footer from "@/src/infrastructure/ui/global/footer";
+import LandingPageNavbar from "@/src/infrastructure/ui/global/navbar/landingPage";
 
 export const metadata = {
   title: "Mitrain Konveksi",
@@ -13,8 +13,9 @@ const layout = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <>
-      <Navbar isResults={false} token={token} />
+      <LandingPageNavbar />
       {children}
+      <Footer />
     </>
   );
 };

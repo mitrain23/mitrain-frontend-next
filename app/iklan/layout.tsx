@@ -1,3 +1,4 @@
+import Footer from "@/src/infrastructure/ui/global/footer";
 import Navbar from "@/src/infrastructure/ui/global/navbar";
 import NavbarResults from "@/src/infrastructure/ui/global/navbar/navbarResults";
 import SubNavbar from "@/src/infrastructure/ui/global/subNavbar";
@@ -16,9 +17,12 @@ const layout = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <ServerSideProtectedRoutes>
-      <SubNavbar />
-      <NavbarResults token={token} />
-      {children}
+      <div className="min-h-screen relative">
+        <SubNavbar />
+        <NavbarResults token={token} />
+        {children}
+        <Footer />
+      </div>
     </ServerSideProtectedRoutes>
   );
 };

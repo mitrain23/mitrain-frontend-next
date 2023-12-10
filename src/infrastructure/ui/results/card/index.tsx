@@ -2,7 +2,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import MitraPermiumIcon from "@/public/svg/mitra_permium_check.svg";
-import { Alert, AlertDescription, AlertTitle } from "@/src/components/ui/alert";
+import { formatPrice } from "@/src/infrastructure/services/posts/postsRepository";
 
 interface CardProps {
   data?: any;
@@ -12,6 +12,8 @@ const Card = ({ data }: CardProps) => {
   const API_BASE_URL = process.env.BASE_URL;
 
   const Image1 = `${API_BASE_URL}/images/${data?.images?.[0]?.url}`;
+
+  console.log(data);
 
   return (
     <Link href={`details/${data?.id}-${encodeURIComponent(data?.title)}`}>
@@ -40,7 +42,7 @@ const Card = ({ data }: CardProps) => {
             <p>Mitra Premium</p>
           </div>
           <h1 className="font-bold lg:text-[22px] font-satoshi text-[#020831]">
-            Rp {data?.priceMin} - Rp {data?.priceMax}
+            Rp {formatPrice(data?.priceMin)} - Rp {formatPrice(data?.priceMax)}
           </h1>
         </div>
       </div>

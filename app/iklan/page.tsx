@@ -4,12 +4,13 @@ import FilterBar from "@/src/infrastructure/ui/iklan/filterBar";
 import IklanSayaContainer from "@/src/infrastructure/ui/iklan/iklanSayaContainer";
 import LayoutTemplate from "@/src/utils/layout";
 import Cookies from "js-cookie";
-import React, { useEffect, useState } from "react";
-import { useGetPostByAuthor } from "@/src/application/hooks/posts/useGetPostByAuthor";
+import React, { useCallback } from "react";
 import Link from "next/link";
 import LoadingState from "@/src/infrastructure/ui/global/state/loading";
 import { Skeleton } from "@/src/components/ui/skeleton";
 import TambahIcon from "@/public/svg/tambah.svg";
+import { useQuery } from "react-query";
+import { PostsRepository } from "@/src/infrastructure/services/posts/postsRepository";
 
 interface parsedUser {
   id: string;
@@ -19,22 +20,21 @@ interface parsedUser {
 }
 
 const Page = () => {
-  const [mitraId, setMitraId] = useState<string | null>(null);
-  // const [data, setData] = useState<any>(null);
-
-  useEffect(() => {
-    // Retrieve user data from cookies
+  const getMitraId = useCallback(() => {
     const storedUser = Cookies.get("user");
 
     if (storedUser) {
       const parsedUser: parsedUser = JSON.parse(storedUser);
-      setMitraId(parsedUser.id);
-      console.log(parsedUser.id);
+      return parsedUser.id;
     }
+
+    return null;
   }, []);
 
-  const id = "someId"; // Replace with your actual ID or a variable that holds it
-  const { data, isLoading, isError } = useGetPostByAuthor(mitraId);
+  const { data, isLoading } = useQuery(
+    ["get_posts_by_author", getMitraId()],
+    () => PostsRepository.getPostByAuthor(getMitraId()),
+  );
 
   return (
     <LayoutTemplate>

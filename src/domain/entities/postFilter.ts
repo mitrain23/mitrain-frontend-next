@@ -1,7 +1,7 @@
 export interface PostFilter {
-  search: string;
-  price_min: string;
-  price_max: string;
+  searchText: string;
+  minPrice: string;
+  maxPrice: string;
   lokasi: string;
   page: number;
 }

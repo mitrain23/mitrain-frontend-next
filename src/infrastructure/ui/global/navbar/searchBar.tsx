@@ -1,11 +1,32 @@
+"use client";
+
 import { cn } from "@/lib/utils";
-import React from "react";
+import { useDebounce } from "@/src/application/hooks/global/useDebounce";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import React, { useEffect, useState } from "react";
 
 type TProps = {
   className?: string;
 };
 
 const SearchBar = ({ className }: TProps) => {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const [searchText, setSearchText] = useState("");
+  const [searchInputFocus, setSearchInputFocus] = useState(false);
+
+  const searchTextDebounce = useDebounce(searchText);
+
+  useEffect(() => {
+    if (pathname === "/results" && !searchParams.get("searchText")) {
+      router.replace(`/results?searchText=${searchTextDebounce}`);
+    } else if (searchInputFocus) {
+      router.replace(`/results?searchText=${searchTextDebounce}`);
+    }
+  }, [searchTextDebounce, pathname, searchInputFocus]);
+
   return (
     <div
       className={cn(
@@ -38,6 +59,9 @@ const SearchBar = ({ className }: TProps) => {
         </g>
       </svg>
       <input
+        onChange={(e) => setSearchText(e.target.value)}
+        onFocus={() => setSearchInputFocus(true)}
+        onBlur={() => setSearchInputFocus(false)}
         type="text"
         placeholder="Cari Konveksi Baju Termurah..."
         className="w-full bg-transparent focus:outline-none"

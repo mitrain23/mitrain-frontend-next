@@ -6,7 +6,7 @@ import {
   AvatarImage,
 } from "@/src/components/ui/avatar";
 import { Button } from "@/src/components/ui/button";
-import { DotsVerticalIcon } from "@radix-ui/react-icons";
+import { ChevronLeftIcon, DotsVerticalIcon } from "@radix-ui/react-icons";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -25,10 +25,22 @@ import {
   AlertDialogTrigger,
 } from "@/src/components/ui/alert-dialog";
 
-const MessageTopBar = () => {
+type TProps = {
+  setOpenChat: (value: React.SetStateAction<boolean>) => void;
+};
+
+const MessageTopBar: React.FC<TProps> = ({ setOpenChat }) => {
   return (
     <div className="w-full h-[110px] flex flex-row justify-between items-center space-x-2">
-      <div className="left flex items-start gap-[24px]">
+      <div className="left flex items-center gap-3">
+        <Button
+          size="icon"
+          variant="ghost"
+          className="md:hidden"
+          onClick={() => setOpenChat(false)}
+        >
+          <ChevronLeftIcon />
+        </Button>
         <div>
           <Avatar className="md:w-[62px] md:h-[62px]">
             <AvatarImage />
@@ -36,10 +48,10 @@ const MessageTopBar = () => {
           </Avatar>
         </div>
         <div className="flex flex-col">
-          <h1 className="text-[#020831] font-satoshi md:text-[24px] font-bold break-all">
+          <p className="text-[#020831] font-satoshi md:text-[24px] font-bold break-all line-clamp-1">
             Indrawan Firgiawan Siregar
-          </h1>
-          <p className="font-inter text-[#425379] md:text-[16px] text-sm break-all">
+          </p>
+          <p className="font-inter text-[#425379] md:text-[16px] text-sm break-all line-clamp-1">
             Last online 7 hours ago
           </p>
         </div>

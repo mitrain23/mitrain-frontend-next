@@ -9,13 +9,9 @@ const IklanSayaContainer = ({
 }) => {
   return (
     <>
-      {data?.data.map((item, index) => {
-        return (
-          <>
-            <IklanSayaCard data={item} index={index + 1} />
-          </>
-        );
-      })}
+      {data?.data.map((item, index) => (
+        <IklanSayaCard data={item} index={index + 1} key={index} />
+      ))}
     </>
   );
 };

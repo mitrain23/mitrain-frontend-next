@@ -1,8 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
-import { useGetAllPost } from "@/src/application/hooks/posts/useGetAllPost";
+import { usePathname, useSearchParams } from "next/navigation";
 import Pagination from "@/src/infrastructure/ui/results/pagination";
 import { PostFilter } from "@/src/domain/entities/postFilter";
 import Card from "@/src/infrastructure/ui/results/card";
@@ -12,6 +11,10 @@ import CardSlider from "@/src/infrastructure/ui/results/cardSlider";
 import LoadingState from "@/src/infrastructure/ui/global/state/loading";
 import { Skeleton } from "@/src/components/ui/skeleton";
 import { Alert, AlertDescription, AlertTitle } from "@/src/components/ui/alert";
+import EmptyState from "@/src/infrastructure/ui/global/state/empty";
+import { useDebounce } from "@/src/application/hooks/global/useDebounce";
+import { useQuery } from "react-query";
+import { PostsRepository } from "@/src/infrastructure/services/posts/postsRepository";
 
 const CardLoading = () => {
   return (
@@ -39,79 +42,81 @@ const CardLoading = () => {
 
 const Results = () => {
   const searchParams = useSearchParams();
-  const search = searchParams.get("search");
-  const lokasi = searchParams.get("lokasi");
+  const pathname = usePathname();
 
   const [pageNumber, setPageNumber] = useState(1);
 
+  const [priceMin, setPriceMin] = useState("");
+  const [priceMax, setPriceMax] = useState("");
+
+  const priceMinDebounce = useDebounce(priceMin);
+  const priceMaxDebounce = useDebounce(priceMax);
+
   const [formData, setFormData] = useState<PostFilter>({
-    search: search || "",
-    price_min: "",
-    price_max: "",
-    lokasi: lokasi || "",
+    searchText: searchParams.get("searchText") || "",
+    minPrice: priceMin,
+    maxPrice: priceMin,
+    lokasi: searchParams.get("lokasi") || "",
     page: pageNumber,
   });
 
-  const getAllPostByFilterQuery = useGetAllPost(pageNumber);
+  const getAllFilteredPostQuery = useQuery(
+    ["get_filtered_posts", formData],
+    () => PostsRepository.getAllPostByFilter(formData),
+  );
 
   useEffect(() => {
-    getAllPostByFilterQuery.refetch();
-  }, [pageNumber]);
+    setFormData({
+      ...formData,
+      lokasi: searchParams.get("lokasi") || "",
+      minPrice: priceMinDebounce,
+      maxPrice: priceMaxDebounce,
+      searchText: searchParams.get("searchText") || "",
+    });
 
-  if (getAllPostByFilterQuery.isError) {
-    return (
-      <Alert>
-        <AlertTitle>Maaf</AlertTitle>
-        <AlertDescription>
-          Data yang dicari tidak ditemukan / Kosong
-        </AlertDescription>
-      </Alert>
-    );
-  }
+    getAllFilteredPostQuery.refetch();
+    console.log(`${pathname}/${searchParams}`);
+  }, [pageNumber, priceMinDebounce, priceMaxDebounce, searchParams, pathname]);
 
   const handlePageChange = (data: number) => {
     setPageNumber(data);
-    setFormData((prev) => ({
-      ...prev,
-      page: data,
-    }));
   };
 
   return (
     <LayoutTemplate>
-      <Filter />
-      <div className="Heading-Konveksi-Baju font-inter text-[30px] font-semibold text-[#020831]">
+      <Filter setPriceMin={setPriceMin} setPriceMax={setPriceMax} />
+      <div className="Heading-Konveksi-Baju font-inter text-[30px] font-semibold text-[#020831] mb-4">
         <h1>Konveksi Baju</h1>
       </div>
+
       <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 place-items-center md:place-items-start max-lg:gap-10 gap-[32px] my-4">
         <LoadingState
           loadingFallback={<CardLoading />}
           loadingCount={4}
-          isLoading={getAllPostByFilterQuery.isLoading}
+          isLoading={getAllFilteredPostQuery.isLoading}
         >
-          {!getAllPostByFilterQuery.data?.length ? (
-            <Alert>
-              <AlertTitle>Maaf</AlertTitle>
-              <AlertDescription>
-                Data yang dicari tidak ditemukan / Kosong
-              </AlertDescription>
-            </Alert>
-          ) : (
-            getAllPostByFilterQuery.data?.map((item) => {
+          <EmptyState
+            data={
+              getAllFilteredPostQuery.data?.length &&
+              !getAllFilteredPostQuery.isLoading
+            }
+            customClass="col-span-1 sm:col-span-2 md:col-span-3 lg:col-span-4"
+          >
+            {getAllFilteredPostQuery.data?.map((item) => {
               return (
                 <div className="w-full" key={item.id}>
                   <Card data={item} />
                 </div>
               );
-            })
-          )}
+            })}
+          </EmptyState>
         </LoadingState>
       </div>
       <Pagination handlePageChange={handlePageChange} />
       <div className="mb-[48px]"></div>
       <div
         className={
-          getAllPostByFilterQuery.isLoading
+          getAllFilteredPostQuery.isLoading
             ? "flex md:flex-row flex-col gap-4"
             : ""
         }
@@ -119,9 +124,9 @@ const Results = () => {
         <LoadingState
           loadingFallback={<CardLoading />}
           loadingCount={4}
-          isLoading={getAllPostByFilterQuery.isLoading}
+          isLoading={getAllFilteredPostQuery.isLoading}
         >
-          {!getAllPostByFilterQuery.data?.length ? (
+          {!getAllFilteredPostQuery.data?.length ? (
             <Alert>
               <AlertTitle>Maaf</AlertTitle>
               <AlertDescription>
@@ -129,7 +134,7 @@ const Results = () => {
               </AlertDescription>
             </Alert>
           ) : (
-            <CardSlider data={getAllPostByFilterQuery.data} />
+            <CardSlider data={getAllFilteredPostQuery.data} />
           )}
         </LoadingState>
       </div>
