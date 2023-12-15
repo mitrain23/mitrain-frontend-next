@@ -20,7 +20,6 @@ import { useMutation } from "react-query";
 import { user } from "@/src/domain/entities/user";
 import { MitraRepository } from "@/src/infrastructure/services/mitraAuth/mitraRepository";
 import Cookies from "js-cookie";
-import { useRouter } from "next/navigation";
 import { useToast } from "@/src/components/ui/use-toast";
 
 const formSchema = z.object({
@@ -38,7 +37,6 @@ const Page = () => {
   });
 
   const { toast } = useToast();
-  const router = useRouter();
 
   const { mutate: loginMitra, isLoading } = useMutation({
     mutationFn: (formData: user) => MitraRepository.loginMitra(formData),
@@ -57,7 +55,7 @@ const Page = () => {
           description: "Menuju halaman utama...",
         });
 
-        router.replace("/results");
+        window.location.href = "/results";
       },
       onError: (error) => {
         console.error(error);

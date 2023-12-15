@@ -20,7 +20,6 @@ import { useMutation } from "react-query";
 import { user } from "@/src/domain/entities/user";
 import UserRepository from "@/src/infrastructure/services/userAuth/userRepository";
 import Cookies from "js-cookie";
-import { useRouter } from "next/navigation";
 import { useToast } from "@/src/components/ui/use-toast";
 
 const formSchema = z.object({
@@ -38,7 +37,6 @@ const Page = () => {
   });
 
   const { toast } = useToast();
-  const router = useRouter();
 
   const { mutate: loginUser, isLoading } = useMutation({
     mutationFn: (credentials: user) => UserRepository.loginUser(credentials),
@@ -55,7 +53,7 @@ const Page = () => {
           title: "Notifikasi",
           description: "Menuju halaman utama...",
         });
-        router.replace("/results");
+        window.location.href = "/results";
       },
       onError: (_) => {
         toast({

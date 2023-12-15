@@ -5,6 +5,7 @@ import Cookies from "js-cookie";
 import { GetPostByAuthorResponse } from "../../models/getPostByAuthorResponse";
 import { PostDetailResponse } from "../../models/getPostDetailResponse";
 import { IUpdatePostRequest } from "@/src/domain/entities/updatePostRequest";
+import IAllPostResponse from "@/src/domain/entities/allPostResponse";
 
 const API_BASE_URL = process.env.BASE_URL;
 
@@ -19,7 +20,9 @@ export const formatPrice = (input: string) => {
 };
 
 export class PostsRepository {
-  static getAllPost = async (pageNumber: number): Promise<Post[]> => {
+  static getAllPost = async (
+    pageNumber: number,
+  ): Promise<IAllPostResponse[]> => {
     const response = await axios.get(
       `${API_BASE_URL}/api/post?page=${pageNumber}&pageSize=10`,
     );

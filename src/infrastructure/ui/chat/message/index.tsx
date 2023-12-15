@@ -1,12 +1,23 @@
 import React from "react";
 
-const Message = () => {
+type TProps = {
+  messageContent: string;
+  updatedAt: string;
+  isCurrentUserMessage: boolean;
+};
+
+const Message: React.FC<TProps> = ({
+  messageContent,
+  updatedAt,
+  isCurrentUserMessage,
+}) => {
   return (
-    <div className="max-w-[420px] py-[16px] px-[18px] w-fit border-[2px] border-[#e7e7e7]">
-      <p>
-        I have a good news for you, the stock is ready now, would you like to
-        set an appointment for us to have a chance to meet on the occasion?
-      </p>
+    <div
+      className={`max-w-[420px] rounded-md py-[16px] px-[18px] w-fit ${
+        isCurrentUserMessage && "bg-[#0066C9] text-white"
+      }`}
+    >
+      <p>{messageContent}</p>
     </div>
   );
 };
