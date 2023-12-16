@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Textarea } from "@/src/components/ui/textarea";
 import Message from "../message";
 import MessageTopBar from "../messageTopBar";
@@ -11,6 +11,9 @@ import { QueryClient, useMutation, useQuery } from "react-query";
 import { ChatRepository } from "@/src/infrastructure/services/chat/chatRepository";
 import { useEffect, useState } from "react";
 import { useUser } from "@/src/application/hooks/global/useUser";
+import EmptyState from "../../global/state/empty";
+import LoadingState from "../../global/state/loading";
+import { Skeleton } from "@/src/components/ui/skeleton";
 
 type TPropsChatArea = {
   openChat: boolean;
@@ -26,6 +29,8 @@ const ChatArea: React.FC<TPropsChatArea> = ({
   const [inputMessage, setInputMessage] = useState("");
   const { selectedChat, setSelectedChat } = useChatStore((state) => state);
 
+  const chatContainerRef = useRef<HTMLDivElement | null>(null);
+
   const queryClient = new QueryClient();
 
   const chatId = selectedChat?._id;
@@ -33,7 +38,7 @@ const ChatArea: React.FC<TPropsChatArea> = ({
 
   const {
     data: getAllMessageById,
-    isLoading: getMessageLoading,
+    isFetching: getMessageLoading,
     refetch: getAllMessageByIdRefetch,
   } = useQuery({
     queryKey: ["get_all_message_by_id"],
@@ -63,8 +68,17 @@ const ChatArea: React.FC<TPropsChatArea> = ({
     );
   };
 
+  const scrollToBottom = () => {
+    const chatContainer = chatContainerRef.current;
+
+    if (chatContainer) {
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+  };
+
   useEffect(() => {
     console.log(getAllMessageById);
+    scrollToBottom();
   }, [getAllMessageById]);
 
   useEffect(() => {
@@ -87,27 +101,42 @@ const ChatArea: React.FC<TPropsChatArea> = ({
                 setSelectedChat={setSelectedChat}
               />
             </div>
-            <div className="h-[800px] pt-[60px] flex flex-col gap-[44px] overflow-y-auto no-scrollbar">
-              {getAllMessageById?.map((message, idx) => (
-                <React.Fragment key={idx}>
-                  {message.sender.id === currentUser?.id ? (
-                    <div className="self-end">
-                      <Message
-                        messageContent={message.content}
-                        updatedAt={message.updatedAt}
-                        isCurrentUserMessage
-                      />
-                    </div>
-                  ) : (
-                    <Message
-                      messageContent={message.content}
-                      updatedAt={message.updatedAt}
-                      isCurrentUserMessage={false}
-                    />
-                  )}
-                </React.Fragment>
-              ))}
-              <div className="mb-[16px]" />
+            <div
+              className="h-[800px] py-2 flex flex-col gap-[44px] overflow-y-auto no-scrollbar"
+              ref={chatContainerRef}
+            >
+              <LoadingState
+                isLoading={getMessageLoading}
+                loadingFallback={
+                  <Skeleton className="w-full py-10 rounded-md bg-[#E6E9FE]" />
+                }
+              >
+                <EmptyState
+                  data={getAllMessageById?.length && !getMessageLoading}
+                  customErrorTitle="Belum ada chat"
+                  customErrorMessage="Mulai chat baru mu!"
+                >
+                  {getAllMessageById?.map((message, idx) => (
+                    <React.Fragment key={idx}>
+                      {message.sender.id === currentUser?.id ? (
+                        <div className="self-end">
+                          <Message
+                            messageContent={message.content}
+                            updatedAt={message.updatedAt}
+                            isCurrentUserMessage
+                          />
+                        </div>
+                      ) : (
+                        <Message
+                          messageContent={message.content}
+                          updatedAt={message.updatedAt}
+                          isCurrentUserMessage={false}
+                        />
+                      )}
+                    </React.Fragment>
+                  ))}
+                </EmptyState>
+              </LoadingState>
             </div>
 
             <div className="pt-4 z-10 flex items-center justify-between w-full gap-[24px]">

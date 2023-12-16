@@ -26,11 +26,10 @@ const MessageHighlights: React.FC<TProps> = ({
 }) => {
   return (
     <div
-      className={`flex flex-row py-[22px] gap-[24px]  cursor-pointer ${
-        selectedChat?._id === chat._id
+      className={`flex flex-row py-[22px] gap-[24px]  cursor-pointer ${selectedChat?._id === chat._id
           ? "border-r-4 border-sky-600"
           : "hover:border-r-4 hover:border-sky-600/50"
-      }`}
+        }`}
       onClick={() => {
         setSelectedChat(chat);
         setOpenChat(true);
@@ -40,18 +39,17 @@ const MessageHighlights: React.FC<TProps> = ({
         <Avatar className="md:w-[62px] md:h-[62px]">
           <AvatarImage />
           <AvatarFallback>
-            {
-              chat.users
-                .find((user) => user.id !== joinedUser?.id)
-                ?.name.toUpperCase()[0]
-            }
+            {chat.users
+              .find((user) => user.id !== joinedUser?.id)
+              ?.name.toUpperCase()[0] || chat.users[0].name.toUpperCase()[0]}
           </AvatarFallback>
         </Avatar>
       </div>
       <div className="flex flex-col overflow-hidden relative w-full">
         <h1 className="font-satoshi text-[#020831] md:text-[22px] text-lg font-bold">
           {!chat.isGroupChat && joinedUser
-            ? getSender(joinedUser, chat.users)
+            ? chat.users.find((user) => user.id !== joinedUser?.id)?.name ||
+            "Diri Sendiri"
             : chat.chatName}
         </h1>
         <div className="flex items-center">

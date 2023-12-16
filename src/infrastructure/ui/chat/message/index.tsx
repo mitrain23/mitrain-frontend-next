@@ -13,9 +13,10 @@ const Message: React.FC<TProps> = ({
 }) => {
   return (
     <div
-      className={`max-w-[420px] rounded-md py-[16px] px-[18px] w-fit ${
-        isCurrentUserMessage && "bg-[#0066C9] text-white"
-      }`}
+      className={`max-w-[420px] rounded-md py-[16px] px-[18px] w-fit ${isCurrentUserMessage
+          ? "bg-[#0066C9] text-white"
+          : "border-2 border-[#E6E9FE]"
+        }`}
     >
       <p>{messageContent}</p>
     </div>

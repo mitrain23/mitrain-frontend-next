@@ -58,21 +58,17 @@ const MessageTopBar: React.FC<TProps> = ({
           <Avatar className="md:w-[62px] md:h-[62px]">
             <AvatarImage />
             <AvatarFallback>
-              {
-                selectedChat?.users
-                  .find((userChat) => userChat.id !== currentUser?.id)
-                  ?.name.toUpperCase()[0]
-              }
+              {selectedChat?.users
+                .find((userChat) => userChat.id !== currentUser?.id)
+                ?.name.toUpperCase()[0] || currentUser?.name.toUpperCase()[0]}
             </AvatarFallback>
           </Avatar>
         </div>
         <div className="flex flex-col">
           <p className="text-[#020831] font-satoshi md:text-[24px] font-bold break-all line-clamp-1">
-            {
-              selectedChat?.users.find(
-                (userChat) => userChat.id !== currentUser?.id,
-              )?.name
-            }
+            {selectedChat?.users.find(
+              (userChat) => userChat.id !== currentUser?.id,
+            )?.name || currentUser?.name}
           </p>
           <p className="font-inter text-[#425379] md:text-[16px] text-sm break-all line-clamp-1">
             Last online 7 hours ago
