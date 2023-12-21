@@ -11,14 +11,15 @@ const Message: React.FC<TProps> = ({
   updatedAt,
   isCurrentUserMessage,
 }) => {
+  // TODO: word break issue on mobile
   return (
     <div
-      className={`max-w-[420px] rounded-md py-[16px] px-[18px] w-fit ${isCurrentUserMessage
+      className={`rounded-md py-[16px] px-[18px] ${isCurrentUserMessage
           ? "bg-[#0066C9] text-white"
           : "border-2 border-[#E6E9FE]"
         }`}
     >
-      <p>{messageContent}</p>
+      <p className="break-all">{messageContent}</p>
     </div>
   );
 };

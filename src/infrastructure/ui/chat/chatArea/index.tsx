@@ -7,65 +7,85 @@ import SendIcon from "@/public/svg/send.svg";
 import { useChatStore } from "@/src/application/zustand/useChatStore";
 import { ChatBubbleIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
-import { QueryClient, useMutation, useQuery } from "react-query";
 import { ChatRepository } from "@/src/infrastructure/services/chat/chatRepository";
 import { useEffect, useState } from "react";
 import { useUser } from "@/src/application/hooks/global/useUser";
 import EmptyState from "../../global/state/empty";
 import LoadingState from "../../global/state/loading";
 import { Skeleton } from "@/src/components/ui/skeleton";
+import { io } from "socket.io-client";
+import IChatResponse from "@/src/domain/entities/chatResponse";
+import IAllMessageById from "@/src/domain/entities/allMessageByIdResponse";
+import { useToast } from "@/src/components/ui/use-toast";
 
 type TPropsChatArea = {
   openChat: boolean;
   setOpenChat: (values: React.SetStateAction<boolean>) => void;
-  setRefetchSelectedChat: (value: React.SetStateAction<boolean>) => void;
 };
 
-const ChatArea: React.FC<TPropsChatArea> = ({
-  setOpenChat,
-  openChat,
-  setRefetchSelectedChat,
-}) => {
+const ENDPOINT = process.env.BASE_URL;
+
+const socket = io(ENDPOINT!);
+let selectedChatCompare: IChatResponse | null;
+
+const ChatArea: React.FC<TPropsChatArea> = ({ setOpenChat, openChat }) => {
   const [inputMessage, setInputMessage] = useState("");
-  const { selectedChat, setSelectedChat } = useChatStore((state) => state);
+  const [messages, setMessages] = useState<IAllMessageById[] | []>([]);
+  const [fetchMessageLoading, setFetchMessageLoading] = useState(false);
+  const [sendMessageLoading, setSendMessageLoading] = useState(false);
+
+  const { selectedChat, setSelectedChat, notifications, setNotifications } =
+    useChatStore((state) => state);
 
   const chatContainerRef = useRef<HTMLDivElement | null>(null);
 
-  const queryClient = new QueryClient();
-
-  const chatId = selectedChat?._id;
   const { currentUser } = useUser();
+  const { toast } = useToast();
 
-  const {
-    data: getAllMessageById,
-    isFetching: getMessageLoading,
-    refetch: getAllMessageByIdRefetch,
-  } = useQuery({
-    queryKey: ["get_all_message_by_id"],
-    queryFn: () => (chatId ? ChatRepository.getAllMessageById(chatId) : []),
-    enabled: !!chatId,
-  });
+  const fetchMessage = async () => {
+    if (!selectedChat) return;
 
-  const { mutate: sendMessage, isLoading: sendMessageLoading } = useMutation({
-    mutationFn: (data: { content: string; chatId: string }) =>
-      ChatRepository.sendMessage(data.chatId, data.content),
-  });
+    try {
+      setFetchMessageLoading(true);
+
+      const messages = await ChatRepository.getAllMessageById(selectedChat._id);
+
+      setMessages(messages);
+      setFetchMessageLoading(false);
+
+      socket.emit("joinChat", selectedChat._id, currentUser?.name);
+    } catch (err) {
+      toast({
+        title: "Notifikasi Error",
+        description: "Gagal membaca beberapa pesan",
+      });
+    }
+  };
 
   const sendMessageHandler = async () => {
-    sendMessage(
-      {
-        content: inputMessage,
-        chatId: selectedChat?._id as string,
-      },
-      {
-        onSuccess: (data) => {
-          queryClient.invalidateQueries("get_all_message_by_id");
-          getAllMessageByIdRefetch();
-          setInputMessage("");
-          setRefetchSelectedChat(true);
-        },
-      },
-    );
+    if (!selectedChat) return;
+
+    try {
+      setSendMessageLoading(true);
+
+      const data = await ChatRepository.sendMessage(
+        selectedChat._id,
+        inputMessage,
+      );
+
+      socket.emit("newMessage", data);
+
+      setMessages([...messages, data]);
+      setNotifications([...notifications, data]);
+
+      setInputMessage("");
+      setSendMessageLoading(false);
+    } catch (err) {
+      toast({
+        title: "Notifikasi Error",
+        description: "Gagal mengirimkan pesan",
+      });
+    }
   };
 
   const scrollToBottom = () => {
@@ -77,13 +97,33 @@ const ChatArea: React.FC<TPropsChatArea> = ({
   };
 
   useEffect(() => {
-    console.log(getAllMessageById);
-    scrollToBottom();
-  }, [getAllMessageById]);
+    socket.emit("setup", currentUser);
+  }, []);
 
   useEffect(() => {
-    getAllMessageByIdRefetch();
-  }, [selectedChat?._id]);
+    scrollToBottom();
+  }, [messages]);
+
+  useEffect(() => {
+    fetchMessage();
+    selectedChatCompare = selectedChat;
+  }, [selectedChat]);
+
+  useEffect(() => {
+    socket.on("messageReceived", (newMessageReceived: IAllMessageById) => {
+      // This condition check if the current selectedChat focus is not the same as previous selectedChat then..
+      if (
+        !selectedChatCompare ||
+        selectedChatCompare._id !== newMessageReceived.chat._id
+      ) {
+        // set notifications with isRead false
+        setNotifications([...notifications, newMessageReceived]);
+      } else {
+        setNotifications([...notifications, newMessageReceived]);
+        setMessages([...messages, newMessageReceived]);
+      }
+    });
+  });
 
   return (
     <div
@@ -106,20 +146,20 @@ const ChatArea: React.FC<TPropsChatArea> = ({
               ref={chatContainerRef}
             >
               <LoadingState
-                isLoading={getMessageLoading}
+                isLoading={fetchMessageLoading}
                 loadingFallback={
                   <Skeleton className="w-full py-10 rounded-md bg-[#E6E9FE]" />
                 }
               >
                 <EmptyState
-                  data={getAllMessageById?.length && !getMessageLoading}
+                  data={messages.length && !fetchMessageLoading}
                   customErrorTitle="Belum ada chat"
                   customErrorMessage="Mulai chat baru mu!"
                 >
-                  {getAllMessageById?.map((message, idx) => (
+                  {messages.map((message, idx) => (
                     <React.Fragment key={idx}>
                       {message.sender.id === currentUser?.id ? (
-                        <div className="self-end">
+                        <div className={`self-end ${idx === 0 && "mt-auto"}`}>
                           <Message
                             messageContent={message.content}
                             updatedAt={message.updatedAt}
@@ -127,11 +167,13 @@ const ChatArea: React.FC<TPropsChatArea> = ({
                           />
                         </div>
                       ) : (
-                        <Message
-                          messageContent={message.content}
-                          updatedAt={message.updatedAt}
-                          isCurrentUserMessage={false}
-                        />
+                        <div className={`self-start ${idx === 0 && "mt-auto"}`}>
+                          <Message
+                            messageContent={message.content}
+                            updatedAt={message.updatedAt}
+                            isCurrentUserMessage={false}
+                          />
+                        </div>
                       )}
                     </React.Fragment>
                   ))}

@@ -1,3 +1,4 @@
+import IAllMessageById from "@/src/domain/entities/allMessageByIdResponse";
 import IChatResponse from "@/src/domain/entities/chatResponse";
 import { create } from "zustand";
 
@@ -15,6 +16,9 @@ type TChatStore = {
   selectedChat: IChatResponse | null;
   setSelectedChat: (chat: IChatResponse | null) => void;
 
+  notifications: IAllMessageById[] | [];
+  setNotifications: (notifications: IAllMessageById[] | []) => void;
+
   chats: IChatResponse[] | [];
   setChats: (chats: IChatResponse[] | []) => void;
 };
@@ -25,6 +29,9 @@ export const useChatStore = create<TChatStore>((set) => ({
 
   selectedChat: null,
   setSelectedChat: (chat) => set((_) => ({ selectedChat: chat })),
+
+  notifications: [],
+  setNotifications: (notifications) => set((_) => ({ notifications })),
 
   chats: [],
   setChats: (chats) => set((_) => ({ chats })),

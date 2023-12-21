@@ -6,7 +6,7 @@ import Cookies from "js-cookie";
 const API_BASE_URL = process.env.BASE_URL;
 
 export class ChatRepository {
-  static getChats = async () => {
+  static getChats = async (): Promise<IChatResponse[] | []> => {
     const token = Cookies.get("token");
 
     const response = await axios.get(`${API_BASE_URL}/api/chat`, {
@@ -49,7 +49,10 @@ export class ChatRepository {
     return response.data.data;
   };
 
-  static sendMessage = async (chatId: string, content: string) => {
+  static sendMessage = async (
+    chatId: string,
+    content: string,
+  ): Promise<IAllMessageById> => {
     const token = Cookies.get("token");
 
     const response = await axios.post(

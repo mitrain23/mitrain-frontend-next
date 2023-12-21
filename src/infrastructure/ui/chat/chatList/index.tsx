@@ -1,11 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import MessageHighlights from "../messageHighlights";
 import { useQuery } from "react-query";
 import { ChatRepository } from "@/src/infrastructure/services/chat/chatRepository";
-import {
-  TChatUser,
-  useChatStore,
-} from "@/src/application/zustand/useChatStore";
+import { useChatStore } from "@/src/application/zustand/useChatStore";
 import LoadingState from "../../global/state/loading";
 import EmptyState from "../../global/state/empty";
 import { Skeleton } from "@/src/components/ui/skeleton";
@@ -13,11 +10,10 @@ import { Separator } from "@/src/components/ui/separator";
 import { useUser } from "@/src/application/hooks/global/useUser";
 
 type TProps = {
-  refetchChat: boolean;
   setOpenChat: (values: React.SetStateAction<boolean>) => void;
 };
 
-const ChatList: React.FC<TProps> = ({ setOpenChat, refetchChat }) => {
+const ChatList: React.FC<TProps> = ({ setOpenChat }) => {
   const { selectedChat, setSelectedChat, chats, setChats } = useChatStore(
     (state) => state,
   );
@@ -29,7 +25,6 @@ const ChatList: React.FC<TProps> = ({ setOpenChat, refetchChat }) => {
   useEffect(() => {
     if (getChats.data) {
       setChats(getChats.data);
-      console.log(getChats.data);
     }
   }, [getChats.data]);
 
@@ -38,10 +33,6 @@ const ChatList: React.FC<TProps> = ({ setOpenChat, refetchChat }) => {
       setOpenChat(true);
     }
   }, [selectedChat]);
-
-  useEffect(() => {
-    if (refetchChat) getChats.refetch();
-  }, [refetchChat]);
 
   return (
     <div className="py-[34px] px-[28px] border-[1px] border-[#E7E7E7] rounded-md lg:rounded-r-none">

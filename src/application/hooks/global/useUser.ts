@@ -1,15 +1,19 @@
-import { useEffect, useState } from "react";
 import { TChatUser } from "../../zustand/useChatStore";
 
 export const useUser = () => {
-  const [user, setUser] = useState<TChatUser | null>(null);
+  return { currentUser: getCurrentUser() };
+};
 
-  useEffect(() => {
+export const getCurrentUser = () => {
+  if (typeof window !== "undefined") {
     const userFromStorage = localStorage.getItem("user");
-    if (userFromStorage) {
-      setUser(JSON.parse(userFromStorage));
-    }
-  }, []);
 
-  return { currentUser: user };
+    if (userFromStorage) {
+      return JSON.parse(userFromStorage) as TChatUser;
+    }
+
+    return null;
+  }
+
+  return null;
 };

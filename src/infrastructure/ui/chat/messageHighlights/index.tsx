@@ -1,4 +1,4 @@
-import React, { MouseEventHandler, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Avatar,
   AvatarFallback,
@@ -6,8 +6,11 @@ import {
 } from "@/src/components/ui/avatar";
 import { Badge } from "@/src/components/ui/badge";
 import IChatResponse from "@/src/domain/entities/chatResponse";
-import { getSender } from "@/src/application/helper/chat";
-import { TChatUser } from "@/src/application/zustand/useChatStore";
+import {
+  TChatUser,
+  useChatStore,
+} from "@/src/application/zustand/useChatStore";
+import IAllMessageById from "@/src/domain/entities/allMessageByIdResponse";
 
 type TProps = {
   chat: IChatResponse;
@@ -17,6 +20,25 @@ type TProps = {
   setOpenChat: (values: React.SetStateAction<boolean>) => void;
 };
 
+const getLatestMessage = (
+  chat: IChatResponse,
+  notifications: IAllMessageById[] | [],
+) => {
+  return (
+    notifications.findLast((notification) => notification.chat._id === chat._id)
+      ?.content ||
+    (chat.latestMessage ? chat.latestMessage.content : "Belum ada chat")
+  );
+};
+
+const subStrLatestMessage = (latestMessage: string) => {
+  if (latestMessage.length > 16) {
+    return latestMessage.split("").slice(0, 15).join("") + "...";
+  }
+
+  return latestMessage;
+};
+
 const MessageHighlights: React.FC<TProps> = ({
   chat,
   joinedUser,
@@ -24,6 +46,13 @@ const MessageHighlights: React.FC<TProps> = ({
   setSelectedChat,
   setOpenChat,
 }) => {
+  // FIX: notif issue with isRead and with no selectedChat
+  const { notifications } = useChatStore();
+
+  useEffect(() => {
+    console.log(notifications, " from message highlights");
+  }, [notifications]);
+
   return (
     <div
       className={`flex flex-row py-[22px] gap-[24px]  cursor-pointer ${selectedChat?._id === chat._id
@@ -54,7 +83,7 @@ const MessageHighlights: React.FC<TProps> = ({
         </h1>
         <div className="flex items-center">
           <p className="md:w-[300px] whitespace-wrap break-all truncate text-[#425379] font-inter md:text-[16px]">
-            {chat.latestMessage ? chat.latestMessage.content : "Belum Ada Chat"}
+            {subStrLatestMessage(getLatestMessage(chat, notifications))}
           </p>
           {chat.latestMessage && (
             <Badge className="bg-[#E75252] hover:bg-[#E75252] rounded-full md:text-[14px] absolute top-0 right-2 md:static">
