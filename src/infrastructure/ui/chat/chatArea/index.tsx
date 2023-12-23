@@ -1,25 +1,26 @@
-import React, { useRef } from "react";
-import { Textarea } from "@/src/components/ui/textarea";
-import Message from "../message";
-import MessageTopBar from "../messageTopBar";
-import { Button } from "@/src/components/ui/button";
 import SendIcon from "@/public/svg/send.svg";
+import { useUser } from "@/src/application/hooks/global/useUser";
 import { useChatStore } from "@/src/application/zustand/useChatStore";
+import { Button } from "@/src/components/ui/button";
+import { Skeleton } from "@/src/components/ui/skeleton";
+import { Textarea } from "@/src/components/ui/textarea";
+import { useToast } from "@/src/components/ui/use-toast";
+import IAllMessageById from "@/src/domain/entities/allMessageByIdResponse";
+import IChatResponse from "@/src/domain/entities/chatResponse";
+import { ChatRepository } from "@/src/infrastructure/services/chat/chatRepository";
 import { ChatBubbleIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
-import { ChatRepository } from "@/src/infrastructure/services/chat/chatRepository";
-import { useEffect, useState } from "react";
-import { useUser } from "@/src/application/hooks/global/useUser";
+import React, { useEffect, useRef, useState } from "react";
+import { io } from "socket.io-client";
 import EmptyState from "../../global/state/empty";
 import LoadingState from "../../global/state/loading";
-import { Skeleton } from "@/src/components/ui/skeleton";
-import { io } from "socket.io-client";
-import IChatResponse from "@/src/domain/entities/chatResponse";
-import IAllMessageById from "@/src/domain/entities/allMessageByIdResponse";
-import { useToast } from "@/src/components/ui/use-toast";
+import Message from "../message";
+import MessageTopBar from "../messageTopBar";
 
 type TPropsChatArea = {
   openChat: boolean;
+  refetch: boolean;
+  setRefetch: (value: React.SetStateAction<boolean>) => void;
   setOpenChat: (values: React.SetStateAction<boolean>) => void;
 };
 
@@ -28,7 +29,12 @@ const ENDPOINT = process.env.BASE_URL;
 const socket = io(ENDPOINT!);
 let selectedChatCompare: IChatResponse | null;
 
-const ChatArea: React.FC<TPropsChatArea> = ({ setOpenChat, openChat }) => {
+const ChatArea: React.FC<TPropsChatArea> = ({
+  setOpenChat,
+  openChat,
+  refetch,
+  setRefetch,
+}) => {
   const [inputMessage, setInputMessage] = useState("");
   const [messages, setMessages] = useState<IAllMessageById[] | []>([]);
   const [fetchMessageLoading, setFetchMessageLoading] = useState(false);
@@ -50,8 +56,26 @@ const ChatArea: React.FC<TPropsChatArea> = ({ setOpenChat, openChat }) => {
 
       const messages = await ChatRepository.getAllMessageById(selectedChat._id);
 
+      const isNotificationExists = notifications.find(
+        (notification) => notification.chat._id === selectedChat._id
+      )?._id;
+
+      if (isNotificationExists) {
+        const setReaded = await ChatRepository.setMessageReaded(
+          selectedChat._id
+        );
+
+        setNotifications(
+          notifications.filter(
+            (notification) => notification.chat._id !== selectedChat._id
+          )
+        );
+      }
+
       setMessages(messages);
       setFetchMessageLoading(false);
+
+      setRefetch(!refetch);
 
       socket.emit("joinChat", selectedChat._id, currentUser?.name);
     } catch (err) {
@@ -70,16 +94,17 @@ const ChatArea: React.FC<TPropsChatArea> = ({ setOpenChat, openChat }) => {
 
       const data = await ChatRepository.sendMessage(
         selectedChat._id,
-        inputMessage,
+        inputMessage
       );
 
       socket.emit("newMessage", data);
 
       setMessages([...messages, data]);
-      setNotifications([...notifications, data]);
 
       setInputMessage("");
       setSendMessageLoading(false);
+
+      setRefetch(!refetch);
     } catch (err) {
       toast({
         title: "Notifikasi Error",
@@ -116,12 +141,17 @@ const ChatArea: React.FC<TPropsChatArea> = ({ setOpenChat, openChat }) => {
         !selectedChatCompare ||
         selectedChatCompare._id !== newMessageReceived.chat._id
       ) {
-        // set notifications with isRead false
-        setNotifications([...notifications, newMessageReceived]);
+        if (
+          !notifications.find(
+            (notification) => notification._id === newMessageReceived._id
+          )
+        ) {
+          setNotifications([...notifications, newMessageReceived]);
+        }
       } else {
-        setNotifications([...notifications, newMessageReceived]);
         setMessages([...messages, newMessageReceived]);
       }
+      setRefetch(!refetch);
     });
   });
 
@@ -187,7 +217,7 @@ const ChatArea: React.FC<TPropsChatArea> = ({ setOpenChat, openChat }) => {
                   e.currentTarget.style.height = "20px";
                   e.currentTarget.style.height = `${Math.min(
                     e.currentTarget.scrollHeight,
-                    200,
+                    200
                   )}px`;
                 }}
                 placeholder="Tulis pesan.."

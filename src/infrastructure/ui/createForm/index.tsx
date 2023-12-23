@@ -1,7 +1,13 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import FileInputBox from "./fileInputBox";
+import { Button } from "@/src/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/src/components/ui/form";
 import { Input } from "@/src/components/ui/input";
 import {
   Select,
@@ -11,27 +17,21 @@ import {
   SelectValue,
 } from "@/src/components/ui/select";
 import { Textarea } from "@/src/components/ui/textarea";
-import { Button } from "@/src/components/ui/button";
-import { Province } from "@/src/domain/entities/province";
+import { useToast } from "@/src/components/ui/use-toast";
 import { City } from "@/src/domain/entities/city";
-import axios from "axios";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/src/components/ui/form";
+import { Province } from "@/src/domain/entities/province";
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { useMutation } from "react-query";
+import { z } from "zod";
 import {
   PostsRepository,
   formatPrice,
 } from "../../services/posts/postsRepository";
-import { useMutation } from "react-query";
-import { useRouter } from "next/navigation";
-import { useToast } from "@/src/components/ui/use-toast";
+import FileInputBox from "./fileInputBox";
 
 interface ImageData {
   file: File | null;
@@ -213,7 +213,6 @@ const CreateForm = () => {
         },
       });
     } catch (error) {
-      console.log(error);
       toast({
         title: "Notifikasi",
         description: "Gagal membuat iklan baru",
@@ -255,7 +254,7 @@ const CreateForm = () => {
       setCities(response.data);
     };
 
-    getCities().catch((reason) => console.log(reason));
+    getCities();
   }, [selectedProvinceId]);
 
   return (

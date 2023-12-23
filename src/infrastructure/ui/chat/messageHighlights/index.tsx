@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   Avatar,
   AvatarFallback,
@@ -20,15 +20,52 @@ type TProps = {
   setOpenChat: (values: React.SetStateAction<boolean>) => void;
 };
 
-const getLatestMessage = (
-  chat: IChatResponse,
-  notifications: IAllMessageById[] | [],
+// const getLatestMessage = (
+//   chat: IChatResponse,
+//   notifications: IAllMessageById[] | [],
+// ) => {
+//   return (
+//     notifications.findLast((notification) => notification.chat._id === chat._id)
+//       ?.content ||
+//     (chat.latestMessage ? chat.latestMessage.content : "Belum ada chat")
+//   );
+// };
+
+const getSenderName = (
+  chat: Omit<IChatResponse, "latestMessage">,
+  joinedUser: TChatUser | null,
 ) => {
   return (
-    notifications.findLast((notification) => notification.chat._id === chat._id)
-      ?.content ||
-    (chat.latestMessage ? chat.latestMessage.content : "Belum ada chat")
+    chat.users.find((user) => user.id !== joinedUser?.id)?.name ||
+    chat.users[0].name
   );
+};
+
+type TUnreadNotification = {
+  chatId: string;
+  message: string;
+};
+
+const getUnreadMessageNotification = (
+  notifications: IAllMessageById[] | [],
+  joinedUser: TChatUser | null,
+  callback: (
+    unreadNotifications: TUnreadNotification[],
+  ) => React.ReactNode | undefined,
+) => {
+  if (!notifications.length) return [];
+
+  const unreadNotifications = notifications
+    .filter((notification) => !notification.isRead)
+    .map((notification) => ({
+      chatId: notification.chat._id,
+      message: `Ada pesan baru dari ${getSenderName(
+        notification.chat,
+        joinedUser,
+      )}`,
+    }));
+
+  return callback(unreadNotifications);
 };
 
 const subStrLatestMessage = (latestMessage: string) => {
@@ -46,12 +83,7 @@ const MessageHighlights: React.FC<TProps> = ({
   setSelectedChat,
   setOpenChat,
 }) => {
-  // FIX: notif issue with isRead and with no selectedChat
   const { notifications } = useChatStore();
-
-  useEffect(() => {
-    console.log(notifications, " from message highlights");
-  }, [notifications]);
 
   return (
     <div
@@ -68,9 +100,7 @@ const MessageHighlights: React.FC<TProps> = ({
         <Avatar className="md:w-[62px] md:h-[62px]">
           <AvatarImage />
           <AvatarFallback>
-            {chat.users
-              .find((user) => user.id !== joinedUser?.id)
-              ?.name.toUpperCase()[0] || chat.users[0].name.toUpperCase()[0]}
+            {getSenderName(chat, joinedUser).toUpperCase()[0]}
           </AvatarFallback>
         </Avatar>
       </div>
@@ -83,12 +113,29 @@ const MessageHighlights: React.FC<TProps> = ({
         </h1>
         <div className="flex items-center">
           <p className="md:w-[300px] whitespace-wrap break-all truncate text-[#425379] font-inter md:text-[16px]">
-            {subStrLatestMessage(getLatestMessage(chat, notifications))}
+            {subStrLatestMessage(
+              chat.latestMessage
+                ? chat.latestMessage.content
+                : "Belum ada pesan",
+            )}
           </p>
-          {chat.latestMessage && (
-            <Badge className="bg-[#E75252] hover:bg-[#E75252] rounded-full md:text-[14px] absolute top-0 right-2 md:static">
-              1
-            </Badge>
+          {getUnreadMessageNotification(
+            notifications,
+            joinedUser,
+            (unreadNotifications) => {
+              const currentChatUnreadNotification = unreadNotifications.filter(
+                (notification) => notification.chatId === chat._id,
+              ).length;
+
+              // FIX: di web bener di mobile ngaco bjir
+              if (currentChatUnreadNotification) {
+                return (
+                  <Badge className="bg-[#E75252] hover:bg-[#E75252] rounded-full md:text-[14px] absolute top-0 right-2 md:static">
+                    {currentChatUnreadNotification}
+                  </Badge>
+                );
+              }
+            },
           )}
         </div>
       </div>

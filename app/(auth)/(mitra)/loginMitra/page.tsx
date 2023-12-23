@@ -1,8 +1,6 @@
 "use client";
 
 import { Button } from "@/src/components/ui/button";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
   FormControl,
@@ -12,15 +10,15 @@ import {
   FormMessage,
 } from "@/src/components/ui/form";
 import { Input } from "@/src/components/ui/input";
-import GoogleIcon from "@/public/svg/google_logo.svg";
-import Link from "next/link";
-import React from "react";
-import { z } from "zod";
-import { useMutation } from "react-query";
+import { useToast } from "@/src/components/ui/use-toast";
 import { user } from "@/src/domain/entities/user";
 import { MitraRepository } from "@/src/infrastructure/services/mitraAuth/mitraRepository";
+import { zodResolver } from "@hookform/resolvers/zod";
 import Cookies from "js-cookie";
-import { useToast } from "@/src/components/ui/use-toast";
+import Link from "next/link";
+import { useForm } from "react-hook-form";
+import { useMutation } from "react-query";
+import { z } from "zod";
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -45,7 +43,6 @@ const Page = () => {
   const handleSubmit = (values: z.infer<typeof formSchema>) => {
     loginMitra(values, {
       onSuccess: (data) => {
-        console.log(data);
         Cookies.set("token", data.token, { expires: 1 / 8 });
         Cookies.set("user", JSON.stringify(data.data), { expires: 1 / 8 });
 
@@ -58,8 +55,6 @@ const Page = () => {
         window.location.href = "/results";
       },
       onError: (error) => {
-        console.error(error);
-
         toast({
           title: "Notifikasi",
           description: "Error saat login, periksa kembali kredensial anda",

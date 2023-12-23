@@ -10,10 +10,11 @@ import { Separator } from "@/src/components/ui/separator";
 import { useUser } from "@/src/application/hooks/global/useUser";
 
 type TProps = {
+  refetch: boolean;
   setOpenChat: (values: React.SetStateAction<boolean>) => void;
 };
 
-const ChatList: React.FC<TProps> = ({ setOpenChat }) => {
+const ChatList: React.FC<TProps> = ({ refetch, setOpenChat }) => {
   const { selectedChat, setSelectedChat, chats, setChats } = useChatStore(
     (state) => state,
   );
@@ -27,6 +28,10 @@ const ChatList: React.FC<TProps> = ({ setOpenChat }) => {
       setChats(getChats.data);
     }
   }, [getChats.data]);
+
+  useEffect(() => {
+    getChats.refetch();
+  }, [refetch]);
 
   useEffect(() => {
     if (selectedChat) {

@@ -1,5 +1,6 @@
 import IAllMessageById from "@/src/domain/entities/allMessageByIdResponse";
 import IChatResponse from "@/src/domain/entities/chatResponse";
+import { IMessageReaded } from "@/src/domain/entities/messageReadedResponse";
 import axios from "axios";
 import Cookies from "js-cookie";
 
@@ -70,5 +71,43 @@ export class ChatRepository {
     );
 
     return response.data;
+  };
+
+  static setMessageReaded = async (chatId: string): Promise<IMessageReaded> => {
+    const token = Cookies.get("token");
+
+    const response = await axios.put(
+      `${API_BASE_URL}/api/message/${chatId}`,
+      {
+        chatId,
+      },
+      {
+        headers: {
+          Authorization: token ? `Bearer ${token}` : "",
+          "Content-Type": "application/json",
+        },
+      },
+    );
+
+    return response.data;
+  };
+
+  static getNotifications = async (): Promise<IAllMessageById[] | []> => {
+    const token = Cookies.get("token");
+
+    try {
+      const response = await axios.get(
+        `${API_BASE_URL}/api/message/getUnread`,
+        {
+          headers: {
+            Authorization: token ? `Bearer ${token}` : "",
+          },
+        },
+      );
+
+      return response.data.data;
+    } catch (err) {
+      return [];
+    }
   };
 }

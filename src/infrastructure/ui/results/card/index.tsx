@@ -1,8 +1,7 @@
-import React from "react";
-import Image from "next/image";
-import Link from "next/link";
 import MitraPermiumIcon from "@/public/svg/mitra_permium_check.svg";
 import { formatPrice } from "@/src/infrastructure/services/posts/postsRepository";
+import Image from "next/image";
+import Link from "next/link";
 
 interface CardProps {
   data?: any;
@@ -12,8 +11,6 @@ const Card = ({ data }: CardProps) => {
   const API_BASE_URL = process.env.BASE_URL;
 
   const Image1 = `${API_BASE_URL}/images/${data?.images?.[0]?.url}`;
-
-  console.log(data);
 
   return (
     <Link href={`details/${data?.id}-${encodeURIComponent(data?.title)}`}>

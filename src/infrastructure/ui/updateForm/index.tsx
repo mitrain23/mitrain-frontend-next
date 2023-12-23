@@ -17,23 +17,23 @@ import {
   SelectValue,
 } from "@/src/components/ui/select";
 import { Textarea } from "@/src/components/ui/textarea";
+import { useToast } from "@/src/components/ui/use-toast";
 import { City } from "@/src/domain/entities/city";
 import { Province } from "@/src/domain/entities/province";
+import { IUpdatePostRequest } from "@/src/domain/entities/updatePostRequest";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useMutation } from "react-query";
 import { z } from "zod";
 import { PostDetailResponse } from "../../models/getPostDetailResponse";
-import FileInputBox from "../createForm/fileInputBox";
 import {
   PostsRepository,
   formatPrice,
 } from "../../services/posts/postsRepository";
-import { useMutation } from "react-query";
-import { IUpdatePostRequest } from "@/src/domain/entities/updatePostRequest";
-import { useRouter } from "next/navigation";
-import { useToast } from "@/src/components/ui/use-toast";
+import FileInputBox from "../createForm/fileInputBox";
 
 interface ImageData {
   file: File | null;
@@ -48,7 +48,7 @@ interface ImageDataWithFile {
 }
 
 const isMobilePhone = new RegExp(
-  /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/,
+  /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/
 );
 
 const formSchema = z.object({
@@ -93,7 +93,7 @@ const UpdateForm: React.FC<TProps> = ({ data }) => {
 
     const provinceName = location.split(", ")[1];
     const provinceId = provinces.find(
-      (province) => province.name === provinceName,
+      (province) => province.name === provinceName
     )?.id;
 
     return provinceId || "";
@@ -112,7 +112,7 @@ const UpdateForm: React.FC<TProps> = ({ data }) => {
     Array(5).fill({
       file: null,
       imageUrl: null,
-    }),
+    })
   );
   const [provinces, setProvinces] = useState<Province[]>([]);
   const [selectedProvinceId, setSelectedProvinceId] = useState<string>("");
@@ -125,7 +125,7 @@ const UpdateForm: React.FC<TProps> = ({ data }) => {
   const handleFileChange = (
     file: File | null,
     boxNumber: number,
-    coverImage: ImageData,
+    coverImage: ImageData
   ) => {
     // Get latest data (if null then fill it with { file: null, imageUrl: null }) not Array(5).fill(null))
     let updatedImages: ImageData[] = coverImages.map((imageData) => ({
@@ -183,7 +183,7 @@ const UpdateForm: React.FC<TProps> = ({ data }) => {
     }
 
     const filteredImages = updatedImages.filter(
-      (imageData) => !!imageData.imageUrl,
+      (imageData) => !!imageData.imageUrl
     );
 
     // Remove duplicate
@@ -194,7 +194,7 @@ const UpdateForm: React.FC<TProps> = ({ data }) => {
     });
 
     filteredImages.forEach((imageData, idx) =>
-      tempArrImages.fill(imageData, idx, idx + 1),
+      tempArrImages.fill(imageData, idx, idx + 1)
     );
 
     setCoverImages(tempArrImages);
@@ -233,7 +233,7 @@ const UpdateForm: React.FC<TProps> = ({ data }) => {
     const imagesRequestData: { id: string | null; url: string | null }[] = [];
 
     const deletedImage = data?.images.filter(
-      (image) => !coverImages.some((imageData) => imageData.id === image.id),
+      (image) => !coverImages.some((imageData) => imageData.id === image.id)
     );
 
     if (deletedImage) {
@@ -246,7 +246,7 @@ const UpdateForm: React.FC<TProps> = ({ data }) => {
     }
 
     const updatedImage: ImageDataWithFile[] = coverImages.filter(
-      (imageData) => imageData.file && imageData.id,
+      (imageData) => imageData.file && imageData.id
     ) as ImageDataWithFile[];
 
     if (updatedImage) {
@@ -290,7 +290,6 @@ const UpdateForm: React.FC<TProps> = ({ data }) => {
         { data: requestData, postId: data?.id as string },
         {
           onSuccess: (data) => {
-            console.log(data);
             toast({
               title: "Notifikasi",
               description: "Berhasil mengedit iklan",
@@ -303,10 +302,9 @@ const UpdateForm: React.FC<TProps> = ({ data }) => {
               description: "Gagal mengedit iklan",
             });
           },
-        },
+        }
       );
     } catch (error) {
-      console.log(error);
       toast({
         title: "Notifikasi",
         description: "Gagal mengedit iklan",
@@ -329,7 +327,7 @@ const UpdateForm: React.FC<TProps> = ({ data }) => {
 
     const getProvinces = async () => {
       const response = await axios.get(
-        "https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json",
+        "https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json"
       );
 
       setProvinces(response.data);
@@ -373,7 +371,7 @@ const UpdateForm: React.FC<TProps> = ({ data }) => {
             id: imageData.id,
           },
           idx,
-          idx + 1,
+          idx + 1
         );
 
         setCoverImages(tmpArr);
@@ -384,12 +382,11 @@ const UpdateForm: React.FC<TProps> = ({ data }) => {
   useEffect(() => {
     const getCities = async () => {
       const response = await axios.get(
-        `https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${selectedProvinceId}.json`,
+        `https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${selectedProvinceId}.json`
       );
       setCities(response.data);
     };
-
-    getCities().catch((reason) => console.log(reason));
+    getCities();
   }, [selectedProvinceId]);
 
   return (
@@ -611,7 +608,7 @@ const UpdateForm: React.FC<TProps> = ({ data }) => {
                             onChange={(e) =>
                               form.setValue(
                                 "priceMin",
-                                formatPrice(e.target.value),
+                                formatPrice(e.target.value)
                               )
                             }
                             type="text"
@@ -641,7 +638,7 @@ const UpdateForm: React.FC<TProps> = ({ data }) => {
                             onChange={(e) =>
                               form.setValue(
                                 "priceMax",
-                                formatPrice(e.target.value),
+                                formatPrice(e.target.value)
                               )
                             }
                             type="text"
@@ -675,7 +672,7 @@ const UpdateForm: React.FC<TProps> = ({ data }) => {
                 onValueChange={(value) => {
                   const selectedProvinceId = value;
                   const selectedProvinceObject = provinces.find(
-                    (province: any) => province.id === selectedProvinceId,
+                    (province: any) => province.id === selectedProvinceId
                   );
 
                   setSelectedProvinceId(selectedProvinceObject?.id || "");
@@ -704,7 +701,7 @@ const UpdateForm: React.FC<TProps> = ({ data }) => {
                   value={selectedCityId}
                   onValueChange={(value) => {
                     const province = provinces.find(
-                      (province) => province.id === selectedProvinceId,
+                      (province) => province.id === selectedProvinceId
                     )?.name;
                     const city = cities.find((city) => city.id === value)?.name;
 

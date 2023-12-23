@@ -1,15 +1,13 @@
+import IAllPostResponse from "@/src/domain/entities/allPostResponse";
 import { Post } from "@/src/domain/entities/post";
 import { PostFilter } from "@/src/domain/entities/postFilter";
+import { IUpdatePostRequest } from "@/src/domain/entities/updatePostRequest";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { GetPostByAuthorResponse } from "../../models/getPostByAuthorResponse";
 import { PostDetailResponse } from "../../models/getPostDetailResponse";
-import { IUpdatePostRequest } from "@/src/domain/entities/updatePostRequest";
-import IAllPostResponse from "@/src/domain/entities/allPostResponse";
 
 const API_BASE_URL = process.env.BASE_URL;
-
-console.log(process.env.BASE_URL);
 
 export interface responseDelete {
   data: string;
@@ -21,10 +19,10 @@ export const formatPrice = (input: string) => {
 
 export class PostsRepository {
   static getAllPost = async (
-    pageNumber: number,
+    pageNumber: number
   ): Promise<IAllPostResponse[]> => {
     const response = await axios.get(
-      `${API_BASE_URL}/api/post?page=${pageNumber}&pageSize=10`,
+      `${API_BASE_URL}/api/post?page=${pageNumber}&pageSize=10`
     );
     const { data } = await response.data;
 
@@ -32,7 +30,6 @@ export class PostsRepository {
   };
 
   static getPostById = async (id: string): Promise<PostDetailResponse> => {
-    console.log(id);
     const response = await fetch(`${API_BASE_URL}/api/post/${id}`, {
       headers: {
         // "ngrok-skip-browser-warning": "69420",
@@ -53,7 +50,7 @@ export class PostsRepository {
         // "ngrok-skip-browser-warning": "69420",
       },
     });
-    console.log(response.data);
+
     return response.data;
   };
 
@@ -67,13 +64,12 @@ export class PostsRepository {
       },
     });
 
-    console.log(response.data);
     return response.data;
   };
 
   static updatePost = async (
     data: IUpdatePostRequest,
-    postId: string,
+    postId: string
   ): Promise<Post> => {
     const token = Cookies.get("token");
     const response = await axios.put(
@@ -85,20 +81,17 @@ export class PostsRepository {
           // "ngrok-skip-browser-warning": "69420",
           // "Access-Control-Allow-Origin": `${API_BASE_URL}`,
         },
-      },
+      }
     );
-
-    console.log(response);
 
     return response.data;
   };
 
   static getPostByAuthor = async (
-    id: string | null,
+    id: string | null
   ): Promise<GetPostByAuthorResponse> => {
     const token = Cookies.get("token");
-    console.log(token);
-    console.log(id);
+
     const response = await fetch(`${API_BASE_URL}/api/post/postAuthor/${id}`, {
       headers: {
         Authorization: token ? `Bearer ${token}` : "",
@@ -106,12 +99,12 @@ export class PostsRepository {
       },
     });
     const data = await response.json();
-    console.log(data);
+
     return data;
   };
 
   static getAllPostByFilter = async (
-    postFilter: PostFilter,
+    postFilter: PostFilter
   ): Promise<Post[]> => {
     const getParams = () => {
       const params = [];
@@ -130,7 +123,7 @@ export class PostsRepository {
         headers: {
           // "ngrok-skip-browser-warning": "69420",
         },
-      },
+      }
     );
     const data = await response.json();
 

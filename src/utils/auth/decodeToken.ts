@@ -11,7 +11,7 @@ export const decodeToken = (): number | null => {
           return userId;
         }
       } catch (error) {
-        console.error("Error decoding JWT token:", error);
+        console.error(error);
       }
     }
   }

@@ -1,24 +1,24 @@
 "use client";
 
-import React, { useState } from "react";
-import Image from "next/image";
-import image1 from "../../../../../public/images/bingungcarisupplier.png";
-import Link from "next/link";
-import WAIcon from "@/public/svg/wa.svg";
-import LikeProductIcon from "@/public/svg/like_product.svg";
 import AddBookmarkIcon from "@/public/svg/add_bookmark.svg";
+import LikeProductIcon from "@/public/svg/like_product.svg";
 import PremiumIcon from "@/public/svg/premium.svg";
 import TruckIcon from "@/public/svg/truck.svg";
+import WAIcon from "@/public/svg/wa.svg";
 import { Button } from "@/src/components/ui/button";
 import { Separator } from "@/src/components/ui/separator";
 import { formatPrice } from "@/src/infrastructure/services/posts/postsRepository";
+import Image from "next/image";
+import Link from "next/link";
+import { useState } from "react";
+import image1 from "../../../../../public/images/bingungcarisupplier.png";
 
-import { useMutation, useQueryClient } from "react-query";
-import { ChatRepository } from "@/src/infrastructure/services/chat/chatRepository";
 import { useChatStore } from "@/src/application/zustand/useChatStore";
 import { useToast } from "@/src/components/ui/use-toast";
-import { useRouter } from "next/navigation";
 import { PostDetailResponse } from "@/src/infrastructure/models/getPostDetailResponse";
+import { ChatRepository } from "@/src/infrastructure/services/chat/chatRepository";
+import { useRouter } from "next/navigation";
+import { useMutation, useQueryClient } from "react-query";
 
 const HeaderDetails = ({ data }: { data: PostDetailResponse }) => {
   const API_BASE_URL = process.env.BASE_URL;
@@ -28,7 +28,7 @@ const HeaderDetails = ({ data }: { data: PostDetailResponse }) => {
   const [activeImg, setActiveImage] = useState(Image1);
 
   const imageUrls = (data?.images || []).map(
-    (imageData: any) => `${API_BASE_URL}/images/${imageData?.url}`,
+    (imageData: any) => `${API_BASE_URL}/images/${imageData?.url}`
   );
 
   const { toast } = useToast();
@@ -62,8 +62,6 @@ const HeaderDetails = ({ data }: { data: PostDetailResponse }) => {
       },
     });
   };
-
-  console.log(data);
 
   return (
     <div className="flex flex-col md:flex-row gap-[28px] mb-[41px]">

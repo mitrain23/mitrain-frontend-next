@@ -12,7 +12,7 @@ export default interface IAllMessageById {
     users: TChatUser[];
   };
   content: string;
-  readBy: TChatUser[];
+  isRead: boolean;
   sender: TChatUser;
 
   createdAt: string;

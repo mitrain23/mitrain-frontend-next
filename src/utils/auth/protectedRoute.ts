@@ -1,8 +1,8 @@
 "use client";
 
+import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import Cookies from "js-cookie";
 
 const ProtectedRoute = ({ children }: any) => {
   const router = useRouter();
@@ -10,10 +10,9 @@ const ProtectedRoute = ({ children }: any) => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     const tokenCookies = Cookies.get("token");
-    // console.log(tokenCookies)
+    //
     if (!tokenCookies) {
       router.push("/login");
-      console.log("oke");
     }
   }, [router]);
 

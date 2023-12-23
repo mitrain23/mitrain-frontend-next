@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useCallback, useEffect, useState } from "react";
-import Link from "next/link";
+import LocationIcon from "@/public/svg/location.svg";
+import { Button } from "@/src/components/ui/button";
+import { Input } from "@/src/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -10,13 +11,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/src/components/ui/select";
-import { Input } from "@/src/components/ui/input";
-import { Button } from "@/src/components/ui/button";
-import { ChevronDownIcon } from "@radix-ui/react-icons";
-import LocationIcon from "@/public/svg/location.svg";
-import { Province } from "@/src/domain/entities/province";
 import { City } from "@/src/domain/entities/city";
+import { Province } from "@/src/domain/entities/province";
+import { ChevronDownIcon } from "@radix-ui/react-icons";
 import axios from "axios";
+import Link from "next/link";
+import React, { useCallback, useEffect, useState } from "react";
 
 type TProps = {
   provinces: Province[];
@@ -39,14 +39,12 @@ const FlyingHeroSearch: React.FC<TProps> = ({ provinces }) => {
 
     const city = cities.find((city) => city.id === selectedCityId)?.name;
     const province = provinces.find(
-      (province) => province.id === selectedProvinceId,
+      (province) => province.id === selectedProvinceId
     )?.name;
 
     if (city && province) {
       params.push("lokasi=" + city + ", " + province);
     }
-
-    console.log(params);
 
     return params.join("&");
   }, [search, selectedCityId, selectedProvinceId]);
@@ -55,7 +53,7 @@ const FlyingHeroSearch: React.FC<TProps> = ({ provinces }) => {
     if (selectedProvinceId) {
       axios
         .get(
-          `https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${selectedProvinceId}.json`,
+          `https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${selectedProvinceId}.json`
         )
         .then((response) => setCities(response.data));
     }
@@ -78,7 +76,7 @@ const FlyingHeroSearch: React.FC<TProps> = ({ provinces }) => {
             <Select
               onValueChange={(selectedProvinceId) => {
                 const selectedProvince = provinces.find(
-                  (province) => province.id === selectedProvinceId,
+                  (province) => province.id === selectedProvinceId
                 );
 
                 setSelectedProvinceId(selectedProvince?.id || "");
