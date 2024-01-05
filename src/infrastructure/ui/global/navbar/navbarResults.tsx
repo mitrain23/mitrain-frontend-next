@@ -44,9 +44,6 @@ interface parsedUser {
 
 const API_BASE_URL = process.env.BASE_URL;
 
-/** TODO:
- * - Memahami logic
- */
 const NavbarResults = ({
   token,
 }: {
@@ -94,7 +91,7 @@ const NavbarResults = ({
     if (token) {
       ChatRepository.getNotifications().then((data) => {
         const notificationForCurrentUser = data.filter(
-          (notification) => notification.sender.id !== currentUser?.id
+          (notification) => notification.sender.id !== currentUser?.id,
         );
 
         setNotifications(notificationForCurrentUser);
@@ -212,7 +209,7 @@ const NavbarResults = ({
                   <DropdownMenuContent side="bottom" align="center">
                     {notifications.filter(
                       (notification) =>
-                        notification.sender.id !== currentUser?.id
+                        notification.sender.id !== currentUser?.id,
                     ).length ? (
                       <DropdownMenuItem className="py-[12px] cursor-pointer">
                         <Link href="/chat">

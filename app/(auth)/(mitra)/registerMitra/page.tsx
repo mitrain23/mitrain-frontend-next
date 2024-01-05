@@ -158,14 +158,16 @@ const Page = () => {
   }, []);
 
   useEffect(() => {
-    const getCities = async () => {
-      const response = await axios.get(
-        `https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${selectedProvinceId}.json`,
-      );
-      setCities(response.data);
-    };
+    if (selectedProvinceId) {
+      const getCities = async () => {
+        const response = await axios.get(
+          `https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${selectedProvinceId}.json`,
+        );
+        setCities(response.data);
+      };
 
-    getCities();
+      getCities();
+    }
   }, [selectedProvinceId]);
 
   return (

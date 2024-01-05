@@ -5,6 +5,7 @@ const nextConfig = {
       "localhost",
       "0152-2a02-4780-10-d402-00-1.ngrok-free.app",
       "api-dev.mitrainid.com",
+      "api.mitrainid.com",
       "static.nike.com",
     ],
   },

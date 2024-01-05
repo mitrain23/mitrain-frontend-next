@@ -11,7 +11,6 @@ const Message: React.FC<TProps> = ({
   updatedAt,
   isCurrentUserMessage,
 }) => {
-  // TODO: word break issue on mobile
   return (
     <div
       className={`rounded-md py-[16px] px-[18px] ${isCurrentUserMessage

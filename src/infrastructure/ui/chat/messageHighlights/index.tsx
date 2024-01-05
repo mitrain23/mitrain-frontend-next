@@ -127,7 +127,6 @@ const MessageHighlights: React.FC<TProps> = ({
                 (notification) => notification.chatId === chat._id,
               ).length;
 
-              // FIX: di web bener di mobile ngaco bjir
               if (currentChatUnreadNotification) {
                 return (
                   <Badge className="bg-[#E75252] hover:bg-[#E75252] rounded-full md:text-[14px] absolute top-0 right-2 md:static">
