@@ -1,12 +1,20 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: [
-      "localhost",
-      "0152-2a02-4780-10-d402-00-1.ngrok-free.app",
-      "api-dev.mitrainid.com",
-      "api.mitrainid.com",
-      "static.nike.com",
+    // remotePatterns: [
+    //   "localhost",
+    //   "0152-2a02-4780-10-d402-00-1.ngrok-free.app",
+    //   "api-dev.mitrainid.com",
+    //   "api.mitrainid.com",
+    //   "static.nike.com",
+    // ],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "api.mitrainid.com",
+        port: "",
+        pathname: "/images/**",
+      },
     ],
   },
   env: {
