@@ -19,7 +19,7 @@ export default function RootLayout({
 
   return (
     <html data-theme="light" lang="en" suppressHydrationWarning>
-      <body>
+      <body className="no-scrollbar">
         <ProgressProvider>
           <QueryClientWrapper token={token}>
             {children}

@@ -1,5 +1,8 @@
 "use client";
 
+import LocationIcon from "@/public/svg/location_mobile.svg";
+import { Button } from "@/src/components/ui/button";
+import { Input } from "@/src/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -8,15 +11,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/src/components/ui/select";
-import { ChevronDownIcon } from "@radix-ui/react-icons";
-import Link from "next/link";
-import React, { useCallback, useEffect, useState } from "react";
-import LocationIcon from "@/public/svg/location_mobile.svg";
-import { Input } from "@/src/components/ui/input";
-import { Button } from "@/src/components/ui/button";
 import { City } from "@/src/domain/entities/city";
 import { Province } from "@/src/domain/entities/province";
+import { ChevronDownIcon } from "@radix-ui/react-icons";
 import axios from "axios";
+import Link from "next/link";
+import React, { useCallback, useEffect, useState } from "react";
 
 type TProps = {
   provinces: Province[];
@@ -46,8 +46,6 @@ const MobileHero: React.FC<TProps> = ({ provinces }) => {
       params.push("lokasi=" + location);
     }
 
-    console.log(params);
-
     return params.join("&");
   }, [search, selectedCityId, selectedProvinceId]);
 
@@ -55,7 +53,7 @@ const MobileHero: React.FC<TProps> = ({ provinces }) => {
     if (selectedProvinceId) {
       axios
         .get(
-          `https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${selectedProvinceId}.json`,
+          `https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${selectedProvinceId}.json`
         )
         .then((response) => setCities(response.data));
     }
@@ -72,7 +70,7 @@ const MobileHero: React.FC<TProps> = ({ provinces }) => {
           <Select
             onValueChange={(selectedProvinceId) => {
               const selectedProvince = provinces.find(
-                (province) => province.id === selectedProvinceId,
+                (province) => province.id === selectedProvinceId
               );
 
               setSelectedProvinceId(selectedProvince?.id || "");

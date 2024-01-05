@@ -9,20 +9,20 @@ export class MitraRepository {
   static registerMitra = async (data: FormData): Promise<Mitra> => {
     const response = await axios.post(
       `${API_BASE_URL}/api/auth/registerMitra`,
-      data,
+      data
     );
-    console.log(response.data.data);
+
     return response.data.data;
   };
 
   static loginMitra = async (
-    credentials: user,
+    credentials: user
   ): Promise<LoginMitraResponse> => {
     const response = await axios.post(
       `${API_BASE_URL}/api/auth/login`,
-      credentials,
+      credentials
     );
-    console.log(response.data);
+
     return response.data;
   };
 }

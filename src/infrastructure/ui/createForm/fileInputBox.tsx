@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect, ChangeEvent } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 
 type TProps = {
   boxNumber: number;
@@ -11,7 +11,7 @@ type TProps = {
       file: File | null;
       imageUrl: string | null;
       id: string | null;
-    },
+    }
   ) => void;
   coverImage: {
     file: File | null;
@@ -25,7 +25,7 @@ const FileInputBox: React.FC<TProps> = ({
   onChange,
   coverImage,
 }) => {
-  // console.log(coverImage.imageUrl);
+  //
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 

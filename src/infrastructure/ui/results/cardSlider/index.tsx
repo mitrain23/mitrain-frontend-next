@@ -1,20 +1,18 @@
 "use client";
-import React, { MutableRefObject, useRef } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
+import ArrowLeftIcon from "@/public/svg/arrow_left.svg";
+import ArrowRightIcon from "@/public/svg/arrow_right.svg";
+import { useRef } from "react";
+import SwiperCore, { Grid, Pagination } from "swiper";
 import "swiper/css";
 import "swiper/css/grid";
 import "swiper/css/pagination";
+import { Swiper, SwiperSlide } from "swiper/react";
 import Card from "../card";
-import SwiperCore, { Grid, Pagination } from "swiper";
-import ArrowRightIcon from "@/public/svg/arrow_right.svg";
-import ArrowLeftIcon from "@/public/svg/arrow_left.svg";
 
 // install Swiper modules
 SwiperCore.use([Pagination]);
 
 const CardSlider = ({ data }: any) => {
-  console.log(data);
-
   // const swiperRef = useRef();
   const swiperRef = useRef<any | null>(null);
   const sliderSettings = {

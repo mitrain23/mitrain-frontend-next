@@ -40,7 +40,6 @@ const IklanSayaCard = ({ data, index }: { data: Datum; index: number }) => {
   const queryClient = useQueryClient();
 
   const handleDelete = async () => {
-    console.log(data.id);
     try {
       deletePost(data.id, {
         onSuccess: (_) => {
@@ -60,7 +59,6 @@ const IklanSayaCard = ({ data, index }: { data: Datum; index: number }) => {
         },
       });
     } catch (err) {
-      console.log(err);
       toast({
         title: "Notifikasi",
         description: "Gagal menghapus iklan",

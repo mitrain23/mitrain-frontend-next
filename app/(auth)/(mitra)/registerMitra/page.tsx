@@ -111,7 +111,6 @@ const Page = () => {
     try {
       registerMitra(formData, {
         onSuccess: (data) => {
-          console.log(data);
           toast({
             title: "Notifikasi",
             description: "Berhasil melakukan registrasi",
@@ -126,7 +125,6 @@ const Page = () => {
         },
       });
     } catch (error) {
-      console.log(error);
       toast({
         title: "Notifikasi",
         description: "Gagal melakukan registrasi",
@@ -137,7 +135,6 @@ const Page = () => {
   useEffect(() => {
     const getCategories = async () => {
       const response = await axios.get(API_BASE_URL + "/api/category");
-      console.log(response.data.data);
 
       const categories: string[] = [];
 
@@ -161,14 +158,16 @@ const Page = () => {
   }, []);
 
   useEffect(() => {
-    const getCities = async () => {
-      const response = await axios.get(
-        `https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${selectedProvinceId}.json`,
-      );
-      setCities(response.data);
-    };
+    if (selectedProvinceId) {
+      const getCities = async () => {
+        const response = await axios.get(
+          `https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${selectedProvinceId}.json`,
+        );
+        setCities(response.data);
+      };
 
-    getCities().catch((reason) => console.log(reason));
+      getCities();
+    }
   }, [selectedProvinceId]);
 
   return (

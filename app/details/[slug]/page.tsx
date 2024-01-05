@@ -111,7 +111,7 @@ export default function Page({ params }: { params: { slug: number } }) {
         loadingFallback={<HeaderDetailsLoading />}
         isLoading={getPostByIdQuery.isLoading}
       >
-        <HeaderDetails data={getPostByIdQuery.data} />
+        <HeaderDetails data={getPostByIdQuery.data!} />
       </LoadingState>
       <DescriptionDetails data={getPostByIdQuery.data} />
     </LayoutTemplate>
