@@ -57,18 +57,18 @@ const ChatArea: React.FC<TPropsChatArea> = ({
       const messages = await ChatRepository.getAllMessageById(selectedChat._id);
 
       const isNotificationExists = notifications.find(
-        (notification) => notification.chat._id === selectedChat._id
+        (notification) => notification.chat._id === selectedChat._id,
       )?._id;
 
       if (isNotificationExists) {
         const setReaded = await ChatRepository.setMessageReaded(
-          selectedChat._id
+          selectedChat._id,
         );
 
         setNotifications(
           notifications.filter(
-            (notification) => notification.chat._id !== selectedChat._id
-          )
+            (notification) => notification.chat._id !== selectedChat._id,
+          ),
         );
       }
 
@@ -94,7 +94,7 @@ const ChatArea: React.FC<TPropsChatArea> = ({
 
       const data = await ChatRepository.sendMessage(
         selectedChat._id,
-        inputMessage
+        inputMessage,
       );
 
       socket.emit("newMessage", data);
@@ -143,7 +143,7 @@ const ChatArea: React.FC<TPropsChatArea> = ({
       ) {
         if (
           !notifications.find(
-            (notification) => notification._id === newMessageReceived._id
+            (notification) => notification._id === newMessageReceived._id,
           )
         ) {
           setNotifications([...notifications, newMessageReceived]);
@@ -217,7 +217,7 @@ const ChatArea: React.FC<TPropsChatArea> = ({
                   e.currentTarget.style.height = "20px";
                   e.currentTarget.style.height = `${Math.min(
                     e.currentTarget.scrollHeight,
-                    200
+                    200,
                   )}px`;
                 }}
                 placeholder="Tulis pesan.."

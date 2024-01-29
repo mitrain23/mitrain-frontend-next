@@ -27,6 +27,8 @@ const ChatList: React.FC<TProps> = ({ refetch, setOpenChat }) => {
     if (getChats.data) {
       setChats(getChats.data);
     }
+
+    console.log(getChats.data);
   }, [getChats.data]);
 
   useEffect(() => {

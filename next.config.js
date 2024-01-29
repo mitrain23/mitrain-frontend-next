@@ -11,7 +11,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "api.mitrainid.com",
+        hostname: "*.mitrainid.com",
         port: "",
         pathname: "/images/**",
       },

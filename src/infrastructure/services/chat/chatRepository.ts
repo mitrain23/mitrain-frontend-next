@@ -19,12 +19,14 @@ export class ChatRepository {
     return response.data;
   };
 
-  static createOrEnterChat = async (userId: string): Promise<IChatResponse> => {
+  static createOrEnterChat = async (
+    productId: string,
+  ): Promise<IChatResponse> => {
     const token = Cookies.get("token");
 
     const response = await axios.post(
       `${API_BASE_URL}/api/chat`,
-      { Id: userId }, // kenapa gk userId key nya ? ada alasannya di BE. btw itu huruf I nya kapital sengaja ya bre
+      { product_id: productId },
       {
         headers: {
           Authorization: token ? `Bearer ${token}` : "",

@@ -28,7 +28,7 @@ const HeaderDetails = ({ data }: { data: PostDetailResponse }) => {
   const [activeImg, setActiveImage] = useState(Image1);
 
   const imageUrls = (data?.images || []).map(
-    (imageData: any) => `${API_BASE_URL}/images/${imageData?.url}`
+    (imageData: any) => `${API_BASE_URL}/images/${imageData?.url}`,
   );
 
   const { toast } = useToast();
@@ -37,17 +37,21 @@ const HeaderDetails = ({ data }: { data: PostDetailResponse }) => {
   const queryClient = useQueryClient();
   const router = useRouter();
   const { mutate: createOrEnterChat, isLoading } = useMutation({
-    mutationFn: (userId: string) => {
-      return ChatRepository.createOrEnterChat(userId);
+    mutationFn: (productId: string) => {
+      return ChatRepository.createOrEnterChat(productId);
     },
   });
 
   const handleClick = () => {
-    createOrEnterChat(data.mitraId, {
+    console.log("product id : ", data.id);
+
+    createOrEnterChat(data.id, {
       onSuccess: (data) => {
         if (!chats.find((chat) => chat._id === data._id)) {
           setChats([...chats, data]);
         }
+
+        console.log("chat ", data);
 
         queryClient.invalidateQueries("get_chats");
 

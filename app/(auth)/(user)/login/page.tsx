@@ -24,7 +24,7 @@ import { useToast } from "@/src/components/ui/use-toast";
 
 const formSchema = z.object({
   email: z.string().email(),
-  password: z.string().min(8).max(10),
+  password: z.string().min(8),
 });
 
 const Page = () => {
@@ -74,12 +74,12 @@ const Page = () => {
           Welcome back please enter your user details
         </p>
 
-        <Link
-          href="/loginMitra"
-          className="lg:text-[20px] text-blue-600 underline cursor-pointer"
-        >
-          Masuk Sebagai Mitra ?
-        </Link>
+        {/* <Link */}
+        {/*   href="/loginMitra" */}
+        {/*   className="lg:text-[20px] text-blue-600 underline cursor-pointer" */}
+        {/* > */}
+        {/*   Masuk Sebagai Mitra ? */}
+        {/* </Link> */}
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleSubmit)} className="mt-4">
             <div className="space-y-4 mb-8">
