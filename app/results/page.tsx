@@ -55,14 +55,14 @@ const Results = () => {
   const [formData, setFormData] = useState<PostFilter>({
     searchText: searchParams.get("searchText") || "",
     minPrice: priceMin,
-    maxPrice: priceMin,
+    maxPrice: priceMax,
     lokasi: searchParams.get("lokasi") || "",
     page: pageNumber,
   });
 
   const getAllFilteredPostQuery = useQuery(
     ["get_filtered_posts", formData],
-    () => PostsRepository.getAllPostByFilter(formData)
+    () => PostsRepository.getAllPostByFilter(formData),
   );
 
   useEffect(() => {

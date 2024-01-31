@@ -12,6 +12,7 @@ export interface PostDetailResponse {
   priceMax: string;
   priceMin: string;
   title: string;
+  merchant_name: string;
 }
 
 interface Mitra {

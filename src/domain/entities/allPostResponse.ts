@@ -10,6 +10,7 @@ export default interface IAllPostResponse {
   priceMax: string;
   priceMin: string;
   title: string;
+  merchant_name: string;
   images?: [
     {
       url: string;

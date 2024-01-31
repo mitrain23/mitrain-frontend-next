@@ -152,7 +152,7 @@ const HeaderDetails = ({ data }: { data: PostDetailResponse }) => {
           </div>
           <div className="flex flex-col space-y-1">
             <h1 className="text-[#020831] font-satoshi text-[22px] font-bold">
-              {data.mitra.categoryName}
+              {data.merchant_name || "Merchant Mitrain"}
             </h1>
             <div className="flex gap-[8px]">
               <PremiumIcon />
