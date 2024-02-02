@@ -2,6 +2,7 @@ import { TChatUser } from "@/src/application/zustand/useChatStore";
 
 export default interface IChatResponse {
   _id: string;
+  product_name: string;
   chatName: string;
   isGroupChat: boolean;
   users: User[];

@@ -5,6 +5,7 @@ export default interface IAllMessageById {
   chat: {
     _id: string;
     chatName: string;
+    product_name: string;
     createdAt: string;
     isGroupChat: boolean;
     latestMessage: string;

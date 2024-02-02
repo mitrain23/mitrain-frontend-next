@@ -76,11 +76,10 @@ const MessageHighlights: React.FC<TProps> = ({
 
   return (
     <div
-      className={`flex flex-row py-[22px] gap-[24px]  cursor-pointer ${
-        selectedChat?._id === chat._id
+      className={`flex flex-row py-[22px] gap-[24px]  cursor-pointer ${selectedChat?._id === chat._id
           ? "border-r-4 border-sky-600"
           : "hover:border-r-4 hover:border-sky-600/50"
-      }`}
+        }`}
       onClick={() => {
         setSelectedChat(chat);
         setOpenChat(true);
@@ -96,8 +95,7 @@ const MessageHighlights: React.FC<TProps> = ({
       </div>
       <div className="flex flex-col overflow-hidden relative w-full">
         <h1 className="font-satoshi text-[#020831] md:text-[22px] text-lg font-bold">
-          {chat.users.find((user) => user.id !== joinedUser?.id)?.name ||
-            "Diri Sendiri"}
+          {chat.product_name || "Diri Sendiri"}
         </h1>
         <div className="flex items-center">
           <p className="md:w-[300px] whitespace-wrap break-all truncate text-[#425379] font-inter md:text-[16px]">

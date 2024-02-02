@@ -36,15 +36,6 @@ const LandingPageNavbar: React.FC<TProps> = ({ token }) => {
 
         {/* Desktop Nav Menu */}
         <ul className="hidden md:flex space-x-4 items-center">
-          <li>
-            <Link
-              href="/registerMitra"
-              className="text-gray-700 hover:text-gray-900 cursor-pointer"
-            >
-              Daftar Mitra
-            </Link>
-          </li>
-
           {!token && (
             <>
               <Separator

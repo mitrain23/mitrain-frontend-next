@@ -66,9 +66,7 @@ const MessageTopBar: React.FC<TProps> = ({
         </div>
         <div className="flex flex-col">
           <p className="text-[#020831] font-satoshi md:text-[24px] font-bold break-all line-clamp-1">
-            {selectedChat?.users.find(
-              (userChat) => userChat.id !== currentUser?.id,
-            )?.name || currentUser?.name}
+            {selectedChat?.product_name || currentUser?.name}
           </p>
           <p className="font-inter text-[#425379] md:text-[16px] text-sm break-all line-clamp-1">
             Last online 7 hours ago

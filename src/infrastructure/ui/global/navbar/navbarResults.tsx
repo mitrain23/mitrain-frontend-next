@@ -153,9 +153,6 @@ const NavbarResults = ({
                 ))}
               </DropdownMenuContent>
             </DropdownMenu>
-            <Link href={"/registerMitra"}>
-              <h1>Gabung Jadi Mitra</h1>
-            </Link>
           </div>
         </div>
 
@@ -236,13 +233,6 @@ const NavbarResults = ({
                         Profil Saya
                       </Link>
                     </DropdownMenuItem>
-                    {isMitra && (
-                      <DropdownMenuItem className="py-[12px]">
-                        <Link href={"/iklan"} className="w-full">
-                          Iklan Saya
-                        </Link>
-                      </DropdownMenuItem>
-                    )}
                     <DropdownMenuItem
                       onClick={handleLogout}
                       className="py-[12px] focus:bg-destructive focus:text-white cursor-pointer"
@@ -278,9 +268,6 @@ const NavbarResults = ({
                   </AccordionContent>
                 </AccordionItem>
               </Accordion>
-              <Link href={"/registerMitra"} className="inline-block">
-                <h1 className="text-[16px]">Gabung Jadi Mitra</h1>
-              </Link>
             </div>
 
             {token == null ? (
@@ -319,7 +306,6 @@ const NavbarResults = ({
                 </Accordion>
                 <Link href="/chat">Chat</Link>
                 <Link href="/maintenance">Profil Saya</Link>
-                {isMitra && <Link href="/iklan">Iklan Saya</Link>}
                 <Button
                   variant="destructive"
                   className="w-full"
