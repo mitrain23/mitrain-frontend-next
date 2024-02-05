@@ -58,6 +58,8 @@ const Results = () => {
     maxPrice: priceMax,
     lokasi: searchParams.get("lokasi") || "",
     page: pageNumber,
+    skip: 0,
+    take: 10
   });
 
   const getAllFilteredPostQuery = useQuery(
@@ -78,6 +80,11 @@ const Results = () => {
   }, [pageNumber, priceMinDebounce, priceMaxDebounce, searchParams, pathname]);
 
   const handlePageChange = (data: number) => {
+    setFormData({
+      ...formData,
+      skip: (data * 10) - 10
+    })
+
     setPageNumber(data);
   };
 
