@@ -17,10 +17,13 @@ import { ChevronDownIcon } from "@radix-ui/react-icons";
 import axios from "axios";
 import Link from "next/link";
 import React, { useCallback, useEffect, useState } from "react";
+import { useQuery } from "react-query";
 
 type TProps = {
   provinces: Province[];
 };
+
+const API_BASE_URL = process.env.BASE_URL;
 
 const FlyingHeroSearch: React.FC<TProps> = ({ provinces }) => {
   const [selectedProvinceId, setSelectedProvinceId] = useState<string>("");
@@ -28,7 +31,21 @@ const FlyingHeroSearch: React.FC<TProps> = ({ provinces }) => {
   const [cities, setCities] = useState<City[]>([]);
   const [selectedCityId, setSelectedCityId] = useState<string>("");
 
+  const [selectedCategory, setSelectedCategory] = useState("");
+
   const [search, setSearch] = useState("");
+
+  const { data: categories } = useQuery("get_categories", async () => {
+    const response = await axios.get(API_BASE_URL + "/api/category");
+
+    const categories: string[] = [];
+
+    for (const category of response.data.data) {
+      categories.push(category.categoryName);
+    }
+
+    return categories;
+  });
 
   const getSearchParams = useCallback(() => {
     const params = [];
@@ -39,21 +56,25 @@ const FlyingHeroSearch: React.FC<TProps> = ({ provinces }) => {
 
     const city = cities.find((city) => city.id === selectedCityId)?.name;
     const province = provinces.find(
-      (province) => province.id === selectedProvinceId
+      (province) => province.id === selectedProvinceId,
     )?.name;
 
     if (city && province) {
       params.push("lokasi=" + city + ", " + province);
     }
 
+    if (selectedCategory) {
+      params.push("categoryName=" + selectedCategory);
+    }
+
     return params.join("&");
-  }, [search, selectedCityId, selectedProvinceId]);
+  }, [search, selectedCityId, selectedProvinceId, selectedCategory]);
 
   useEffect(() => {
     if (selectedProvinceId) {
       axios
         .get(
-          `https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${selectedProvinceId}.json`
+          `https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${selectedProvinceId}.json`,
         )
         .then((response) => setCities(response.data));
     }
@@ -76,7 +97,7 @@ const FlyingHeroSearch: React.FC<TProps> = ({ provinces }) => {
             <Select
               onValueChange={(selectedProvinceId) => {
                 const selectedProvince = provinces.find(
-                  (province) => province.id === selectedProvinceId
+                  (province) => province.id === selectedProvinceId,
                 );
 
                 setSelectedProvinceId(selectedProvince?.id || "");
@@ -104,25 +125,25 @@ const FlyingHeroSearch: React.FC<TProps> = ({ provinces }) => {
               </SelectContent>
             </Select>
 
-            <Select>
+            <Select
+              onValueChange={(value) => {
+                console.log(value);
+                setSelectedCategory(value);
+              }}
+            >
               <SelectTrigger className="w-1/2 h-[56px] leading-[24px] text-[#757575] text-[16px] bg-[#fbfbfb] rounded-[8px] border-none">
                 <SelectValue placeholder="Jenis" />
               </SelectTrigger>
               <SelectContent>
-                <SelectGroup>
+                {categories?.map((category, idx) => (
                   <SelectItem
-                    value="konveksi"
+                    value={category}
                     className="h-[56px] cursor-pointer"
+                    key={idx}
                   >
-                    Konveksi
+                    {category}
                   </SelectItem>
-                  <SelectItem
-                    value="lainnya"
-                    className="h-[56px] cursor-pointer"
-                  >
-                    Lainnya
-                  </SelectItem>
-                </SelectGroup>
+                ))}
               </SelectContent>
             </Select>
           </div>

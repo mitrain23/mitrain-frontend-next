@@ -13,7 +13,7 @@ import Cookies from "js-cookie";
 import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import SearchBar from "./searchBar";
 
 import { useUser } from "@/src/application/hooks/global/useUser";
@@ -34,6 +34,15 @@ import {
 import { Separator } from "@/src/components/ui/separator";
 import { ChatRepository } from "@/src/infrastructure/services/chat/chatRepository";
 import axios from "axios";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/src/components/ui/select";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 interface parsedUser {
   id: string;
@@ -52,6 +61,9 @@ const NavbarResults = ({
 }) => {
   const [isMenuOpenResults, setIsMenuOpenResults] = useState(false);
 
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
   const { notifications, setNotifications } = useChatStore((state) => state);
 
   const { currentUser } = useUser();
@@ -68,6 +80,24 @@ const NavbarResults = ({
     localStorage.clear();
     window.location.reload();
   };
+
+  const getSearchParams = useCallback(() => {
+    const params = [];
+
+    // if (searchParams.get("categoryName")) {
+    //   params.push("categoryName=" + searchParams.get("categoryName"));
+    // }
+
+    if (searchParams.get("searchText")) {
+      params.push("searchText=" + searchParams.get("searchText"));
+    }
+
+    if (searchParams.get("lokasi")) {
+      params.push("lokasi=" + searchParams.get("lokasi"));
+    }
+
+    return params.join("&");
+  }, [searchParams]);
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -135,24 +165,29 @@ const NavbarResults = ({
           </Link>
 
           <div className="hidden md:flex items-center gap-[16px]">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <div className="hidden lg:flex items-center gap-[6px] cursor-pointer">
-                  <h1>Kategori</h1>
-                  <ChevronDownIcon className="w-[24px] h-[24px] fill-[#020831] stroke-[#020831] p-1" />
-                </div>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent side="bottom" align="center">
+            <Select
+              onValueChange={(category) => {
+                router.replace(
+                  `/results?${getSearchParams()}&categoryName=${category}`,
+                );
+              }}
+              defaultValue={searchParams.get("categoryName") || undefined}
+            >
+              <SelectTrigger className="border-none shadow-none">
+                <SelectValue
+                  placeholder="Kategori"
+                  className="text-foreground border-none"
+                />
+              </SelectTrigger>
+
+              <SelectContent>
                 {categories.map((category, idx) => (
-                  <DropdownMenuItem
-                    className="py-[12px] cursor-pointer"
-                    key={idx}
-                  >
+                  <SelectItem value={category} key={idx}>
                     {category}
-                  </DropdownMenuItem>
+                  </SelectItem>
                 ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
+              </SelectContent>
+            </Select>
           </div>
         </div>
 
@@ -254,20 +289,29 @@ const NavbarResults = ({
           <div className="flex flex-col items-start justify-center gap-8 px-[24px] pt-[18px]">
             <SearchBar className="rounded-[8px]" />
             <div className="mt-[32px] space-y-4 text-[#020831] w-full">
-              <Accordion type="single" collapsible>
-                <AccordionItem value="item-1" className="border-none">
-                  <AccordionTrigger>
-                    <h1 className="text-[16px]">Kategori</h1>
-                  </AccordionTrigger>
-                  <AccordionContent className="text-[16px] text-[#425379]">
-                    {categories.map((category, idx) => (
-                      <p className="py-[12px] cursor-pointer w-full" key={idx}>
-                        {category}
-                      </p>
-                    ))}
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion>
+              <Select
+                onValueChange={(category) => {
+                  router.replace(
+                    `/results?${getSearchParams()}&categoryName=${category}`,
+                  );
+                }}
+                defaultValue={searchParams.get("categoryName") || undefined}
+              >
+                <SelectTrigger className="border-none shadow-none">
+                  <SelectValue
+                    placeholder="Kategori"
+                    className="text-foreground border-none"
+                  />
+                </SelectTrigger>
+
+                <SelectContent>
+                  {categories.map((category, idx) => (
+                    <SelectItem value={category} key={idx}>
+                      {category}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
 
             {token == null ? (

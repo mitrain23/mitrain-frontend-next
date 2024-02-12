@@ -59,7 +59,8 @@ const Results = () => {
     lokasi: searchParams.get("lokasi") || "",
     page: pageNumber,
     skip: 0,
-    take: 10
+    take: 10,
+    categoryName: searchParams.get("categoryName") || "",
   });
 
   const getAllFilteredPostQuery = useQuery(
@@ -74,6 +75,7 @@ const Results = () => {
       minPrice: priceMinDebounce,
       maxPrice: priceMaxDebounce,
       searchText: searchParams.get("searchText") || "",
+      categoryName: searchParams.get("categoryName") || "",
     });
 
     getAllFilteredPostQuery.refetch();
@@ -82,8 +84,8 @@ const Results = () => {
   const handlePageChange = (data: number) => {
     setFormData({
       ...formData,
-      skip: (data * 10) - 10
-    })
+      skip: data * 10 - 10,
+    });
 
     setPageNumber(data);
   };

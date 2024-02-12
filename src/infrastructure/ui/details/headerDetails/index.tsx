@@ -107,7 +107,7 @@ const HeaderDetails = ({ data }: { data: PostDetailResponse }) => {
         <div className="flex flex-wrap md:flex-row md:items-center mb-[28px] gap-[10px] font-inter text-[#425379] font-medium">
           <p>{data.location}</p>
           <p>Diperbarui pada: 18 Agustus 2023</p>
-          <p>Pengalaman lebih dari 10 tahun</p>
+          <p>Pengalaman {data.mitra.experience}</p>
         </div>
         <h1 className="text-[#020831] font-satoshi text-2xl md:text-[32px] font-bold mb-[28px]">
           Rp {formatPrice(data.priceMin)} - Rp {formatPrice(data.priceMax)}

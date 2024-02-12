@@ -6,4 +6,5 @@ export interface PostFilter {
   page: number;
   skip: number;
   take: number;
+  categoryName: string;
 }
