@@ -1,19 +1,23 @@
-import React from "react";
+import MitraPermiumIcon from "@/public/svg/mitra_permium_check.svg";
+import PostResultResponse from "@/src/domain/entities/postResultResponse";
+import { formatPrice } from "@/src/infrastructure/services/posts/postsRepository";
 import Image from "next/image";
 import Link from "next/link";
-import MitraPermiumIcon from "@/public/svg/mitra_permium_check.svg";
-import { formatPrice } from "@/src/infrastructure/services/posts/postsRepository";
+import { useEffect } from "react";
 
 interface CardProps {
-  data?: any;
+  data: PostResultResponse;
 }
 
 const Card = ({ data }: CardProps) => {
   const API_BASE_URL = process.env.BASE_URL;
 
   const Image1 = `${API_BASE_URL}/images/${data?.images?.[0]?.url}`;
+  console.log(Image1);
 
-  console.log(data);
+  useEffect(() => {
+    console.log(data);
+  }, []);
 
   return (
     <Link href={`details/${data?.id}-${encodeURIComponent(data?.title)}`}>
@@ -33,9 +37,7 @@ const Card = ({ data }: CardProps) => {
             <h1 className="font-satoshi text-[22px] font-bold text-[#020831]">
               {data?.title}
             </h1>
-            <p className="font-inter text-[#425379] text-[16px]">
-              Pengalaman lebih dari 10 tahun
-            </p>
+            <p className="font-inter text-[#425379] text-[16px]">Pengalaman</p>
           </div>
           <div className="mitra-premium flex flex-row gap-1 mb-[12px]">
             <MitraPermiumIcon />

@@ -13,9 +13,11 @@ import Cookies from "js-cookie";
 import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import SearchBar from "./searchBar";
 
+import { useUser } from "@/src/application/hooks/global/useUser";
+import { useChatStore } from "@/src/application/zustand/useChatStore";
 import {
   Accordion,
   AccordionContent,
@@ -30,7 +32,17 @@ import {
   DropdownMenuTrigger,
 } from "@/src/components/ui/dropdown-menu";
 import { Separator } from "@/src/components/ui/separator";
+import { ChatRepository } from "@/src/infrastructure/services/chat/chatRepository";
 import axios from "axios";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/src/components/ui/select";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 interface parsedUser {
   id: string;
@@ -41,23 +53,22 @@ interface parsedUser {
 
 const API_BASE_URL = process.env.BASE_URL;
 
-/** TODO:
- * - Memahami logic
- */
 const NavbarResults = ({
-  isResults = false,
   token,
 }: {
   isResults?: boolean;
   token?: RequestCookie | undefined;
 }) => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMenuOpenResults, setIsMenuOpenResults] = useState(false);
 
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  const { notifications, setNotifications } = useChatStore((state) => state);
+
+  const { currentUser } = useUser();
+
   const [categories, setCategories] = useState<string[]>([]);
-
-  console.log(isMenuOpenResults);
-
   const [isMitra, setIsMitra] = useState(false);
 
   const handleMenuToggleResults = () => {
@@ -70,6 +81,24 @@ const NavbarResults = ({
     window.location.reload();
   };
 
+  const getSearchParams = useCallback(() => {
+    const params = [];
+
+    // if (searchParams.get("categoryName")) {
+    //   params.push("categoryName=" + searchParams.get("categoryName"));
+    // }
+
+    if (searchParams.get("searchText")) {
+      params.push("searchText=" + searchParams.get("searchText"));
+    }
+
+    if (searchParams.get("lokasi")) {
+      params.push("lokasi=" + searchParams.get("lokasi"));
+    }
+
+    return params.join("&");
+  }, [searchParams]);
+
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
@@ -79,7 +108,6 @@ const NavbarResults = ({
 
     const getCategories = async () => {
       const response = await axios.get(API_BASE_URL + "/api/category");
-      console.log(response.data.data);
 
       const categories: string[] = [];
 
@@ -90,12 +118,22 @@ const NavbarResults = ({
       setCategories(categories);
     };
 
+    if (token) {
+      ChatRepository.getNotifications().then((data) => {
+        const notificationForCurrentUser = data.filter(
+          (notification) => notification.sender.id !== currentUser?.id,
+        );
+
+        setNotifications(notificationForCurrentUser);
+      });
+    }
+
     getCategories();
   }, []);
 
   useEffect(() => {
     // Add or remove a class to the body to disable scrolling
-    if (isMenuOpen || isMenuOpenResults) {
+    if (isMenuOpenResults) {
       document.body.classList.add("overflow-hidden");
     } else {
       document.body.classList.remove("overflow-hidden");
@@ -105,7 +143,7 @@ const NavbarResults = ({
     return () => {
       document.body.classList.remove("overflow-hidden");
     };
-  }, [isMenuOpen || isMenuOpenResults]);
+  }, [isMenuOpenResults]);
 
   return (
     <>
@@ -127,27 +165,29 @@ const NavbarResults = ({
           </Link>
 
           <div className="hidden md:flex items-center gap-[16px]">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <div className="hidden lg:flex items-center gap-[6px] cursor-pointer">
-                  <h1>Kategori</h1>
-                  <ChevronDownIcon className="w-[24px] h-[24px] fill-[#020831] stroke-[#020831] p-1" />
-                </div>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent side="bottom" align="center">
+            <Select
+              onValueChange={(category) => {
+                router.replace(
+                  `/results?${getSearchParams()}&categoryName=${category}`,
+                );
+              }}
+              defaultValue={searchParams.get("categoryName") || undefined}
+            >
+              <SelectTrigger className="border-none shadow-none">
+                <SelectValue
+                  placeholder="Kategori"
+                  className="text-foreground border-none"
+                />
+              </SelectTrigger>
+
+              <SelectContent>
                 {categories.map((category, idx) => (
-                  <DropdownMenuItem
-                    className="py-[12px] cursor-pointer"
-                    key={idx}
-                  >
+                  <SelectItem value={category} key={idx}>
                     {category}
-                  </DropdownMenuItem>
+                  </SelectItem>
                 ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
-            <Link href={"/registerMitra"}>
-              <h1>Gabung Jadi Mitra</h1>
-            </Link>
+              </SelectContent>
+            </Select>
           </div>
         </div>
 
@@ -189,9 +229,32 @@ const NavbarResults = ({
               </>
             ) : (
               <div className="flex items-center gap-6">
-                <Link href="/maintenance">
-                  <BellIcon className="w-[30px] h-[30px]" />
-                </Link>
+                <DropdownMenu>
+                  <DropdownMenuTrigger className="cursor-pointer" asChild>
+                    <div className="relative">
+                      <BellIcon className="w-[30px] h-[30px]" />
+                      {notifications.length > 0 && (
+                        <p className="absolute text-sm top-0 -right-1 p-1 rounded-full bg-red-600"></p>
+                      )}
+                    </div>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent side="bottom" align="center">
+                    {notifications.filter(
+                      (notification) =>
+                        notification.sender.id !== currentUser?.id,
+                    ).length ? (
+                      <DropdownMenuItem className="py-[12px] cursor-pointer">
+                        <Link href="/chat">
+                          {notifications.length} pesan belum dibaca
+                        </Link>
+                      </DropdownMenuItem>
+                    ) : (
+                      <DropdownMenuItem className="py-[12px] cursor-pointer">
+                        Tidak ada notifikasi
+                      </DropdownMenuItem>
+                    )}
+                  </DropdownMenuContent>
+                </DropdownMenu>
                 <Link href="/chat">
                   <ChatIcon className="w-[30px] h-[30px]" />
                 </Link>
@@ -205,13 +268,6 @@ const NavbarResults = ({
                         Profil Saya
                       </Link>
                     </DropdownMenuItem>
-                    {isMitra && (
-                      <DropdownMenuItem className="py-[12px]">
-                        <Link href={"/iklan"} className="w-full">
-                          Iklan Saya
-                        </Link>
-                      </DropdownMenuItem>
-                    )}
                     <DropdownMenuItem
                       onClick={handleLogout}
                       className="py-[12px] focus:bg-destructive focus:text-white cursor-pointer"
@@ -233,23 +289,29 @@ const NavbarResults = ({
           <div className="flex flex-col items-start justify-center gap-8 px-[24px] pt-[18px]">
             <SearchBar className="rounded-[8px]" />
             <div className="mt-[32px] space-y-4 text-[#020831] w-full">
-              <Accordion type="single" collapsible>
-                <AccordionItem value="item-1" className="border-none">
-                  <AccordionTrigger>
-                    <h1 className="text-[16px]">Kategori</h1>
-                  </AccordionTrigger>
-                  <AccordionContent className="text-[16px] text-[#425379]">
-                    {categories.map((category, idx) => (
-                      <p className="py-[12px] cursor-pointer w-full" key={idx}>
-                        {category}
-                      </p>
-                    ))}
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion>
-              <Link href={"/registerMitra"} className="inline-block">
-                <h1 className="text-[16px]">Gabung Jadi Mitra</h1>
-              </Link>
+              <Select
+                onValueChange={(category) => {
+                  router.replace(
+                    `/results?${getSearchParams()}&categoryName=${category}`,
+                  );
+                }}
+                defaultValue={searchParams.get("categoryName") || undefined}
+              >
+                <SelectTrigger className="border-none shadow-none">
+                  <SelectValue
+                    placeholder="Kategori"
+                    className="text-foreground border-none"
+                  />
+                </SelectTrigger>
+
+                <SelectContent>
+                  {categories.map((category, idx) => (
+                    <SelectItem value={category} key={idx}>
+                      {category}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
 
             {token == null ? (
@@ -261,10 +323,33 @@ const NavbarResults = ({
               </Button>
             ) : (
               <div className="space-y-4 flex flex-col w-full">
-                <Link href="/maintenance">Notifikasi</Link>
+                <Accordion type="single" collapsible>
+                  <AccordionItem value="item-1" className="border-none py-0">
+                    <AccordionTrigger className="text-base">
+                      <p>
+                        Notifikasi{" "}
+                        {notifications.length > 0 && (
+                          <span className="font-bold text-red-600">
+                            &#x2022;
+                          </span>
+                        )}
+                      </p>
+                    </AccordionTrigger>
+                    {notifications.length ? (
+                      <AccordionContent className="text-[16px] text-[#425379]">
+                        <Link href="/chat">
+                          {notifications.length} Pesan belum dibaca
+                        </Link>
+                      </AccordionContent>
+                    ) : (
+                      <AccordionContent className="text-[16px] text-[#425379]">
+                        Tidak ada notifikasi
+                      </AccordionContent>
+                    )}
+                  </AccordionItem>
+                </Accordion>
                 <Link href="/chat">Chat</Link>
                 <Link href="/maintenance">Profil Saya</Link>
-                {isMitra && <Link href="/iklan">Iklan Saya</Link>}
                 <Button
                   variant="destructive"
                   className="w-full"

@@ -20,12 +20,11 @@ import { useMutation } from "react-query";
 import { user } from "@/src/domain/entities/user";
 import UserRepository from "@/src/infrastructure/services/userAuth/userRepository";
 import Cookies from "js-cookie";
-import { useRouter } from "next/navigation";
 import { useToast } from "@/src/components/ui/use-toast";
 
 const formSchema = z.object({
   email: z.string().email(),
-  password: z.string().min(8).max(10),
+  password: z.string().min(8),
 });
 
 const Page = () => {
@@ -38,7 +37,6 @@ const Page = () => {
   });
 
   const { toast } = useToast();
-  const router = useRouter();
 
   const { mutate: loginUser, isLoading } = useMutation({
     mutationFn: (credentials: user) => UserRepository.loginUser(credentials),
@@ -55,7 +53,7 @@ const Page = () => {
           title: "Notifikasi",
           description: "Menuju halaman utama...",
         });
-        router.replace("/results");
+        window.location.href = "/results";
       },
       onError: (_) => {
         toast({
@@ -76,12 +74,12 @@ const Page = () => {
           Welcome back please enter your user details
         </p>
 
-        <Link
-          href="/loginMitra"
-          className="lg:text-[20px] text-blue-600 underline cursor-pointer"
-        >
-          Masuk Sebagai Mitra ?
-        </Link>
+        {/* <Link */}
+        {/*   href="/loginMitra" */}
+        {/*   className="lg:text-[20px] text-blue-600 underline cursor-pointer" */}
+        {/* > */}
+        {/*   Masuk Sebagai Mitra ? */}
+        {/* </Link> */}
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleSubmit)} className="mt-4">
             <div className="space-y-4 mb-8">

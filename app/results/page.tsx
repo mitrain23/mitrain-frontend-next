@@ -1,20 +1,20 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
-import Pagination from "@/src/infrastructure/ui/results/pagination";
-import { PostFilter } from "@/src/domain/entities/postFilter";
-import Card from "@/src/infrastructure/ui/results/card";
-import LayoutTemplate from "@/src/utils/layout";
-import Filter from "@/src/infrastructure/ui/results/filter";
-import CardSlider from "@/src/infrastructure/ui/results/cardSlider";
-import LoadingState from "@/src/infrastructure/ui/global/state/loading";
-import { Skeleton } from "@/src/components/ui/skeleton";
-import { Alert, AlertDescription, AlertTitle } from "@/src/components/ui/alert";
-import EmptyState from "@/src/infrastructure/ui/global/state/empty";
 import { useDebounce } from "@/src/application/hooks/global/useDebounce";
-import { useQuery } from "react-query";
+import { Alert, AlertDescription, AlertTitle } from "@/src/components/ui/alert";
+import { Skeleton } from "@/src/components/ui/skeleton";
+import { PostFilter } from "@/src/domain/entities/postFilter";
 import { PostsRepository } from "@/src/infrastructure/services/posts/postsRepository";
+import EmptyState from "@/src/infrastructure/ui/global/state/empty";
+import LoadingState from "@/src/infrastructure/ui/global/state/loading";
+import Card from "@/src/infrastructure/ui/results/card";
+import CardSlider from "@/src/infrastructure/ui/results/cardSlider";
+import Filter from "@/src/infrastructure/ui/results/filter";
+import Pagination from "@/src/infrastructure/ui/results/pagination";
+import LayoutTemplate from "@/src/utils/layout";
+import { usePathname, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useQuery } from "react-query";
 
 const CardLoading = () => {
   return (
@@ -55,9 +55,12 @@ const Results = () => {
   const [formData, setFormData] = useState<PostFilter>({
     searchText: searchParams.get("searchText") || "",
     minPrice: priceMin,
-    maxPrice: priceMin,
+    maxPrice: priceMax,
     lokasi: searchParams.get("lokasi") || "",
     page: pageNumber,
+    skip: 0,
+    take: 10,
+    categoryName: searchParams.get("categoryName") || "",
   });
 
   const getAllFilteredPostQuery = useQuery(
@@ -72,13 +75,18 @@ const Results = () => {
       minPrice: priceMinDebounce,
       maxPrice: priceMaxDebounce,
       searchText: searchParams.get("searchText") || "",
+      categoryName: searchParams.get("categoryName") || "",
     });
 
     getAllFilteredPostQuery.refetch();
-    console.log(`${pathname}/${searchParams}`);
   }, [pageNumber, priceMinDebounce, priceMaxDebounce, searchParams, pathname]);
 
   const handlePageChange = (data: number) => {
+    setFormData({
+      ...formData,
+      skip: data * 10 - 10,
+    });
+
     setPageNumber(data);
   };
 

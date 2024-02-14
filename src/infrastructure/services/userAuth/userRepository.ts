@@ -1,11 +1,10 @@
 import { user } from "@/src/domain/entities/user";
 import axios from "axios";
-import { RegisterUserResponse } from "../../models/registerUserResponse";
 import { LoginUserResponse } from "../../models/loginUserResponse";
+import { RegisterUserResponse } from "../../models/registerUserResponse";
 
 const API_BASE_URL = process.env.BASE_URL;
 
-// User repository
 class UserRepository {
   static registerUser = async (
     formData: FormData,
@@ -14,7 +13,7 @@ class UserRepository {
       `${API_BASE_URL}/api/auth/registerUser`,
       formData,
     );
-    console.log(response.data.data);
+
     return response.data.data;
   };
 
@@ -23,7 +22,7 @@ class UserRepository {
       `${API_BASE_URL}/api/auth/login`,
       credentials,
     );
-    console.log(response.data);
+
     return response.data;
   };
 }

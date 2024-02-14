@@ -1,9 +1,6 @@
 "use client";
 
-import LayoutTemplate from "@/src/utils/layout";
-import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { Button } from "@/src/components/ui/button";
 import {
   Form,
   FormControl,
@@ -11,11 +8,7 @@ import {
   FormItem,
   FormMessage,
 } from "@/src/components/ui/form";
-import { z } from "zod";
 import { Input } from "@/src/components/ui/input";
-import { Button } from "@/src/components/ui/button";
-import { Province } from "@/src/domain/entities/province";
-import { City } from "@/src/domain/entities/city";
 import {
   Select,
   SelectContent,
@@ -23,11 +16,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/src/components/ui/select";
-import axios from "axios";
-import { useMutation } from "react-query";
-import UserRepository from "@/src/infrastructure/services/userAuth/userRepository";
-import { useRouter } from "next/navigation";
 import { useToast } from "@/src/components/ui/use-toast";
+import { City } from "@/src/domain/entities/city";
+import { Province } from "@/src/domain/entities/province";
+import UserRepository from "@/src/infrastructure/services/userAuth/userRepository";
+import LayoutTemplate from "@/src/utils/layout";
+import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { useMutation } from "react-query";
+import { z } from "zod";
 
 const isMobilePhone = new RegExp(
   /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/,
@@ -93,7 +93,6 @@ const Page = () => {
     try {
       registerUser(formData, {
         onSuccess: (data) => {
-          console.log(data);
           toast({
             title: "Notifikasi",
             description: "Berhasil melakukan registrasi",
@@ -101,7 +100,6 @@ const Page = () => {
           router.push("/login");
         },
         onError: (error) => {
-          console.error(error);
           toast({
             title: "Notifikasi",
             description: "Gagal melakukan registrasi",
@@ -109,7 +107,6 @@ const Page = () => {
         },
       });
     } catch (error) {
-      console.log(error);
       toast({
         title: "Notifikasi",
         description: "Gagal melakukan registrasi",
@@ -130,14 +127,16 @@ const Page = () => {
   }, []);
 
   useEffect(() => {
-    const getCities = async () => {
-      const response = await axios.get(
-        `https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${selectedProvinceId}.json`,
-      );
-      setCities(response.data);
-    };
+    if (selectedProvinceId) {
+      const getCities = async () => {
+        const response = await axios.get(
+          `https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${selectedProvinceId}.json`,
+        );
+        setCities(response.data);
+      };
 
-    getCities().catch((reason) => console.log(reason));
+      getCities();
+    }
   }, [selectedProvinceId]);
 
   return (

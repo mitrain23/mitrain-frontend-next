@@ -1,7 +1,13 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import FileInputBox from "./fileInputBox";
+import { Button } from "@/src/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/src/components/ui/form";
 import { Input } from "@/src/components/ui/input";
 import {
   Select,
@@ -11,32 +17,34 @@ import {
   SelectValue,
 } from "@/src/components/ui/select";
 import { Textarea } from "@/src/components/ui/textarea";
-import { Button } from "@/src/components/ui/button";
-import { Province } from "@/src/domain/entities/province";
+import { useToast } from "@/src/components/ui/use-toast";
 import { City } from "@/src/domain/entities/city";
-import axios from "axios";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/src/components/ui/form";
+import { Province } from "@/src/domain/entities/province";
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { QueryClient, useMutation } from "react-query";
+import { z } from "zod";
 import {
   PostsRepository,
   formatPrice,
 } from "../../services/posts/postsRepository";
-import { useMutation } from "react-query";
-import { useRouter } from "next/navigation";
-import { useToast } from "@/src/components/ui/use-toast";
+import FileInputBox from "./fileInputBox";
+import Cookies from "js-cookie";
 
 interface ImageData {
   file: File | null;
   imageUrl: string | null;
   id: string | null;
+}
+
+interface parsedUser {
+  id: string;
+  email: string;
+  name: string;
+  isMitra: boolean;
 }
 
 const isMobilePhone = new RegExp(
@@ -96,6 +104,19 @@ const CreateForm = () => {
 
   const [categories, setCategories] = useState<string[]>([]);
   const [location, setLocation] = useState("");
+
+  const queryClient = new QueryClient();
+
+  const getMitraId = useCallback(() => {
+    const storedUser = Cookies.get("user");
+
+    if (storedUser) {
+      const parsedUser: parsedUser = JSON.parse(storedUser);
+      return parsedUser.id;
+    }
+
+    return null;
+  }, []);
 
   const handleFileChange = (
     file: File | null,
@@ -176,6 +197,7 @@ const CreateForm = () => {
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     const formData = new FormData();
+    console.log(values);
 
     for (const [key, value] of Object.entries(values)) {
       if (key === "priceMin" || key === "priceMax") {
@@ -196,6 +218,24 @@ const CreateForm = () => {
     });
 
     try {
+      const { data: postByAuthor } = await queryClient.fetchQuery({
+        queryKey: ["get_posts_by_author", getMitraId()],
+        queryFn: () => PostsRepository.getPostByAuthor(getMitraId()),
+      });
+
+      const isDuplicateQuery = postByAuthor.find(
+        (post) => post.category === values.category,
+      );
+
+      if (isDuplicateQuery) {
+        form.setError("category", {
+          type: "validate",
+          message: "Mitra hanya boleh membuat 1 Iklan per Kategori",
+        });
+
+        return;
+      }
+
       createPost(formData, {
         onSuccess: (data) => {
           toast({
@@ -203,6 +243,7 @@ const CreateForm = () => {
             description: "Berhasil membuat iklan baru",
           });
 
+          form.clearErrors();
           router.push("/iklan");
         },
         onError: (_) => {
@@ -213,7 +254,6 @@ const CreateForm = () => {
         },
       });
     } catch (error) {
-      console.log(error);
       toast({
         title: "Notifikasi",
         description: "Gagal membuat iklan baru",
@@ -248,14 +288,16 @@ const CreateForm = () => {
   }, []);
 
   useEffect(() => {
-    const getCities = async () => {
-      const response = await axios.get(
-        `https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${selectedProvinceId}.json`,
-      );
-      setCities(response.data);
-    };
+    if (selectedProvinceId) {
+      const getCities = async () => {
+        const response = await axios.get(
+          `https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${selectedProvinceId}.json`,
+        );
+        setCities(response.data);
+      };
 
-    getCities().catch((reason) => console.log(reason));
+      getCities();
+    }
   }, [selectedProvinceId]);
 
   return (
@@ -324,22 +366,26 @@ const CreateForm = () => {
                     </div>
                   </div>
                   <Select onValueChange={field.onChange}>
-                    <FormControl>
-                      <SelectTrigger className="w-full md:w-[648px] font-inter text-[#6F7277] h-[56px] font-normal text-[16px]">
-                        <SelectValue placeholder="Pilih Kategori" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent className="text-[16px]">
-                      {categories.map((category, idx) => (
-                        <SelectItem
-                          className="h-[56px]"
-                          value={category}
-                          key={idx}
-                        >
-                          {category}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
+                    <div className="flex flex-col gap-2">
+                      <FormControl>
+                        <SelectTrigger className="w-full md:w-[648px] font-inter text-[#6F7277] h-[56px] font-normal text-[16px]">
+                          <SelectValue placeholder="Pilih Kategori" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent className="text-[16px]">
+                        {categories.map((category, idx) => (
+                          <SelectItem
+                            className="h-[56px]"
+                            value={category}
+                            key={idx}
+                          >
+                            {category}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+
+                      <FormMessage />
+                    </div>
                   </Select>
                 </label>
               </FormItem>

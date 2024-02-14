@@ -1,10 +1,11 @@
-export interface PostDetailResponse {
+export default interface PostResultResponse {
   category: string;
   description: string;
   id: string;
-  images: Image[];
+  images: Images[];
   isLiked: null | boolean;
   location: string;
+  merchant_name: string;
   mitra: Mitra;
   mitraId: string;
   phoneIntContact: string;
@@ -12,19 +13,14 @@ export interface PostDetailResponse {
   priceMax: string;
   priceMin: string;
   title: string;
-  merchant_name: string;
 }
 
-interface Mitra {
-  id: string;
-  categoryName: string;
-  description: string;
-  experience: string;
-}
-
-interface Image {
-  id: string;
-  postId: string;
+type Images = {
   url: string;
-  userId: null | string;
-}
+};
+
+type Mitra = {
+  user: {
+    name: string;
+  };
+};

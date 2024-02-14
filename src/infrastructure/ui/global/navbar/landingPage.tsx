@@ -36,15 +36,6 @@ const LandingPageNavbar: React.FC<TProps> = ({ token }) => {
 
         {/* Desktop Nav Menu */}
         <ul className="hidden md:flex space-x-4 items-center">
-          <li>
-            <Link
-              href="/registerMitra"
-              className="text-gray-700 hover:text-gray-900 cursor-pointer"
-            >
-              Daftar Mitra
-            </Link>
-          </li>
-
           {!token && (
             <>
               <Separator
@@ -108,24 +99,28 @@ const LandingPageNavbar: React.FC<TProps> = ({ token }) => {
 
             <Separator className="bg-[#D3D3D3] my-2" />
 
-            <li className="w-full">
-              <Link href="/login">
-                <Button
-                  variant="outline"
-                  className="h-[48px] rounded-[8px] cursor-pointer w-full"
-                >
-                  Masuk
-                </Button>
-              </Link>
-            </li>
+            {!token && (
+              <>
+                <li className="w-full">
+                  <Link href="/login">
+                    <Button
+                      variant="outline"
+                      className="h-[48px] rounded-[8px] cursor-pointer w-full"
+                    >
+                      Masuk
+                    </Button>
+                  </Link>
+                </li>
 
-            <li className="w-full">
-              <Link href="/register">
-                <Button className="bg-[#020831] h-[48px] rounded-[8px] cursor-pointer w-full">
-                  Daftar
-                </Button>
-              </Link>
-            </li>
+                <li className="w-full">
+                  <Link href="/register">
+                    <Button className="bg-[#020831] h-[48px] rounded-[8px] cursor-pointer w-full">
+                      Daftar
+                    </Button>
+                  </Link>
+                </li>
+              </>
+            )}
           </ul>
         </div>
       )}

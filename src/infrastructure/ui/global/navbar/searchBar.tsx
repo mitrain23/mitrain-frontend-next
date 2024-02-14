@@ -3,7 +3,7 @@
 import { cn } from "@/lib/utils";
 import { useDebounce } from "@/src/application/hooks/global/useDebounce";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 type TProps = {
   className?: string;
@@ -19,11 +19,29 @@ const SearchBar = ({ className }: TProps) => {
 
   const searchTextDebounce = useDebounce(searchText);
 
+  const getSearchParams = useCallback(() => {
+    const params = [];
+
+    if (searchParams.get("categoryName")) {
+      params.push("categoryName=" + searchParams.get("categoryName"));
+    }
+
+    if (searchParams.get("lokasi")) {
+      params.push("lokasi=" + searchParams.get("lokasi"));
+    }
+
+    return params.join("&");
+  }, [searchParams]);
+
   useEffect(() => {
     if (pathname === "/results" && !searchParams.get("searchText")) {
-      router.replace(`/results?searchText=${searchTextDebounce}`);
+      router.replace(
+        `/results?searchText=${searchTextDebounce}&${getSearchParams()}`,
+      );
     } else if (searchInputFocus) {
-      router.replace(`/results?searchText=${searchTextDebounce}`);
+      router.replace(
+        `/results?searchText=${searchTextDebounce}&${getSearchParams()}`,
+      );
     }
   }, [searchTextDebounce, pathname, searchInputFocus]);
 

@@ -1,5 +1,4 @@
 import React from "react";
-import Image from "next/image";
 import {
   Avatar,
   AvatarFallback,
@@ -24,12 +23,23 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/src/components/ui/alert-dialog";
+import { useChatStore } from "@/src/application/zustand/useChatStore";
+import { useUser } from "@/src/application/hooks/global/useUser";
+import IChatResponse from "@/src/domain/entities/chatResponse";
 
 type TProps = {
   setOpenChat: (value: React.SetStateAction<boolean>) => void;
+  selectedChat: IChatResponse | null;
+  setSelectedChat: (chat: IChatResponse | null) => void;
 };
 
-const MessageTopBar: React.FC<TProps> = ({ setOpenChat }) => {
+const MessageTopBar: React.FC<TProps> = ({
+  setOpenChat,
+  selectedChat,
+  setSelectedChat,
+}) => {
+  const { currentUser } = useUser();
+
   return (
     <div className="w-full h-[110px] flex flex-row justify-between items-center space-x-2">
       <div className="left flex items-center gap-3">
@@ -37,19 +47,26 @@ const MessageTopBar: React.FC<TProps> = ({ setOpenChat }) => {
           size="icon"
           variant="ghost"
           className="md:hidden"
-          onClick={() => setOpenChat(false)}
+          onClick={() => {
+            setOpenChat(false);
+            setSelectedChat(null);
+          }}
         >
           <ChevronLeftIcon />
         </Button>
         <div>
           <Avatar className="md:w-[62px] md:h-[62px]">
             <AvatarImage />
-            <AvatarFallback>I</AvatarFallback>
+            <AvatarFallback>
+              {selectedChat?.users
+                .find((userChat) => userChat.id !== currentUser?.id)
+                ?.name.toUpperCase()[0] || currentUser?.name.toUpperCase()[0]}
+            </AvatarFallback>
           </Avatar>
         </div>
         <div className="flex flex-col">
           <p className="text-[#020831] font-satoshi md:text-[24px] font-bold break-all line-clamp-1">
-            Indrawan Firgiawan Siregar
+            {selectedChat?.product_name || currentUser?.name}
           </p>
           <p className="font-inter text-[#425379] md:text-[16px] text-sm break-all line-clamp-1">
             Last online 7 hours ago

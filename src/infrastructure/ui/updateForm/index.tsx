@@ -17,23 +17,24 @@ import {
   SelectValue,
 } from "@/src/components/ui/select";
 import { Textarea } from "@/src/components/ui/textarea";
+import { useToast } from "@/src/components/ui/use-toast";
 import { City } from "@/src/domain/entities/city";
 import { Province } from "@/src/domain/entities/province";
+import { IUpdatePostRequest } from "@/src/domain/entities/updatePostRequest";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useMutation } from "react-query";
 import { z } from "zod";
 import { PostDetailResponse } from "../../models/getPostDetailResponse";
-import FileInputBox from "../createForm/fileInputBox";
 import {
   PostsRepository,
   formatPrice,
 } from "../../services/posts/postsRepository";
-import { useMutation } from "react-query";
-import { IUpdatePostRequest } from "@/src/domain/entities/updatePostRequest";
-import { useRouter } from "next/navigation";
-import { useToast } from "@/src/components/ui/use-toast";
+import FileInputBox from "../createForm/fileInputBox";
+import Cookies from "js-cookie";
 
 interface ImageData {
   file: File | null;
@@ -290,7 +291,6 @@ const UpdateForm: React.FC<TProps> = ({ data }) => {
         { data: requestData, postId: data?.id as string },
         {
           onSuccess: (data) => {
-            console.log(data);
             toast({
               title: "Notifikasi",
               description: "Berhasil mengedit iklan",
@@ -306,7 +306,6 @@ const UpdateForm: React.FC<TProps> = ({ data }) => {
         },
       );
     } catch (error) {
-      console.log(error);
       toast({
         title: "Notifikasi",
         description: "Gagal mengedit iklan",
@@ -315,8 +314,14 @@ const UpdateForm: React.FC<TProps> = ({ data }) => {
   };
 
   useEffect(() => {
+    const token = Cookies.get("token");
+
     const getCategories = async () => {
-      const response = await axios.get(API_BASE_URL + "/api/category");
+      const response = await axios.get(API_BASE_URL + "/api/category", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       const categories: string[] = [];
 
@@ -366,6 +371,7 @@ const UpdateForm: React.FC<TProps> = ({ data }) => {
       });
 
       (data.images || []).forEach((imageData, idx) => {
+        console.log(`${API_BASE_URL}/images/${imageData.url}`);
         tmpArr.fill(
           {
             file: null,
@@ -382,14 +388,15 @@ const UpdateForm: React.FC<TProps> = ({ data }) => {
   }, [data, cities, categories]);
 
   useEffect(() => {
-    const getCities = async () => {
-      const response = await axios.get(
-        `https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${selectedProvinceId}.json`,
-      );
-      setCities(response.data);
-    };
-
-    getCities().catch((reason) => console.log(reason));
+    if (selectedProvinceId) {
+      const getCities = async () => {
+        const response = await axios.get(
+          `https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${selectedProvinceId}.json`,
+        );
+        setCities(response.data);
+      };
+      getCities();
+    }
   }, [selectedProvinceId]);
 
   return (

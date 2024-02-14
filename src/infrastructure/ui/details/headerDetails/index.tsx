@@ -1,35 +1,71 @@
 "use client";
 
-import React, { useState } from "react";
-import Image from "next/image";
-import image1 from "../../../../../public/images/bingungcarisupplier.png";
-import Link from "next/link";
-import WAIcon from "@/public/svg/wa.svg";
-import LikeProductIcon from "@/public/svg/like_product.svg";
 import AddBookmarkIcon from "@/public/svg/add_bookmark.svg";
+import LikeProductIcon from "@/public/svg/like_product.svg";
 import PremiumIcon from "@/public/svg/premium.svg";
 import TruckIcon from "@/public/svg/truck.svg";
+import WAIcon from "@/public/svg/wa.svg";
 import { Button } from "@/src/components/ui/button";
 import { Separator } from "@/src/components/ui/separator";
 import { formatPrice } from "@/src/infrastructure/services/posts/postsRepository";
+import Image from "next/image";
+import Link from "next/link";
+import { useState } from "react";
+import image1 from "../../../../../public/images/bingungcarisupplier.png";
 
-const HeaderDetails = ({ data }: { data: any }) => {
+import { useChatStore } from "@/src/application/zustand/useChatStore";
+import { useToast } from "@/src/components/ui/use-toast";
+import { PostDetailResponse } from "@/src/infrastructure/models/getPostDetailResponse";
+import { ChatRepository } from "@/src/infrastructure/services/chat/chatRepository";
+import { useRouter } from "next/navigation";
+import { useMutation, useQueryClient } from "react-query";
+
+const HeaderDetails = ({ data }: { data: PostDetailResponse }) => {
   const API_BASE_URL = process.env.BASE_URL;
 
   const Image1 = `${API_BASE_URL}/images/${data?.images?.[0]?.url}`;
-  const Image2 = `${API_BASE_URL}/images/${data?.images?.[1]?.url}`;
-  const [images, setImages] = useState({
-    img1: "https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,b_rgb:f5f5f5/3396ee3c-08cc-4ada-baa9-655af12e3120/scarpa-da-running-su-strada-invincible-3-xk5gLh.png",
-    img2: "https://static.nike.com/a/images/f_auto,b_rgb:f5f5f5,w_440/e44d151a-e27a-4f7b-8650-68bc2e8cd37e/scarpa-da-running-su-strada-invincible-3-xk5gLh.png",
-    img3: "https://static.nike.com/a/images/f_auto,b_rgb:f5f5f5,w_440/44fc74b6-0553-4eef-a0cc-db4f815c9450/scarpa-da-running-su-strada-invincible-3-xk5gLh.png",
-    img4: "https://static.nike.com/a/images/f_auto,b_rgb:f5f5f5,w_440/d3eb254d-0901-4158-956a-4610180545e5/scarpa-da-running-su-strada-invincible-3-xk5gLh.png",
-  });
 
   const [activeImg, setActiveImage] = useState(Image1);
 
   const imageUrls = (data?.images || []).map(
     (imageData: any) => `${API_BASE_URL}/images/${imageData?.url}`,
   );
+
+  const { toast } = useToast();
+  const { setSelectedChat, chats, setChats } = useChatStore((state) => state);
+
+  const queryClient = useQueryClient();
+  const router = useRouter();
+  const { mutate: createOrEnterChat, isLoading } = useMutation({
+    mutationFn: (productId: string) => {
+      return ChatRepository.createOrEnterChat(productId);
+    },
+  });
+
+  const handleClick = () => {
+    console.log("product id : ", data.id);
+
+    createOrEnterChat(data.id, {
+      onSuccess: (data) => {
+        if (!chats.find((chat) => chat._id === data._id)) {
+          setChats([...chats, data]);
+        }
+
+        console.log("chat ", data);
+
+        queryClient.invalidateQueries("get_chats");
+
+        setSelectedChat(data);
+        router.push("/chat");
+      },
+      onError: (error) => {
+        toast({
+          title: "Notifikasi",
+          description: "Terjadi kesalahan dalam menghubungi mitra",
+        });
+      },
+    });
+  };
 
   return (
     <div className="flex flex-col md:flex-row gap-[28px] mb-[41px]">
@@ -71,7 +107,7 @@ const HeaderDetails = ({ data }: { data: any }) => {
         <div className="flex flex-wrap md:flex-row md:items-center mb-[28px] gap-[10px] font-inter text-[#425379] font-medium">
           <p>{data.location}</p>
           <p>Diperbarui pada: 18 Agustus 2023</p>
-          <p>Pengalaman lebih dari 10 tahun</p>
+          <p>Pengalaman {data.mitra.experience}</p>
         </div>
         <h1 className="text-[#020831] font-satoshi text-2xl md:text-[32px] font-bold mb-[28px]">
           Rp {formatPrice(data.priceMin)} - Rp {formatPrice(data.priceMax)}
@@ -87,6 +123,8 @@ const HeaderDetails = ({ data }: { data: any }) => {
             </Button>
           </Link>
           <Button
+            disabled={isLoading}
+            onClick={handleClick}
             variant="outline"
             className="rounded-[27px] h-[48px] text-black border-[1px] border-[#F2F2F2] font-inter text-[16px] py-[12px] px-[32px]"
           >
@@ -114,7 +152,7 @@ const HeaderDetails = ({ data }: { data: any }) => {
           </div>
           <div className="flex flex-col space-y-1">
             <h1 className="text-[#020831] font-satoshi text-[22px] font-bold">
-              {data.mitra.name}
+              {data.merchant_name || "Merchant Mitrain"}
             </h1>
             <div className="flex gap-[8px]">
               <PremiumIcon />
