@@ -37,7 +37,9 @@ const Card = ({ data }: CardProps) => {
             <h1 className="font-satoshi text-[22px] font-bold text-[#020831]">
               {data?.title}
             </h1>
-            <p className="font-inter text-[#425379] text-[16px]">Pengalaman</p>
+            <p className="font-inter text-[#425379] text-[16px]">
+              Pengalaman {data.experience}
+            </p>
           </div>
           <div className="mitra-premium flex flex-row gap-1 mb-[12px]">
             <MitraPermiumIcon />

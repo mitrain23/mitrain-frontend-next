@@ -13,6 +13,7 @@ export default interface PostResultResponse {
   priceMax: string;
   priceMin: string;
   title: string;
+  experience: string;
 }
 
 type Images = {
@@ -20,6 +21,7 @@ type Images = {
 };
 
 type Mitra = {
+  experience: string;
   user: {
     name: string;
   };
