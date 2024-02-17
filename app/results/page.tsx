@@ -94,7 +94,7 @@ const Results = () => {
     <LayoutTemplate>
       <Filter setPriceMin={setPriceMin} setPriceMax={setPriceMax} />
       <div className="Heading-Konveksi-Baju font-inter text-[30px] font-semibold text-[#020831] mb-4">
-        <h1>Konveksi Baju</h1>
+        <h1>Menampilkan Mitra</h1>
       </div>
 
       <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 place-items-center md:place-items-start max-lg:gap-10 gap-[32px] my-4">
