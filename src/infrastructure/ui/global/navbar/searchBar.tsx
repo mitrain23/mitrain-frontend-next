@@ -81,7 +81,7 @@ const SearchBar = ({ className }: TProps) => {
         onFocus={() => setSearchInputFocus(true)}
         onBlur={() => setSearchInputFocus(false)}
         type="text"
-        placeholder="Cari Konveksi Baju Termurah..."
+        placeholder="Cari Mitra Termurah...."
         className="w-full bg-transparent focus:outline-none"
       />
     </div>
