@@ -114,6 +114,8 @@ export class PostsRepository {
         params.push(`${key}=${value}`);
       }
 
+      console.log(params);
+
       return params.join("&");
     };
 

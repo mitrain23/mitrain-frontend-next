@@ -20,7 +20,16 @@ type TProps = {
 
 const Filter: React.FC<TProps> = ({ setPriceMax, setPriceMin }) => {
   const [open, setOpen] = useState(false);
+  const [priceMinMobile, setPriceMinMobile] = useState("");
+  const [priceMaxMobile, setPriceMaxMobile] = useState("");
+
   const focusRef = useRef<any>();
+
+  const handleApplyFilterMobile = () => {
+    setPriceMin(priceMinMobile);
+    setPriceMax(priceMaxMobile);
+    setOpen(false);
+  };
 
   useEffect(() => {
     const checkIfClickedOutside = (e: any) => {
@@ -87,7 +96,7 @@ const Filter: React.FC<TProps> = ({ setPriceMax, setPriceMin }) => {
         </div>
       </div>
 
-      <Sheet>
+      <Sheet open={open} onOpenChange={setOpen}>
         <SheetTrigger asChild>
           <div
             className="flex flex-row items-center py-[14px] px-[24px] gap-[42px] lg:hidden  w-[151px] h-[48px] rounded-[8px] border-[1px] border-[#D9D9D9] bg-white mb-[32px] mt-[16px]"
@@ -132,6 +141,7 @@ const Filter: React.FC<TProps> = ({ setPriceMax, setPriceMin }) => {
                   Rp
                 </p>
                 <Input
+                  onChange={(e) => setPriceMinMobile(e.target.value)}
                   type="text"
                   placeholder="Harga Minimum"
                   className="focus:outline-none focus-visible:ring-[#E5E7E9] h-[44px] rounded-l-none rounded-r-[8px] border-[#E5E7E9] border-l-none"
@@ -143,6 +153,7 @@ const Filter: React.FC<TProps> = ({ setPriceMax, setPriceMin }) => {
                   Rp
                 </p>
                 <Input
+                  onChange={(e) => setPriceMaxMobile(e.target.value)}
                   type="text"
                   placeholder="Harga Maksimum"
                   className="focus:outline-none focus-visible:ring-[#E5E7E9] h-[44px] rounded-l-none rounded-r-[8px] border-[#E5E7E9] border-l-none"
@@ -150,7 +161,10 @@ const Filter: React.FC<TProps> = ({ setPriceMax, setPriceMin }) => {
               </div>
             </div>
           </div>
-          <Button className="bg-[#0066C9] w-full mt-[13px] font-bold mt-10">
+          <Button
+            onClick={handleApplyFilterMobile}
+            className="bg-[#0066C9] w-full mt-[13px] font-bold mt-10"
+          >
             Terapkan Filter
           </Button>
         </SheetContent>

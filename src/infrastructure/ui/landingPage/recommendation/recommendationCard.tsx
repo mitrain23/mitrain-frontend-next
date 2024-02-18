@@ -7,6 +7,7 @@ import { ChatRepository } from "@/src/infrastructure/services/chat/chatRepositor
 import { useToast } from "@/src/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import { useChatStore } from "@/src/application/zustand/useChatStore";
+import { formatPrice } from "@/src/infrastructure/services/posts/postsRepository";
 
 type TProps = {
   data: IAllPostResponse;
@@ -76,7 +77,7 @@ const RecommendationCard: React.FC<TProps> = ({ data }) => {
 
       <div className="flex flex-col mt-[14px] gap-[18px]">
         <h1 className="overflow-hidden text-ellipsis text-[22px] font-bold truncate">
-          Rp {data.priceMin} - Rp {data.priceMax}
+          Rp {formatPrice(data.priceMin)} - Rp {formatPrice(data.priceMax)}
         </h1>
         <Button
           disabled={isLoading}
