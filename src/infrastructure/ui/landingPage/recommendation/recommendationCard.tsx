@@ -70,7 +70,7 @@ const RecommendationCard: React.FC<TProps> = ({ data }) => {
             {data.title}
           </h1>
           <p className="text-[16px] font-inter font-medium text-[#425379]">
-            More than 10 years experience
+            Pengalaman {data.experience}
           </p>
         </div>
       </div>
