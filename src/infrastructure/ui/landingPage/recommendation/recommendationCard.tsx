@@ -34,7 +34,7 @@ const RecommendationCard: React.FC<TProps> = ({ data }) => {
   });
 
   const handleClick = () => {
-    createOrEnterChat(data.mitraId, {
+    createOrEnterChat(data.id, {
       onSuccess: (data) => {
         if (!chats.find((chat) => chat._id === data._id)) {
           setChats([...chats, data]);
