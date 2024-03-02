@@ -43,7 +43,7 @@ const HeaderDetails = ({ data }: { data: PostDetailResponse }) => {
   });
 
   const handleClick = () => {
-    console.log("product id : ", data.id);
+    
 
     createOrEnterChat(data.id, {
       onSuccess: (data) => {
@@ -51,7 +51,7 @@ const HeaderDetails = ({ data }: { data: PostDetailResponse }) => {
           setChats([...chats, data]);
         }
 
-        console.log("chat ", data);
+        
 
         queryClient.invalidateQueries("get_chats");
 

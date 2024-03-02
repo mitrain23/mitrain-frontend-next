@@ -371,7 +371,7 @@ const UpdateForm: React.FC<TProps> = ({ data }) => {
       });
 
       (data.images || []).forEach((imageData, idx) => {
-        console.log(`${API_BASE_URL}/images/${imageData.url}`);
+        
         tmpArr.fill(
           {
             file: null,

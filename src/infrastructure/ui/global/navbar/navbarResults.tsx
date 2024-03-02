@@ -96,11 +96,11 @@ const NavbarResults = ({
       searchParams.get("lokasi") &&
       !searchParams.get("lokasi")?.includes("undefined")
     ) {
-      console.log(searchParams.get("lokasi"));
+      
       params.push("lokasi=" + searchParams.get("lokasi"));
     }
 
-    console.log(params, "dari navbar result");
+    
 
     return params.join("&");
   }, [searchParams]);
