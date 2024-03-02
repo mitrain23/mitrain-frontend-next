@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import {
   Accordion,
   AccordionContent,
@@ -8,6 +8,7 @@ import {
   AccordionTrigger,
 } from "@/src/components/ui/accordion";
 import { PostDetailResponse } from "@/src/infrastructure/models/getPostDetailResponse";
+import TipTapPreview from "./tiptapPreview";
 
 const DescriptionDetails = ({ data }: { data?: PostDetailResponse | null }) => {
   return (
@@ -21,19 +22,10 @@ const DescriptionDetails = ({ data }: { data?: PostDetailResponse | null }) => {
             Product Description
           </AccordionTrigger>
           <AccordionContent className="text-[16px] text-[#425379]">
-            {data?.description}
+            <TipTapPreview text={data?.description} />
           </AccordionContent>
         </AccordionItem>
       </Accordion>
-
-      {/**
-      <h1 className="font-inter text-[30px] text-[#031C32] font-semibold mb-[18px]">
-        Frequently Asked Questions
-      </h1>
-      <Accordion />
-      <Accordion />
-      <Accordion />
-         */}
     </div>
   );
 };
