@@ -56,7 +56,11 @@ const Results = () => {
     searchText: searchParams.get("searchText") || "",
     minPrice: priceMin,
     maxPrice: priceMax,
-    lokasi: searchParams.get("lokasi") || "",
+    lokasi:
+      (searchParams.get("lokasi") &&
+      !searchParams.get("lokasi")?.includes("undefined")
+        ? searchParams.get("lokasi")
+        : undefined) || "",
     page: pageNumber,
     skip: 0,
     take: 10,
@@ -71,7 +75,11 @@ const Results = () => {
   useEffect(() => {
     setFormData({
       ...formData,
-      lokasi: searchParams.get("lokasi") || "",
+      lokasi:
+        (searchParams.get("lokasi") &&
+        !searchParams.get("lokasi")?.includes("undefined")
+          ? searchParams.get("lokasi")
+          : undefined) || "",
       minPrice: priceMinDebounce,
       maxPrice: priceMaxDebounce,
       searchText: searchParams.get("searchText") || "",

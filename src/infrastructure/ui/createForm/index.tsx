@@ -197,7 +197,7 @@ const CreateForm = () => {
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     const formData = new FormData();
-    console.log(values);
+    
 
     for (const [key, value] of Object.entries(values)) {
       if (key === "priceMin" || key === "priceMax") {

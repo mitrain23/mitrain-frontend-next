@@ -92,9 +92,15 @@ const NavbarResults = ({
       params.push("searchText=" + searchParams.get("searchText"));
     }
 
-    if (searchParams.get("lokasi")) {
+    if (
+      searchParams.get("lokasi") &&
+      !searchParams.get("lokasi")?.includes("undefined")
+    ) {
+      
       params.push("lokasi=" + searchParams.get("lokasi"));
     }
+
+    
 
     return params.join("&");
   }, [searchParams]);

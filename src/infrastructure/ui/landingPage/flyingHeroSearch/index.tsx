@@ -127,7 +127,7 @@ const FlyingHeroSearch: React.FC<TProps> = ({ provinces }) => {
 
             <Select
               onValueChange={(value) => {
-                console.log(value);
+                
                 setSelectedCategory(value);
               }}
             >

@@ -13,10 +13,10 @@ const Card = ({ data }: CardProps) => {
   const API_BASE_URL = process.env.BASE_URL;
 
   const Image1 = `${API_BASE_URL}/images/${data?.images?.[0]?.url}`;
-  console.log(Image1);
+  
 
   useEffect(() => {
-    console.log(data);
+    
   }, []);
 
   return (
