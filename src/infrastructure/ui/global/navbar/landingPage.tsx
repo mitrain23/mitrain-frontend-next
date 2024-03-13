@@ -36,6 +36,13 @@ const LandingPageNavbar: React.FC<TProps> = ({ token }) => {
 
         {/* Desktop Nav Menu */}
         <ul className="hidden md:flex space-x-4 items-center">
+          <li>
+            <Link href={"/pricing"}>
+              <Button className="bg-[#020831] text-white px-[42px] py-[12px] h-[48px] rounded-[8px] cursor-pointer">
+                Pasang Iklan
+              </Button>
+            </Link>
+          </li>
           {!token && (
             <>
               <Separator
@@ -88,12 +95,14 @@ const LandingPageNavbar: React.FC<TProps> = ({ token }) => {
       {isMenuOpen && (
         <div className="bg-white fixed inset-0 h-full z-10 flex flex-col px-[24px] justify-center">
           <ul className="px-4 font-semibold space-y-2 text-xl">
-            <li>
-              <Link
-                href="/registerMitra"
-                className="text-gray-700 hover:text-gray-900 cursor-pointer"
-              >
-                Daftar Mitra
+            <li className="w-full">
+              <Link href="/pricing">
+                <Button
+                  variant="default"
+                  className="h-[48px] rounded-[8px] cursor-pointer w-full"
+                >
+                  Pasang Iklan
+                </Button>
               </Link>
             </li>
 

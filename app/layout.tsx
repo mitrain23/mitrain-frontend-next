@@ -3,6 +3,10 @@ import QueryClientWrapper from "@/src/utils/Wrapper/QueryClientWrapper";
 import { cookies } from "next/headers";
 import ProgressProvider from "@/src/infrastructure/ui/global/provider/ProgressProvider";
 import { Toaster } from "@/src/components/ui/toaster";
+import { Inter } from "next/font/google";
+
+// If loading a variable font, you don't need to specify the font weight
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   title: "Mitrain",
@@ -19,7 +23,7 @@ export default function RootLayout({
 
   return (
     <html data-theme="light" lang="en" suppressHydrationWarning>
-      <body className="no-scrollbar">
+      <body className={inter.className + " no-scrollbar"}>
         <ProgressProvider>
           <QueryClientWrapper token={token}>
             {children}
